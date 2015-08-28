@@ -1,0 +1,3 @@
+[submodule "CPUmodels"]
+	path = CPUmodels
+	url = https://github.com/gangtan/CPUmodels
