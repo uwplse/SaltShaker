@@ -85,9 +85,8 @@ RUN cd /src/CPUmodels/x86model/Model; make -j4
 
 # install emacs
 RUN apt-get update && apt-get install -y emacs24-nox
-RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz &&
-    tar xpzf ProofGeneral-4.2.tar.gz
-
+RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz
+RUN tar xpzf ProofGeneral-4.2.tgz
 ADD emacs /root/.emacs
-
+RUN emacs --kill
 

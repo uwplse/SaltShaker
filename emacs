@@ -12,13 +12,13 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(load-file "ProofGeneral-4.2/generic/proof-site.el")
+(load-file "ProofGeneral/generic/proof-site.el")
 
 (use-package evil
   :config
   (progn
-    (evil-mode 1)))
-;;  (define-key evil-normal-state-map "L" 'proof-assert-next-command-interactive)
-;;  (define-key evil-normal-state-map "H" 'proof-undo-last-successful-command)
-;;  (define-key evil-normal-state-map "K" 'proof-goto-point)))
+    (evil-mode 1)
+    (define-key evil-normal-state-map "L" 'proof-assert-next-command-interactive)
+    (define-key evil-normal-state-map "H" 'proof-undo-last-successful-command)
+    (define-key evil-normal-state-map "K" 'proof-goto-point)))
 
