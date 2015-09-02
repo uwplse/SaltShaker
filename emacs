@@ -12,7 +12,7 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(load-file "ProofGeneral/generic/proof-site.el")
+(load-file "/ProofGeneral/generic/proof-site.el")
 
 (use-package evil
   :config

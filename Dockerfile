@@ -88,5 +88,4 @@ RUN apt-get update && apt-get install -y emacs24-nox
 RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz
 RUN tar xpzf ProofGeneral-4.2.tgz
 ADD emacs /root/.emacs
-RUN emacs --kill
-
+RUN emacs --batch --script ~/.emacs
