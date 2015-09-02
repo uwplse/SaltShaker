@@ -1,5 +1,3 @@
-Require Import Misc.
-
 Require Import X86Semantics.
 Import X86_RTL.
 Import X86_Compile.
@@ -9,6 +7,8 @@ Import PTree.
 Require Import Bits.
 Require Import List.
 Import ListNotations.
+Require Import SpaceSearch.
+Require Import Rosette.
 
 (* initialize state, inspired by see simulator/test.ml *)
 
@@ -91,14 +91,37 @@ Defined.
 (* Imm_op = Immediate operand = constant *)
 Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
 
-Definition program := eax_plus four ++ eax_plus six.
+Definition add n m := eax_plus n ++ eax_plus m.
 
-Definition result_rtl_state := RTL_step_list program init_rtl_state.
+Definition run p := RTL_step_list p init_rtl_state.
 
 (* Run the instruction *)
+Definition result_rtl_state := run (add four six).
 Compute (fst result_rtl_state).
 Compute ((gp_regs (core (rtl_mach_state (snd result_rtl_state)))) EAX).
 
+(* Perform extraction *)
+
+Existing Instance rosette.
+
+Definition inputs : Space (int32).
+  refine (single four).
+Defined.
+
+Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
+  refine (search _).
+  refine (bind inputs (fun n => _)).
+  refine (bind inputs (fun m => _)).
+  refine (let s := run (add n m) in _).
+  refine (match (fst s) with 
+  | Okay_ans _ => _
+  | a => single (n,n,inl a)
+  end).
+  refine (let r := gp_regs (core (rtl_mach_state (snd result_rtl_state))) EAX in _).
+  refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)).
+Defined.
+
 Extraction Language Scheme.
 
-Extraction "x86sem" program.
+(* they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int *)
+Extraction "x86sem" verification.
