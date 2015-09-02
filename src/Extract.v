@@ -62,8 +62,23 @@ Definition init_rtl_state : rtl_state.
   |}.
 Defined.
 
-Check instr_to_rtl.
-Check interp_rtl.
-Print RTL.
+(* Define an instruction *)
 
-Print rtl_instr.
+(*
+Finally, an instruction can have one instruction prefixes from each of the four groups: (1) lock and repeat prefixes, (2) segment override prefixes, (3) operand-size override prefix, and (4) address-size override prefix. In 64-bit mode, REX prefixes are used for specifying GPRs and SSE registers, 64-bit operand size, and extended control registers. Each instruction can have only one REX prefix at a time.
+
+http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
+*)
+Definition no_prefix : prefix := mkPrefix None None false false.
+
+Definition four : int32. 
+  refine (Word.mkint _ 4 _).
+  compute.
+  constructor; congruence.
+Defined.
+
+(* Imm_op = Immediate operand = constant *)
+Definition twoPlusFour := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op four)).
+
+(* Run the instruction *)
+Compute (RTL_step_list twoPlusFour init_rtl_state).
