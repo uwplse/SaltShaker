@@ -101,7 +101,9 @@ Definition four_plus_six :=
     (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
 
 (* Perform extraction *)
-Extraction Language Scheme.
+Extraction Language Haskell.
+
+Extraction "x86sem" four_plus_six.
 
 Existing Instance rosette.
 
@@ -125,4 +127,3 @@ Defined.
 (* they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int *)
 Extraction "x86sem" verification.
 
-Extraction "x86sem" four_plus_six.
