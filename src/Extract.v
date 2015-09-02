@@ -5,6 +5,8 @@ Import X86_MACHINE.
 Require Import Maps.
 Import PTree.
 Require Import Bits.
+Require Import List.
+Import ListNotations.
 
 (* initialize state, inspired by see simulator/test.ml *)
 
@@ -78,14 +80,19 @@ Definition four : int32.
   constructor; congruence.
 Defined.
 
-(* Imm_op = Immediate operand = constant *)
-Definition eax_plus_four := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op four)).
+Definition six : int32. 
+  refine (#6).
+  compute.
+  constructor; congruence.
+Defined.
 
-Definition program := eax_plus_four.
+(* Imm_op = Immediate operand = constant *)
+Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
+
+Definition program := eax_plus four ++ eax_plus six.
 
 Definition result_rtl_state := RTL_step_list program init_rtl_state.
 
-Compute init_rtl_state.
-
 (* Run the instruction *)
-Compute result_rtl_state.
+Compute (fst result_rtl_state).
+Compute ((gp_regs (core (rtl_mach_state (snd result_rtl_state)))) EAX).
