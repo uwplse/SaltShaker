@@ -1,3 +1,5 @@
+Require Import Misc.
+
 Require Import X86Semantics.
 Import X86_RTL.
 Import X86_Compile.
@@ -96,3 +98,7 @@ Definition result_rtl_state := RTL_step_list program init_rtl_state.
 (* Run the instruction *)
 Compute (fst result_rtl_state).
 Compute ((gp_regs (core (rtl_mach_state (snd result_rtl_state)))) EAX).
+
+Extraction Language Scheme.
+
+Extraction "x86sem" program.
