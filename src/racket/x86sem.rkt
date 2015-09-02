@@ -1,6 +1,7 @@
 #lang racket
 
 (require "extraction.rkt")
+(require profile)
 
 (define __ (void))
 
@@ -11222,4 +11223,4 @@
 
 (write-string "starting\n")
 (flush-output)
-(displayln (four_plus_six))
+(displayln (profile (four_plus_six)))
