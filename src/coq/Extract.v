@@ -96,11 +96,12 @@ Definition add n m := eax_plus n ++ eax_plus m.
 Definition run p := RTL_step_list p init_rtl_state.
 
 (* Run the instruction *)
-Definition result_rtl_state := run (add four six).
-Compute (fst result_rtl_state).
-Compute ((gp_regs (core (rtl_mach_state (snd result_rtl_state)))) EAX).
+Definition four_plus_six :=
+  let s := run (add four six) in
+    (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
 
 (* Perform extraction *)
+Extraction Language Scheme.
 
 Existing Instance rosette.
 
@@ -117,11 +118,11 @@ Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
   | Okay_ans _ => _
   | a => single (n,n,inl a)
   end).
-  refine (let r := gp_regs (core (rtl_mach_state (snd result_rtl_state))) EAX in _).
+  refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
   refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)).
 Defined.
 
-Extraction Language Scheme.
-
 (* they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int *)
 Extraction "x86sem" verification.
+
+Extraction "x86sem" four_plus_six.

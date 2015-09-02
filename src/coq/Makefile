@@ -10,7 +10,8 @@ main:
 	make -j4 -C$(BUILD)
 	cp header.rkt $(BUILD)/x86sem.rkt
 	tail -n +4 $(BUILD)/x86sem.scm >> $(BUILD)/x86sem.rkt
-	# sed -i.bak "s/(define __ (lambda (_) __))/(define __ 'unused)/g" $(BUILD)/bgpv.rkt
+	sed -i.bak "s/(define __ (lambda (_) __))/(define __ (void))/g" $(BUILD)/x86sem.rkt
+	sed -i.bak 's/(error "AXIOM TO BE REALIZED")/(void)/g' $(BUILD)/x86sem.rkt
 
 clean:
 	rm -r $(BUILD)
