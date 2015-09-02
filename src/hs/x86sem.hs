@@ -1,20 +1,21 @@
-{-# OPTIONS_GHC -cpp -fglasgow-exts #-}
-{- For Hugs, use the option -F"cpp -P -traditional" -}
+{-# OPTIONS_GHC -cpp -XConstrainedClassMethods -XDeriveDataTypeable
+-XDeriveFoldable -XDeriveFunctor -XDeriveGeneric -XDeriveTraversable
+-XEmptyDataDecls -XExistentialQuantification -XExplicitNamespaces
+-XFlexibleContexts -XFlexibleInstances -XForeignFunctionInterface
+-XFunctionalDependencies -XGeneralizedNewtypeDeriving -XImplicitParams
+-XKindSignatures -XLiberalTypeSynonyms -XMagicHash -XMultiParamTypeClasses
+-XParallelListComp -XPatternGuards -XPostfixOperators -XRankNTypes
+-XScopedTypeVariables -XStandaloneDeriving -XTypeOperators
+-XTypeSynonymInstances -XUnboxedTuples -XUnicodeSyntax -XUnliftedFFITypes #-}
 
 module X86sem where
 
 import qualified Prelude
 
+import qualified GHC.Base
 
 unsafeCoerce :: a -> b
-#ifdef __GLASGOW_HASKELL__
-import qualified GHC.Base
 unsafeCoerce = GHC.Base.unsafeCoerce#
-#else
--- HUGS
-import qualified IOExts
-unsafeCoerce = IOExts.unsafeCoerce
-#endif
 
 __ :: any
 __ = Prelude.error "Logical or arity value used"
@@ -41,6 +42,7 @@ eq_rec_r x h y =
 
 data Unit =
    Tt
+   deriving (Prelude.Show) 
 
 data Bool =
    True
@@ -99,6 +101,7 @@ option_rect f f0 o =
 
 data Prod a b =
    Pair a b
+   deriving (Prelude.Show) 
 
 prod_rect :: (a1 -> a2 -> a3) -> (Prod a1 a2) -> a3
 prod_rect f p =
@@ -253,6 +256,7 @@ data Positive =
    XI Positive
  | XO Positive
  | XH
+ deriving (Prelude.Show) 
 
 positive_rect :: (Positive -> a1 -> a1) -> (Positive -> a1 -> a1) -> a1 ->
                  Positive -> a1
@@ -285,6 +289,7 @@ data Z =
    Z0
  | Zpos Positive
  | Zneg Positive
+ deriving (Prelude.Show) 
 
 z_rect :: a1 -> (Positive -> a1) -> (Positive -> a1) -> Z -> a1
 z_rect f f0 f1 z =
@@ -5559,6 +5564,7 @@ data RTL_ans a =
    Fail_ans
  | Trap_ans
  | Okay_ans a
+ deriving (Prelude.Show) 
 
 rTL_ans_rect :: a2 -> a2 -> (a1 -> a2) -> (RTL_ans a1) -> a2
 rTL_ans_rect f f0 f1 r =
@@ -12483,4 +12489,9 @@ four_plus_six :: Prod (RTL_ans Unit) Int32
 four_plus_six =
   let {s = run (add3 four six)} in
   Pair (fst s) (gp_regs (core (rtl_mach_state (snd s))) EAX)
+
+main :: Prelude.IO ()
+main = Prelude.print four_plus_six
+
+
 
