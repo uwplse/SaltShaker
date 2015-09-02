@@ -71,14 +71,21 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
+Notation "# n" := (Word.mkint _ n _) (at level 45).
 Definition four : int32. 
-  refine (Word.mkint _ 4 _).
+  refine (#4).
   compute.
   constructor; congruence.
 Defined.
 
 (* Imm_op = Immediate operand = constant *)
-Definition twoPlusFour := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op four)).
+Definition eax_plus_four := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op four)).
+
+Definition program := eax_plus_four.
+
+Definition result_rtl_state := RTL_step_list program init_rtl_state.
+
+Compute init_rtl_state.
 
 (* Run the instruction *)
-Compute (RTL_step_list twoPlusFour init_rtl_state).
+Compute result_rtl_state.

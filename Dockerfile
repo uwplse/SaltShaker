@@ -89,3 +89,7 @@ RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz
 RUN tar xpzf ProofGeneral-4.2.tgz
 ADD emacs /root/.emacs
 RUN emacs --batch --script ~/.emacs
+
+ADD run.sh /bin/run
+
+
