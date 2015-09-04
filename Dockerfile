@@ -40,22 +40,18 @@ RUN git clone https://github.com/emina/rosette.git && \
                 raco setup -l rosette && \
                 ln -s /usr/bin/z3 bin/
 
-# install some haskell packets that we think will be useful
-RUN cabal update && \
-    cabal install --force-reinstalls \
-      array \
-      base \
-      bytestring \
-      containers \
-      filepath \
-      MissingH \
-      parsec \
-      QuickCheck \
-      regex-compat \
-      split \
-      syb \
-      sexp \
-      text-format-simple
+# install smten
+ENV PATH ~/.cabal/bin:$PATH
+RUN mkdir smten && cd smten && \
+    cabal update && \
+    wget https://github.com/ruhler/smten/releases/download/v4.1.0.0/smten-4.1.0.0.tar.gz && \
+    wget https://github.com/ruhler/smten/releases/download/v4.1.0.0/smten-base-4.1.0.0.tar.gz && \
+    wget https://github.com/ruhler/smten/releases/download/v4.1.0.0/smten-lib-4.1.0.0.tar.gz && \
+    wget https://github.com/ruhler/smten/releases/download/v4.1.0.0/smten-minisat-4.1.0.0.tar.gz && \
+    tar -xf smten-4.1.0.0.tar.gz && cd smten-4.1.0.0 && cabal install && cd - && \
+    tar -xf smten-base-4.1.0.0.tar.gz && cd smten-base-4.1.0.0 && cabal install && cd - && \
+    tar -xf smten-lib-4.1.0.0.tar.gz && cd smten-lib-4.1.0.0 && cabal install && cd - && \
+    tar -xf smten-minisat-4.1.0.0.tar.gz && cd smten-minisat-4.1.0.0 && cabal install && cd -
 
 # install coq
 RUN curl -O https://coq.inria.fr/distrib/8.4pl3/files/coq-8.4pl3.tar.gz && \
@@ -71,18 +67,13 @@ RUN curl -O https://coq.inria.fr/distrib/8.4pl3/files/coq-8.4pl3.tar.gz && \
                      -coqdocdir /usr/local/share/texmf/tex/latex/misc && \
                    make -j4; make install
 
-# install x86 semantics
-ADD CPUmodels /CPUmodels
-RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
-RUN cd /CPUmodels/x86model/Model; make -j4
-
 # install emacs
 RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz && \
     tar xpzf ProofGeneral-4.2.tgz
 ADD emacs /root/.emacs
 RUN emacs --batch --script ~/.emacs
 
-# add Makefile
-# ADD Makefile /Makefile
-# ADD src /x86sem
-# RUN make
+# install x86 semantics
+ADD CPUmodels /CPUmodels
+RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
+RUN cd /CPUmodels/x86model/Model; make -j4
