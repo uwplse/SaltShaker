@@ -14,3 +14,12 @@ bug:
     user    1m11.948s
     sys 0m0.168s
 
+
+Runtime in the list monad (not rosette):
+
+inputs                           |  runtime
+---------------------------------+-----------
+(p `(S ,`(S ,`(S ,`(S ,`(O)))))) | 2m39.229s 
+(p `(S ,`(S ,`(S ,`(O)))))       | 0m19.035s
+(p `(S ,`(S ,`(O))))             | 0m02.371s
+

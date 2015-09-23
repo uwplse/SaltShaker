@@ -4800,6 +4800,11 @@
      ((Cons i l~)
        (@ bind rTL_monad (interp_rtl i) (lambda (x) (rTL_step_list l~)))))))
   
+(define concat (lambda (l)
+  (match l
+     ((Nil) `(Nil))
+     ((Cons h t) (@ app h (concat t))))))
+  
 (define empty0 (lambda (spaceSearch)
   (match spaceSearch
      ((Build_SpaceSearch empty1 single0 union0 bind1 search0) (empty1 __)))))
@@ -4824,20 +4829,12 @@
      ((Build_SpaceSearch empty1 single0 union0 bind1 search0)
        (@ search0 __ x)))))
 
-(define symbolicFail (lambda  (_) (assert false)))
-
-(define symbolicReturn (lambdas (a _) a))
-
-(define symbolicUnion
-  (lambdas (s t v) (define-symbolic* b boolean?) (if b (s v) (t v))))
-
-(define symbolicBind (lambdas (s f v) (@ f (s v) v)))
-
-(define symbolicRun (lambda  (e) (solve/evaluate/concretize e)))
-
-(define rosette `(Build_SpaceSearch ,(lambda (_) symbolicFail) ,(lambda (_)
-  symbolicReturn) ,(lambda (_) symbolicUnion) ,(lambdas (_ _) symbolicBind)
-  ,(lambda (_) symbolicRun)))
+(define listSpaceSearch `(Build_SpaceSearch ,(lambda (_) `(Nil)) ,(lambdas (_
+  a) `(Cons ,a ,`(Nil))) ,(lambdas (_ l l~) (@ app l l~)) ,(lambdas (_ _ s f)
+  (concat (@ map f s))) ,(lambdas (_ l)
+  (match l
+     ((Nil) `(None))
+     ((Cons a l0) `(Some ,a))))))
 
 (define bii id)
 
@@ -4942,36 +4939,50 @@
 
 (define run (lambda (p) (@ rTL_step_list p init_rtl_state)))
 
-(define threehundred `(Zpos ,`(XO ,`(XO ,`(XI ,`(XI ,`(XO ,`(XI ,`(XO ,`(XO
-  ,`(XH)))))))))))
-
 (define zero2 `(Z0))
 
-(define inputs
-  (@ union rosette (@ single rosette zero2) (@ single rosette threehundred)))
+(define positives (lambda (n)
+  (match n
+     ((O) (@ single listSpaceSearch `(XH)))
+     ((S n0)
+       (let ((i (positives n0)))
+         (@ union listSpaceSearch (@ single listSpaceSearch `(XH))
+           (@ bind0 listSpaceSearch i (lambda (x)
+             (@ union listSpaceSearch (@ single listSpaceSearch `(XI ,x))
+               (@ single listSpaceSearch `(XO ,x)))))))))))
+  
+(define int32s (lambda (n)
+  (@ union listSpaceSearch (@ single listSpaceSearch zero2)
+    (@ bind0 listSpaceSearch (positives n) (lambda (x)
+      (@ single listSpaceSearch `(Zpos ,x)))))))
 
 (define verification
-  (@ search rosette
-    (@ bind0 rosette inputs (lambda (n)
-      (@ bind0 rosette inputs (lambda (m)
-        (let ((s (run (@ add3 n m))))
-          (match (fst s)
-             ((Fail_ans)
-               (@ single rosette `(Pair ,`(Pair ,n ,m) ,`(Inl ,`(Fail_ans)))))
-             ((Trap_ans)
-               (@ single rosette `(Pair ,`(Pair ,n ,m) ,`(Inl ,`(Trap_ans)))))
-             ((Okay_ans u)
-               (let ((r (@ gp_regs (core (rtl_mach_state (snd s))) `(EAX))))
-                 (match (@ eq `(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
-                          ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
-                          ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
-                          ,`(S ,`(S ,`(O))))))))))))))))))))))))))))))))
-                          (@ add2 `(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
+  (let ((p `(S ,`(S ,`(O)))))
+    (@ search listSpaceSearch
+      (@ bind0 listSpaceSearch (int32s p) (lambda (n)
+        (@ bind0 listSpaceSearch (int32s p) (lambda (m)
+          (let ((s (run (@ add3 n m))))
+            (match (fst s)
+               ((Fail_ans)
+                 (@ single listSpaceSearch `(Pair ,`(Pair ,n ,m) ,`(Inl
+                   ,`(Fail_ans)))))
+               ((Trap_ans)
+                 (@ single listSpaceSearch `(Pair ,`(Pair ,n ,m) ,`(Inl
+                   ,`(Trap_ans)))))
+               ((Okay_ans u)
+                 (let ((r
+                   (@ gp_regs (core (rtl_mach_state (snd s))) `(EAX))))
+                   (match (@ eq `(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
                             ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
                             ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
-                            ,`(S ,`(S ,`(O)))))))))))))))))))))))))))))))) n
-                            m) r)
-                    ((True) (empty0 rosette))
-                    ((False)
-                      (@ single rosette `(Pair ,`(Pair ,n ,m) ,`(Inr ,r)))))))))))))))
+                            ,`(S ,`(S ,`(O))))))))))))))))))))))))))))))))
+                            (@ add2 `(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
+                              ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
+                              ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
+                              ,`(S ,`(S ,`(S ,`(S ,`(S
+                              ,`(O)))))))))))))))))))))))))))))))) n m) r)
+                      ((True) (empty0 listSpaceSearch))
+                      ((False)
+                        (@ single listSpaceSearch `(Pair ,`(Pair ,n ,m)
+                          ,`(Inr ,r))))))))))))))))
 
