@@ -1,15 +1,23 @@
-Require Import X86.
+Require Import X86Semantics.
+Import X86_RTL.
+Import X86_Compile.
+Import X86_MACHINE.
+Require Import Maps.
+Import PTree.
+Require Import Bits.
+Require Import List.
+Import ListNotations.
+Require Import SpaceSearch.
 Require Import Rosette.
+Require Import X86.
 
 (* Perform extraction *)
 Extraction Language Scheme.
 
-Extraction "x86sem" four_plus_six.
-
 Existing Instance rosette.
 
 Definition inputs : Space (int32).
-  refine (single four).
+  refine (union (single four) (single six)).
 Defined.
 
 Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
@@ -19,7 +27,7 @@ Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
   refine (let s := run (add n m) in _).
   refine (match (fst s) with 
   | Okay_ans _ => _
-  | a => single (n,n,inl a)
+  | a => single (n,m,inl a)
   end).
   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
   refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)).

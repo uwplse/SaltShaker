@@ -8,3 +8,5 @@
 
 (require "extraction.rkt")
 (require "rosette.rkt")
+
+(provide verification)

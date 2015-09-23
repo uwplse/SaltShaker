@@ -90,7 +90,14 @@ Defined.
 (* Imm_op = Immediate operand = constant *)
 Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
 
-Definition add n m := eax_plus n ++ eax_plus m.
+Definition fast_eax_plus (n:int32) := [set_loc_rtl 
+  (cast_u_rtl_exp 31
+    (arith_rtl_exp add_op
+      (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
+      (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
+  (reg_loc EAX)].
+
+Definition add n m := fast_eax_plus n ++ fast_eax_plus m.
 
 Definition run p := RTL_step_list p init_rtl_state.
 
@@ -98,4 +105,3 @@ Definition run p := RTL_step_list p init_rtl_state.
 Definition four_plus_six :=
   let s := run (add four six) in
     (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
-
