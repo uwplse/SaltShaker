@@ -20,3 +20,6 @@
         (apply (lambda (as ...) f) (cdr e))
         (match e cs ...))]))
 
+; syntax-case:!
+; (symbol<? a
+
