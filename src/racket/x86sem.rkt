@@ -4920,10 +4920,6 @@
 (define init_rtl_state `(Build_rtl_state ,empty_oracle ,init_full_machine
   ,empty_mem))
 
-(define four `(Zpos ,`(XO ,`(XO ,`(XH)))))
-
-(define six `(Zpos ,`(XO ,`(XI ,`(XH)))))
-
 (define fast_eax_plus (lambda (n) `(Cons ,`(Set_loc_rtl ,`(S ,`(S ,`(S ,`(S
   ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
   ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
@@ -4946,8 +4942,13 @@
 
 (define run (lambda (p) (@ rTL_step_list p init_rtl_state)))
 
+(define threehundred `(Zpos ,`(XO ,`(XO ,`(XI ,`(XI ,`(XO ,`(XI ,`(XO ,`(XO
+  ,`(XH)))))))))))
+
+(define zero2 `(Z0))
+
 (define inputs
-  (@ union rosette (@ single rosette four) (@ single rosette six)))
+  (@ union rosette (@ single rosette zero2) (@ single rosette threehundred)))
 
 (define verification
   (@ search rosette
@@ -4969,7 +4970,7 @@
                             ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
                             ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S ,`(S
                             ,`(S ,`(S ,`(O)))))))))))))))))))))))))))))))) n
-                            n) r)
+                            m) r)
                     ((True) (empty0 rosette))
                     ((False)
                       (@ single rosette `(Pair ,`(Pair ,n ,m) ,`(Inr ,r)))))))))))))))

@@ -16,8 +16,25 @@ Extraction Language Scheme.
 
 Existing Instance rosette.
 
+Definition threehundred : int32.
+  compute.
+  refine {| Word.intval := 300 |}.
+  compute.
+  intuition congruence.
+Defined.
+
+Definition zero : int32.
+  compute.
+  refine {| Word.intval := 0 |}.
+  compute.
+  intuition congruence.
+Defined.
+
 Definition inputs : Space (int32).
-  refine (union (single four) (single six)).
+  refine (union (single zero) (single threehundred)).
+(* 
+  refine (single threehundred).
+  refine (union (union (single four) (single six)) (single threehundred)). *)
 Defined.
 
 Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
