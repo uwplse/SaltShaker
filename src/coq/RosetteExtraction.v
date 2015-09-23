@@ -8,13 +8,15 @@ Require Import Bits.
 Require Import List.
 Import ListNotations.
 Require Import SpaceSearch.
-(* Require Import Rosette. *)
+Require Import Rosette.
 Require Import X86.
 Import BinNums.
 Import Word.
 
-(* Perform extraction *)
 Extraction Language Scheme.
+
+(* Existing Instance listSpaceSearch. *)
+Existing Instance rosette.
 
 Definition threehundred : int32.
   compute.
@@ -28,8 +30,6 @@ Definition zero : int32.
   compute.
   intuition congruence.
 Defined.
-
-Existing Instance listSpaceSearch.
 
 Fixpoint positives (n:nat) : Space positive.
   refine (match n with
