@@ -8,17 +8,18 @@
 -XScopedTypeVariables -XStandaloneDeriving -XTypeOperators
 -XTypeSynonymInstances -XUnboxedTuples -XUnicodeSyntax -XUnliftedFFITypes #-}
 
-module X86sem where
-
-import qualified Prelude
-
 import qualified GHC.Base
+import qualified Smten.Prelude
+import qualified Smten.Control.Monad
+import qualified Smten.Symbolic
+import qualified Smten.Symbolic.Solver.MiniSat
+import qualified Smten.System.Environment
 
 unsafeCoerce :: a -> b
 unsafeCoerce = GHC.Base.unsafeCoerce#
 
 __ :: any
-__ = Prelude.error "Logical or arity value used"
+__ = Smten.Prelude.error "Logical or arity value used"
 
 and_rect :: (() -> () -> a1) -> a1
 and_rect f =
@@ -42,7 +43,7 @@ eq_rec_r x h y =
 
 data Unit =
    Tt
-   deriving (Prelude.Show) 
+   deriving (Smten.Prelude.Show) 
 
 data Bool =
    True
@@ -101,7 +102,7 @@ option_rect f f0 o =
 
 data Prod a b =
    Pair a b
-   deriving (Prelude.Show) 
+   deriving (Smten.Prelude.Show) 
 
 prod_rect :: (a1 -> a2 -> a3) -> (Prod a1 a2) -> a3
 prod_rect f p =
@@ -256,7 +257,7 @@ data Positive =
    XI Positive
  | XO Positive
  | XH
- deriving (Prelude.Show) 
+ deriving (Smten.Prelude.Show) 
 
 positive_rect :: (Positive -> a1 -> a1) -> (Positive -> a1 -> a1) -> a1 ->
                  Positive -> a1
@@ -289,7 +290,7 @@ data Z =
    Z0
  | Zpos Positive
  | Zneg Positive
- deriving (Prelude.Show) 
+ deriving (Smten.Prelude.Show) 
 
 z_rect :: a1 -> (Positive -> a1) -> (Positive -> a1) -> Z -> a1
 z_rect f f0 f1 z =
@@ -3823,31 +3824,31 @@ type R = () -- AXIOM TO BE REALIZED
 
 r0 :: R
 r0 =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 r1 :: R
 r1 =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 rplus :: R -> R -> R
 rplus =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 rmult :: R -> R -> R
 rmult =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 ropp :: R -> R
 ropp =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 rinv :: R -> R
 rinv =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 total_order_T :: R -> R -> Sumor Sumbool
 total_order_T =
-  Prelude.error "AXIOM TO BE REALIZED"
+  Smten.Prelude.error "AXIOM TO BE REALIZED"
 
 zeven :: Z -> Bool
 zeven n =
@@ -5564,7 +5565,7 @@ data RTL_ans a =
    Fail_ans
  | Trap_ans
  | Okay_ans a
- deriving (Prelude.Show) 
+ deriving (Smten.Prelude.Show) 
 
 rTL_ans_rect :: a2 -> a2 -> (a1 -> a2) -> (RTL_ans a1) -> a2
 rTL_ans_rect f f0 f1 r =
@@ -12485,13 +12486,19 @@ run :: (List Rtl_instr) -> Prod (RTL_ans Unit) Rtl_state
 run p =
   rTL_step_list p init_rtl_state
 
-four_plus_six :: Prod (RTL_ans Unit) Int32
-four_plus_six =
-  let {s = run (add3 four six)} in
+n_plus_m :: Int32 -> Int32 -> Prod (RTL_ans Unit) Int32
+n_plus_m n m =
+  let {s = run (add3 n m)} in
   Pair (fst s) (gp_regs (core (rtl_mach_state (snd s))) EAX)
 
-main :: Prelude.IO ()
-main = Prelude.print four_plus_six
+runSmten :: Smten.Prelude.IO (Smten.Prelude.Maybe (Prod (RTL_ans Unit) Int32))
+runSmten = Smten.Symbolic.run_symbolic Smten.Symbolic.Solver.MiniSat.minisat Smten.Prelude.$ do
+	     n <- Smten.Control.Monad.return four
+	     m <- Smten.Control.Monad.return six
+	     Smten.Control.Monad.return Smten.Prelude.$ n_plus_m n m
 
-
+main :: Smten.Prelude.IO ()
+main = do
+  r <- runSmten
+  Smten.Prelude.print r
 
