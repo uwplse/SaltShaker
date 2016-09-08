@@ -1,6 +1,18 @@
-Run
+Build Environment
 
-    sudo docker run -v `pwd`/src:/src/extract -ti x86sem
+    docker build -t x86sem .
+
+Run Environment
+
+    docker run --name x86sem -v $(pwd)/src:/src/extract -ti x86sem
+
+Build Project
+
+    docker exec x86sem make -C /src/extract
+
+Develop with emacs
+
+    emacs "/ssh:user@machine|docker:x86sem:/src/extract/coq/X86.v"
 
 Currently, adding all combincations of 0 and 300 takes about 1min to find the
 bug:

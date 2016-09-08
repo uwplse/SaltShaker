@@ -67,12 +67,6 @@ RUN curl -O https://coq.inria.fr/distrib/8.4pl3/files/coq-8.4pl3.tar.gz && \
                      -coqdocdir /usr/local/share/texmf/tex/latex/misc && \
                    make -j4; make install
 
-# install emacs
-RUN wget http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz && \
-    tar xpzf ProofGeneral-4.2.tgz
-ADD emacs /root/.emacs
-RUN emacs --batch --script ~/.emacs
-
 # install x86 semantics
 ADD CPUmodels /CPUmodels
 RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
