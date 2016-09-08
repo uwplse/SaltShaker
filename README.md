@@ -14,6 +14,15 @@ Develop with emacs
 
     emacs "/ssh:user@machine|docker:x86sem:/src/extract/coq/X86.v"
 
+Remove environment with:
+    
+    docker rm -f x86sem
+
+Remove all old docker containers with:
+
+    docker rm -f $(docker ps -aq)
+
+
 Currently, adding all combincations of 0 and 300 takes about 1min to find the
 bug:
 
