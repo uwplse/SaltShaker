@@ -10,7 +10,11 @@ Build Project
 
     docker exec x86sem make -C /src/extract
 
-Develop with emacs
+Develop with emacs locally
+
+    emacs /docker:x86sem:/src/extract/coq/X86.v
+
+Develop with emacs remotely
 
     emacs "/ssh:user@machine|docker:x86sem:/src/extract/coq/X86.v"
 

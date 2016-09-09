@@ -36,7 +36,8 @@ RUN wget http://mirror.racket-lang.org/installers/6.1.1/racket-6.1.1-x86_64-linu
 
 # install rosette
 RUN git clone https://github.com/emina/rosette.git && \
-    cd rosette; raco link rosette && \
+    cd rosette; git checkout db80315cb37df8e32766f6436c9baad9544540a4 && \
+                raco link rosette && \
                 raco setup -l rosette && \
                 ln -s /usr/bin/z3 bin/
 
