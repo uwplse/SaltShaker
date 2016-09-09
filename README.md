@@ -3,8 +3,8 @@ Build Environment
     docker build -t x86sem .
 
 Run Environment
-
-    docker run --name x86sem -v $(pwd)/src:/src/extract -ti x86sem
+    
+    docker rm -f x86sem; docker run --name x86sem -v $(pwd)/src:/src/extract -ti x86sem
 
 Build Project
 
@@ -17,10 +17,6 @@ Develop with emacs locally
 Develop with emacs remotely
 
     emacs "/ssh:user@machine|docker:x86sem:/src/extract/coq/X86.v"
-
-Remove environment with:
-    
-    docker rm -f x86sem
 
 Remove all old docker containers with:
 
