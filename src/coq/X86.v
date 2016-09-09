@@ -7,8 +7,8 @@ Import PTree.
 Require Import Bits.
 Require Import List.
 Import ListNotations.
-Require Import SpaceSearch.
 Require Import Rosette.
+Require Import SpaceSearch.
 Import BinNums.
 Import Word.
 
@@ -100,14 +100,31 @@ Definition fast_eax_plus (n:int32) := [set_loc_rtl
       (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
   (reg_loc EAX)].
 
+Definition nofast_eax_plus (n:int32) := [set_loc_rtl 
+  (cast_u_rtl_exp 31
+    (arith_rtl_exp add_op
+      (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
+      (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
+  (reg_loc EAX)].
+
 Definition add n m := fast_eax_plus n ++ fast_eax_plus m.
 
 Definition run p := RTL_step_list p init_rtl_state.
+
+Definition natId (n:int32) := 
+  let s := run [set_loc_rtl 
+  (arith_rtl_exp add_op
+    (get_loc_rtl_exp (reg_loc EAX))
+    (imm_rtl_exp n))
+  (reg_loc EAX)] in
+    gp_regs (core (rtl_mach_state (snd s))) EAX.
 
 (* Run the instruction *)
 Definition four_plus_six :=
   let s := run (add four six) in
     (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
+
+Compute four_plus_six.
 
 Extraction Language Scheme.
 
@@ -127,14 +144,57 @@ Definition zero : int32.
   intuition congruence.
 Defined.
 
-Fixpoint positives (n:nat) : Space positive.
+Print positive.
+
+(* 
+Translate a positive number to the following binary number:
+
+xI (xO (xI (xO (xH))))
+|   |   |   |   |
+v   v   v   v   v
+1   0   1   0   1 0 0 0 0 0 ...
+^
+'- least significant
+
+1   2   4   8  16
+
+= 1 + 4 + 16 = 21
+*)
+
+Compute (xI (xO (xI (xO (xH))))).
+
+(* creates an efficient space of all the positive numbers with (S n) bits *)
+Fixpoint positives `{SpaceSearch} (n:nat) : Space positive.
   refine (match n with
   | 0 => single xH
-  | S n => let i := positives n in _
+  | S n => let i := positives _ n in _
   end).
   refine (union (single xH) _).
-  refine (bind i (fun x => (union (single (xI x)) (single (xO x))))).
+  refine (bind i (fun x => (union (single (xO x)) (single (xI x))))).
 Defined.
+
+Open Scope positive_scope.
+
+Compute @positives listSpaceSearch 0.
+Compute @positives listSpaceSearch 1.
+Compute @positives listSpaceSearch 2.
+Compute @positives listSpaceSearch 3.
+
+Require Import Coq.PArith.BinPos.
+
+Definition verification (p:nat) : option positive.
+  refine (search _).
+  refine (bind (positives p) (fun n => _)).
+  refine (if n =? n then empty else single n).
+Defined.
+
+Definition proposition : bool.
+  exact true.
+Defined.
+
+(*
+
+
 
 Axiom ADMIT : forall A, A.
 
@@ -146,19 +206,31 @@ Definition int32s (n:nat) : Space int32.
   apply ADMIT.
 Defined.
 
-Definition verification : option (int32 * int32 * (RTL_ans unit + int32)).
-  refine (let p := 0 in _).
+Compute (natId four).
+
+
+Definition proposition (n:int32) : bool.
+  refine (Word.eq (natId n) n).
+Defined.
+*)
+
+(*
+Definition verification : option int32.
+  refine (let p := 1 in _).
   refine (search _).
   refine (bind (int32s p) (fun n => _)).
-  refine (bind (int32s p) (fun m => _)).
+(*   refine (bind (int32s p) (fun m => _)).
   refine (let s := run (add n m) in _).
   refine (match (fst s) with 
   | Okay_ans _ => _
   | a => single (n,m,inl a)
-  end).
-  refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
-  refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)).
+  end). *)
+(*   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
+  refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)). *)
+  refine (if proposition n then empty else single n).
 Defined.
 
+*)
+
 (* they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int *)
-Extraction "x86sem" verification.
+Extraction "x86sem" verification proposition.

@@ -9,4 +9,4 @@
 (require "extraction.rkt")
 (require "rosette.rkt")
 
-(provide verification)
+(provide (all-defined-out))

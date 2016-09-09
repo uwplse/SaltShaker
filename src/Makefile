@@ -16,6 +16,7 @@ main:
 	sed -i.bak 's/(error "AXIOM TO BE REALIZED")/(void)/g' $(BUILD)/x86sem.rkt
 	cp $(RKT_SRC)/*.rkt $(BUILD)
 	raco make $(BUILD)/$(MAIN)
+	chmod +x $(BUILD)/$(MAIN)
 
 clean:
 	rm -r $(BUILD)
