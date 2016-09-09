@@ -182,14 +182,37 @@ Compute @positives listSpaceSearch 3.
 
 Require Import Coq.PArith.BinPos.
 
+Definition boolSpace `{SpaceSearch} : Space bool :=
+  union (single true) (single false).
+
+(* this is a super efficient representation *)
+Fixpoint listSpace `{SpaceSearch} {A} (s:Space A) (n:nat) : Space (list A) :=
+  match n with
+  | 0 % nat => single []
+  | S n => bind (listSpace s n) (fun l => 
+          bind s (fun a => single (a :: l)))
+  end.
+
+(*
+(* this is a super efficient representation *)
+Fixpoint boolList `{SpaceSearch} (n:nat) : Space (list bool).
+  refine (match n with
+  | 0 % nat => single []
+  | S n => bind (boolList _ n) (fun l => union (single (true :: l)) (single (false :: l)))
+  end).
+Defined.
+*)
+ 
+Compute @listSpace listSpaceSearch bool boolSpace 2.
+
 Definition verification (p:nat) : option positive.
   refine (search _).
   refine (bind (positives p) (fun n => _)).
   refine (if n =? n then empty else single n).
 Defined.
 
-Definition proposition : bool.
-  exact true.
+Definition proposition (n:nat) : Space (list bool).
+  refine (listSpace boolSpace n). 
 Defined.
 
 (*
