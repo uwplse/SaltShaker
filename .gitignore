@@ -1,0 +1,5 @@
+.cabal-sandbox/
+src/.build/
+src/coq/#*#
+src/coq/*~
+src/coq/*.scm

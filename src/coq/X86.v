@@ -244,14 +244,30 @@ Instance freeInt n : @Free rosette (int n) := {|
   freeOk := freeIntSpaceOk n 
 |}.
 
-Definition wordVerification (_:nat) : option (int32 * int32).
+Definition maxInt bits : int bits.
+  refine (# (Word.max_unsigned bits)).
+  unfold max_unsigned.
+  split.
+  - compute; congruence.
+  - omega.
+Defined.
+
+Definition findWord (bits:nat) : option (int bits).
   refine (search _).
-  refine (bind (free int32) (fun x => _)).
-  refine (bind (free int32) (fun y => _)).
+  refine (bind (free (int bits)) (fun x => _)).
+  refine (if Word.eq x (maxInt bits)
+          then single x
+          else empty).
+Defined.
+
+Definition wordVerification (bits:nat) : option (int bits * int bits).
+  refine (search _).
+  refine (bind (free (int bits)) (fun x => _)).
+  refine (bind (free (int bits)) (fun y => _)).
   refine (if Word.eq (Word.add x y) (Word.add y x) 
           then _ 
           else single (x, y)).
-  refine (if Word.eq (Word.add x y) threehundred
+  refine (if Word.eq (Word.add x y) (maxInt bits)
           then single (x, y)
           else empty).
 Defined.
@@ -269,4 +285,4 @@ Definition instructionVerification (_:nat) : option (int32 * int32 * int32).
   refine (if Word.eq (Word.add n m) r then empty else single (n,m,r)).
 Defined.
 
-Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification.
+Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord.
