@@ -28,19 +28,6 @@ RUN git clone https://github.com/Z3Prover/z3.git && \
     cd z3; python scripts/mk_make.py && \
            cd build; make; make install
 
-# install racket
-RUN wget http://mirror.racket-lang.org/installers/6.1.1/racket-6.1.1-x86_64-linux-ubuntu-precise.sh -O install.sh && \
-    chmod +x install.sh && \
-    ./install.sh --in-place --create-links /usr --dest /usr/racket && \
-    rm install.sh
-
-# install rosette
-RUN git clone https://github.com/emina/rosette.git && \
-    cd rosette; git checkout db80315cb37df8e32766f6436c9baad9544540a4 && \
-                raco link rosette && \
-                raco setup -l rosette && \
-                ln -s /usr/bin/z3 bin/
-
 # install smten
 ENV PATH ~/.cabal/bin:$PATH
 RUN mkdir smten && cd smten && \
@@ -68,7 +55,19 @@ RUN curl -O https://coq.inria.fr/distrib/8.4pl3/files/coq-8.4pl3.tar.gz && \
                      -coqdocdir /usr/local/share/texmf/tex/latex/misc && \
                    make -j4; make install
 
+# install racket
+RUN wget http://mirror.racket-lang.org/installers/6.6/racket-6.6-x86_64-linux.sh -O install.sh && \
+    chmod +x install.sh && \
+    ./install.sh --in-place --create-links /usr --dest /usr/racket && \
+    rm install.sh
+
+# install rosette
+RUN git clone https://github.com/emina/rosette.git && \
+    cd rosette; git checkout 2.2 && \
+                raco pkg install
+
 # install x86 semantics
 ADD CPUmodels /CPUmodels
 RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
 RUN cd /CPUmodels/x86model/Model; make -j4
+

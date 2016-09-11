@@ -11,6 +11,8 @@ Require Import Rosette.
 Require Import SpaceSearch.
 Import BinNums.
 Import Word.
+Require Import Coq.PArith.BinPos.
+Import Pos.
 
 (* initialize state, inspired by see simulator/test.ml *)
 
@@ -126,8 +128,6 @@ Definition four_plus_six :=
 
 Compute four_plus_six.
 
-Extraction Language Scheme.
-
 (* Existing Instance listSpaceSearch. *)
 Existing Instance rosette.
 
@@ -144,8 +144,6 @@ Definition zero : int32.
   intuition congruence.
 Defined.
 
-Print positive.
-
 (* 
 Translate a positive number to the following binary number:
 
@@ -161,99 +159,114 @@ v   v   v   v   v
 = 1 + 4 + 16 = 21
 *)
 
-Compute (xI (xO (xI (xO (xH))))).
-
-(* creates an efficient space of all the positive numbers with (S n) bits *)
-Fixpoint positives `{SpaceSearch} (n:nat) : Space positive.
-  refine (match n with
-  | 0 => single xH
-  | S n => let i := positives _ n in _
-  end).
-  refine (union (single xH) _).
-  refine (bind i (fun x => (union (single (xO x)) (single (xI x))))).
-Defined.
-
-Open Scope positive_scope.
-
-Compute @positives listSpaceSearch 0.
-Compute @positives listSpaceSearch 1.
-Compute @positives listSpaceSearch 2.
-Compute @positives listSpaceSearch 3.
-
-Require Import Coq.PArith.BinPos.
-
 Definition boolSpace `{SpaceSearch} : Space bool :=
   union (single true) (single false).
 
-(* this is a super efficient representation *)
+(* efficient representation of all lists of length n *)
 Fixpoint listSpace `{SpaceSearch} {A} (s:Space A) (n:nat) : Space (list A) :=
   match n with
-  | 0 % nat => single []
+  | 0%nat => single []
   | S n => bind (listSpace s n) (fun l => 
           bind s (fun a => single (a :: l)))
   end.
 
-(*
-(* this is a super efficient representation *)
-Fixpoint boolList `{SpaceSearch} (n:nat) : Space (list bool).
-  refine (match n with
-  | 0 % nat => single []
-  | S n => bind (boolList _ n) (fun l => union (single (true :: l)) (single (false :: l)))
-  end).
-Defined.
-*)
- 
 Compute @listSpace listSpaceSearch bool boolSpace 2.
 
-Definition verification (p:nat) : option positive.
-  refine (search _).
-  refine (bind (positives p) (fun n => _)).
-  refine (if n =? n then empty else single n).
+(* creates an efficient space of all the positive numbers with n bits followed by xH *)
+Fixpoint positiveSpace `{SpaceSearch} (n:nat) : Space positive.
+  refine (match n with
+  | 0%nat => single xH
+  | S n => bind (positiveSpace _ n)
+               (fun x => (union (single (xO x)) (single (xI x))))
+  end).
 Defined.
 
-Definition proposition (n:nat) : Space (list bool).
-  refine (listSpace boolSpace n). 
+(* creates an efficient space of all the positive numbers with n bits *)
+Fixpoint positiveSpace' `{SpaceSearch} (n:nat) : Space positive.
+  refine (match n with
+  | 0%nat => empty
+  | S n => union (positiveSpace' _ n) (positiveSpace n)
+  end).
+Defined.
+
+Compute @positiveSpace' listSpaceSearch 0.
+Compute @positiveSpace' listSpaceSearch 1.
+Compute @positiveSpace' listSpaceSearch 2.
+Compute @positiveSpace' listSpaceSearch 3.
+Compute @positiveSpace' listSpaceSearch 4.
+
+Search (positive -> positive -> bool).
+
+(* this is fast for reasonable p :) *)
+Definition constructPositiveSpace (p:nat) : Space positive :=
+  positiveSpace p.
+
+(* this takes ages for reasonable p :( *)
+Definition trivialPositiveVerification (p:nat) : option positive.
+  refine (search _).
+  refine (bind (positiveSpace p) (fun n => _)).
+  refine (if eqb n n then empty else single n).
 Defined.
 
 (*
+they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int 
 
+https://github.com/maximedenes/native-coq/blob/master/plugins/extraction/ExtrOcamlZBigInt.v
 
+Extract Constant Z.add => "Big.add".
+Extract Constant Z.succ => "Big.succ".
+Extract Constant Z.pred => "Big.pred".
+Extract Constant Z.sub => "Big.sub".
+Extract Constant Z.mul => "Big.mult".
+Extract Constant Z.opp => "Big.opp".
+Extract Constant Z.abs => "Big.abs".
+Extract Constant Z.min => "Big.min".
+Extract Constant Z.max => "Big.max".
+Extract Constant Z.compare => "Big.compare_case Eq Lt Gt".
 
-Axiom ADMIT : forall A, A.
-
-Definition int32s (n:nat) : Space int32.
-  refine (union (single zero) _).
-  refine (bind (positives n) (fun x => _)).
-  refine (single {| intval := Zpos x |}).
-  intuition.
-  apply ADMIT.
-Defined.
-
-Compute (natId four).
-
-
-Definition proposition (n:int32) : bool.
-  refine (Word.eq (natId n) n).
-Defined.
+Extract Constant Z.of_N => "fun p -> p".
+Extract Constant Z.abs_N => "Big.abs".
 *)
 
-(*
-Definition verification : option int32.
-  refine (let p := 1 in _).
+Extraction Language Scheme.
+
+Extract Inductive Word.int => "__" [ "word-mkint" ] "__".
+Extract Constant Word.zero => "word-zero".
+Extract Constant Word.add => "word-add".
+Extract Constant Word.eq => "word-eq".
+
+Parameter freeIntSpace : forall n, Space (int n).
+Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
+Extract Constant freeIntSpace => "word-free".
+
+Instance freeInt n : @Free rosette (int n) := {| 
+  free := freeIntSpace n; 
+  freeOk := freeIntSpaceOk n 
+|}.
+
+Definition wordVerification (_:nat) : option (int32 * int32).
   refine (search _).
-  refine (bind (int32s p) (fun n => _)).
-(*   refine (bind (int32s p) (fun m => _)).
+  refine (bind (free int32) (fun x => _)).
+  refine (bind (free int32) (fun y => _)).
+  refine (if Word.eq (Word.add x y) (Word.add y x) 
+          then _ 
+          else single (x, y)).
+  refine (if Word.eq (Word.add x y) threehundred
+          then single (x, y)
+          else empty).
+Defined.
+
+Definition instructionVerification (_:nat) : option (int32 * int32 * int32).
+  refine (search _).
+  refine (bind (free int32) (fun n => _)).
+  refine (bind (free int32) (fun m => _)).
   refine (let s := run (add n m) in _).
-  refine (match (fst s) with 
+  refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
+  refine (match fst s with 
   | Okay_ans _ => _
-  | a => single (n,m,inl a)
-  end). *)
-(*   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
-  refine (if Word.eq (Word.add n m) r then empty else single (n,m,inr r)). *)
-  refine (if proposition n then empty else single n).
+  | _ => single (n,m,r)
+  end).
+  refine (if Word.eq (Word.add n m) r then empty else single (n,m,r)).
 Defined.
 
-*)
-
-(* they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int *)
-Extraction "x86sem" verification proposition.
+Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification.

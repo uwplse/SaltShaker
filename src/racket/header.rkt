@@ -3,10 +3,9 @@
 (require rosette/solver/smt/z3)
 (require racket/format)
 
-(current-bitwidth 10)
-(current-solver (new z3%))
+; (current-bitwidth 10)
+; (current-solver (new z3%))
 
-(require "extraction.rkt")
-(require "rosette.rkt")
+(require "extraction.rkt" "rosette.rkt" "word.rkt")
 
 (provide (all-defined-out))
