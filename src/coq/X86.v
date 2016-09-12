@@ -79,7 +79,8 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
-Notation "# n" := (Word.mkint _ n _) (at level 45).
+Definition mkint := Word.mkint.
+Notation "# n" := (mkint _ n _) (at level 45).
 Definition four : int32. 
   refine (#4).
   compute.
@@ -230,10 +231,22 @@ Extract Constant Z.abs_N => "Big.abs".
 
 Extraction Language Scheme.
 
-Extract Inductive Word.int => "__" [ "word-mkint" ] "__".
+Print Word.int.
+
+(* Extract Inductive Word.int => "integer" [ "word-mkint" ]. *)
+Extract Constant mkint => "word-mkint".
+Extract Constant Word.zero => "word-zero".
 Extract Constant Word.zero => "word-zero".
 Extract Constant Word.add => "word-add".
 Extract Constant Word.eq => "word-eq".
+
+Inductive Num :=
+| Zero : Num
+| Succ : Num -> Num.
+
+Extract Inductive Num => "__" [ "0" "(lambda (n) (+ n 1))" ].
+
+Definition num : Num := Succ (Succ (Zero)).
 
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
@@ -244,21 +257,35 @@ Instance freeInt n : @Free rosette (int n) := {|
   freeOk := freeIntSpaceOk n 
 |}.
 
-Definition maxInt bits : int bits.
-  refine (# (Word.max_unsigned bits)).
+Lemma maxIntIsInt bits : 
+   BinInt.Z.le 0 (max_unsigned bits) /\
+   BinInt.Z.lt (max_unsigned bits) (modulus bits).
+Proof.
   unfold max_unsigned.
   split.
   - compute; congruence.
   - omega.
+Qed.
+
+Definition maxInt bits : int bits.
+  refine (# (Word.max_unsigned bits)).
+  apply maxIntIsInt.
 Defined.
 
-Definition findWord (bits:nat) : option (int bits).
-  refine (search _).
-  refine (bind (free (int bits)) (fun x => _)).
-  refine (if Word.eq x (maxInt bits)
-          then single x
-          else empty).
+Compute (maxInt 31).
+
+Definition findWordProposition (bits:nat) (x:int bits) : bool.
+  refine (Word.eq x (maxInt bits)).
 Defined.
+
+Definition verifyForall {A} `{Free A} (p:A -> bool) : option A.
+  refine (search _).
+  refine (bind (free A) (fun x => _)).
+  refine (if p x then single x else empty).
+Defined.
+
+Definition findWord (bits:nat) : option (int bits) :=
+  verifyForall (findWordProposition bits).
 
 Definition wordVerification (bits:nat) : option (int bits * int bits).
   refine (search _).
@@ -285,4 +312,4 @@ Definition instructionVerification (_:nat) : option (int32 * int32 * int32).
   refine (if Word.eq (Word.add n m) r then empty else single (n,m,r)).
 Defined.
 
-Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord.
+Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord maxInt num findWordProposition.

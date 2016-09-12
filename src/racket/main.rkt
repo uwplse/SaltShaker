@@ -3,9 +3,6 @@
 
 (require "x86sem.rkt" "rosette.rkt" "word.rkt" "extraction.rkt")
 
-(define (number->unary n)
-  (if (= n 0) '(O) `(S ,(number->unary (- n 1)))))
-
 (define (read-bits)
   (string->number (vector-ref (current-command-line-arguments) 1)))
 
@@ -19,15 +16,21 @@
   (displayln (string-append "Trivial positive verification with " (~a bits) " bits:"))
   (displayln (@ trivialPositiveVerification (number->unary (- bits 1)))))
 
+(define (find-word-proposition)
+  (define bits (read-bits))
+  (displayln (string-append "Find word proposition with " (~a bits) " bits:"))
+  (displayln (@ findWordProposition (number->unary (- bits 1)) (bv 4 bits)))
+  (displayln (@ findWordProposition (number->unary (- bits 1)) (bv -1 bits))))
+
 (define (find-word)
   (define bits (read-bits))
   (displayln (string-append "Find word with " (~a bits) " bits:"))
-  (displayln (@ findWord bits)))
+  (displayln (@ findWord (number->unary (- bits 1)))))
 
 (define (word-verification)
   (define bits (read-bits))
   (displayln (string-append "Word verification with " (~a bits) " bits:"))
-  (displayln (@ wordVerification bits)))
+  (displayln (@ wordVerification (number->unary (- bits 1)))))
 
 (define (instruction-verification)
   (displayln "Instruction verification:")
@@ -35,10 +38,13 @@
 
 (define command (vector-ref (current-command-line-arguments) 0))
 
+(displayln (maxInt (number->unary 31)))
+
 (if (equal? command "construct-positive-space") (construct-positive-space)
 (if (equal? command "trivial-positive-verification") (trivial-positive-verification)
+(if (equal? command "find-word-proposition") (find-word-proposition)
 (if (equal? command "find-word") (find-word)
 (if (equal? command "word-verification") (word-verification)
 (if (equal? command "instruction-verification") (instruction-verification)
-(void))))))
+(void)))))))
 

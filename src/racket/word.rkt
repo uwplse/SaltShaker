@@ -4,7 +4,8 @@
 
 ; (require base/bitvector)
 
-(provide word-zero word-mkint word-add word-eq word-free)
+(provide word-zero word-mkint word-add word-eq word-free 
+         unary->number number->unary positive->number z->number)
 
 (define (number->unary n)
   (if (= n 0) '(O) `(S ,(number->unary (- n 1)))))
@@ -16,9 +17,9 @@
 
 (define (positive->number n)
   (match n
-    ((xH) 1)
-    ((xO n) (* 2 (positive->number n)))
-    ((xO n) (+ 1 (* 2 (positive->number n))))))
+    ((XH) 1)
+    ((XO n) (* 2 (positive->number n)))
+    ((XI n) (+ 1 (* 2 (positive->number n))))))
 
 (define (z->number n)
   (match n
@@ -32,7 +33,7 @@
 (define word-zero (lambdas (bits)
   (bv 0 (word-bits->bv-bits bits))))
 
-(define word-mkint (lambdas (bits n _)
+(define word-mkint (lambdas (bits n)
   (bv (z->number n) (word-bits->bv-bits bits))))
 
 (define word-add (lambdas (_ n m)
