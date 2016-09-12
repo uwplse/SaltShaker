@@ -292,11 +292,8 @@ Definition wordVerification (bits:nat) : option (int bits * int bits).
   refine (bind (free (int bits)) (fun x => _)).
   refine (bind (free (int bits)) (fun y => _)).
   refine (if Word.eq (Word.add x y) (Word.add y x) 
-          then _ 
+          then empty
           else single (x, y)).
-  refine (if Word.eq (Word.add x y) (maxInt bits)
-          then single (x, y)
-          else empty).
 Defined.
 
 Definition instructionVerification (_:nat) : option (int32 * int32 * int32).

@@ -38,8 +38,6 @@
 
 (define command (vector-ref (current-command-line-arguments) 0))
 
-(displayln (maxInt (number->unary 31)))
-
 (if (equal? command "construct-positive-space") (construct-positive-space)
 (if (equal? command "trivial-positive-verification") (trivial-positive-verification)
 (if (equal? command "find-word-proposition") (find-word-proposition)

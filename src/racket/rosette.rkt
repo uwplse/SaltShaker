@@ -14,9 +14,10 @@
            [val (values c val)]))))
 
 (define-syntax-rule (solve/evaluate/concretize expr)
-  (solve (expr void)))
-
-
+  (let* ([out (void)]
+         [sol (solve (set! out (expr (void))))])
+    (if (unsat? sol) '(None)
+      `(Some ,(evaluate out sol)))))
 
 ; (let ([v (solve (expr void))])
 ;   (if (unsat? v) '(None)
