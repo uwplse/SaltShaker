@@ -32,19 +32,19 @@
   (displayln (string-append "Word verification with " (~a bits) " bits:"))
   (displayln (@ wordVerification (number->unary (- bits 1)))))
 
-(define (instruction-verification-proposition)
-  (displayln "Instruction verification proposition (good):")
-  (displayln (@ instructionVerificationProposition `(Pair ,(bv 5 32) ,(bv 8 32))))
-  (displayln "Instruction verification proposition (bad):")
-  (displayln (@ instructionVerificationProposition `(Pair ,(bv 1000 32) ,(bv 700 32)))))
+(define (cast8-add-verification-proposition)
+  (displayln "Cast8 add verification proposition (good):")
+  (displayln (@ cast8AddVerificationProposition `(Pair ,(bv 6 32) ,(bv 4 32))))
+  (displayln "Cast8 add verification proposition (bad):")
+  (displayln (@ cast8AddVerificationProposition `(Pair ,(bv 510 32) ,(bv 4 32)))))
 
 (define (init-rtl-state)
   (displayln "Init RTL state:")
   (displayln (@ initRTLState (void))))
 
-(define (instruction-verification)
-  (displayln "Instruction verification:")
-  (displayln (@ instructionVerification (void))))
+(define (cast8-add-verification)
+  (displayln "Cast8 add verification:")
+  (displayln (@ cast8AddVerification (void))))
 
 (define command (vector-ref (current-command-line-arguments) 0))
 
@@ -53,7 +53,7 @@
 (if (equal? command "find-word-proposition") (find-word-proposition)
 (if (equal? command "find-word") (find-word)
 (if (equal? command "word-verification") (word-verification)
-(if (equal? command "instruction-verification-proposition") (instruction-verification-proposition)
+(if (equal? command "cast8-add-verification-proposition") (cast8-add-verification-proposition)
 (if (equal? command "init-rtl-state") (init-rtl-state)
-(if (equal? command "instruction-verification") (instruction-verification)
+(if (equal? command "cast8-add-verification") (cast8-add-verification)
 (void)))))))))

@@ -14,8 +14,6 @@ Import Word.
 Require Import Coq.PArith.BinPos.
 Import Pos.
 
-(* initialize state, inspired by see simulator/test.ml *)
-
 Definition mkint := Word.mkint.
 Notation "# n" := (mkint _ n _) (at level 45).
 
@@ -33,6 +31,10 @@ Definition maxInt bits : int bits.
   refine (# (Word.max_unsigned bits)).
   apply maxIntIsInt.
 Defined.
+
+Compute (maxInt 31).
+
+(* initialize state, inspired by see simulator/test.ml *)
 
 Definition bii := id (A:=nat).
 
@@ -97,6 +99,21 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
+(* Imm_op = Immediate operand = constant *)
+Definition eax_cast8_add n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
+
+Definition fast_eax_cast8_add (n:int32) := [set_loc_rtl 
+  (cast_u_rtl_exp 31
+    (arith_rtl_exp add_op
+      (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
+      (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
+  (reg_loc EAX)].
+
+Definition cast8_add n m := fast_eax_cast8_add n ++ fast_eax_cast8_add m.
+
+Definition run p := RTL_step_list p init_rtl_state.
+
+(* Run the instruction *)
 Definition four : int32. 
   refine (#4).
   compute.
@@ -109,57 +126,44 @@ Definition six : int32.
   constructor; congruence.
 Defined.
 
-(* Imm_op = Immediate operand = constant *)
-Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
-
-Definition fast_eax_plus (n:int32) := [set_loc_rtl 
-  (cast_u_rtl_exp 31
-    (arith_rtl_exp add_op
-      (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
-      (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
-  (reg_loc EAX)].
-
-Definition nofast_eax_plus (n:int32) := [set_loc_rtl 
-  (cast_u_rtl_exp 31
-    (arith_rtl_exp add_op
-      (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
-      (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
-  (reg_loc EAX)].
-
-Definition add n m := fast_eax_plus n ++ fast_eax_plus m.
-
-Definition run p := RTL_step_list p init_rtl_state.
-
-Definition natId (n:int32) := 
-  let s := run [set_loc_rtl 
-  (arith_rtl_exp add_op
-    (get_loc_rtl_exp (reg_loc EAX))
-    (imm_rtl_exp n))
-  (reg_loc EAX)] in
-    gp_regs (core (rtl_mach_state (snd s))) EAX.
-
-(* Run the instruction *)
 Definition four_plus_six :=
-  let s := run (add four six) in
+  let s := run (cast8_add four six) in
     (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
 
 Compute four_plus_six.
 
+Definition fivehundredten : int32.
+  compute.
+  refine {| Word.intval := 510 |}.
+  compute.
+  intuition congruence.
+Defined.
+
+Definition fivehundredten_plus_four :=
+  let s := run (cast8_add fivehundredten four) in
+    (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
+
+(* 510 % 256 = 254 
+   4   % 256 = 4
+   254 + 4   = 258
+   258 % 256 = 2 *)
+Compute fivehundredten_plus_four.
+
 (* Existing Instance listSpaceSearch. *)
 Existing Instance rosette.
 
-Definition threehundred : int32.
-  compute.
-  refine {| Word.intval := 300 |}.
-  compute.
-  intuition congruence.
-Defined.
+Definition boolSpace `{SpaceSearch} : Space bool :=
+  union (single true) (single false).
 
-Definition zero : int32.
-  refine {| Word.intval := 0 |}.
-  compute.
-  intuition congruence.
-Defined.
+(* efficient representation of all lists of length n *)
+Fixpoint listSpace `{SpaceSearch} {A} (s:Space A) (n:nat) : Space (list A) :=
+  match n with
+  | 0%nat => single []
+  | S n => bind (listSpace s n) (fun l => 
+          bind s (fun a => single (a :: l)))
+  end.
+
+Compute @listSpace listSpaceSearch bool boolSpace 2.
 
 (* 
 Translate a positive number to the following binary number:
@@ -175,19 +179,6 @@ v   v   v   v   v
 
 = 1 + 4 + 16 = 21
 *)
-
-Definition boolSpace `{SpaceSearch} : Space bool :=
-  union (single true) (single false).
-
-(* efficient representation of all lists of length n *)
-Fixpoint listSpace `{SpaceSearch} {A} (s:Space A) (n:nat) : Space (list A) :=
-  match n with
-  | 0%nat => single []
-  | S n => bind (listSpace s n) (fun l => 
-          bind s (fun a => single (a :: l)))
-  end.
-
-Compute @listSpace listSpaceSearch bool boolSpace 2.
 
 (* creates an efficient space of all the positive numbers with n bits followed by xH *)
 Fixpoint positiveSpace `{SpaceSearch} (n:nat) : Space positive.
@@ -206,13 +197,13 @@ Fixpoint positiveSpace' `{SpaceSearch} (n:nat) : Space positive.
   end).
 Defined.
 
+Open Scope positive.
+
 Compute @positiveSpace' listSpaceSearch 0.
 Compute @positiveSpace' listSpaceSearch 1.
 Compute @positiveSpace' listSpaceSearch 2.
 Compute @positiveSpace' listSpaceSearch 3.
 Compute @positiveSpace' listSpaceSearch 4.
-
-Search (positive -> positive -> bool).
 
 (* this is fast for reasonable p :) *)
 Definition constructPositiveSpace (p:nat) : Space positive :=
@@ -225,33 +216,8 @@ Definition trivialPositiveVerification (p:nat) : option positive.
   refine (if eqb n n then empty else single n).
 Defined.
 
-(*
-they use the stdlib module ExtrOcamlZBigInt to extract Z to Ocaml's big_int 
-
-https://github.com/maximedenes/native-coq/blob/master/plugins/extraction/ExtrOcamlZBigInt.v
-
-Extract Constant Z.add => "Big.add".
-Extract Constant Z.succ => "Big.succ".
-Extract Constant Z.pred => "Big.pred".
-Extract Constant Z.sub => "Big.sub".
-Extract Constant Z.mul => "Big.mult".
-Extract Constant Z.opp => "Big.opp".
-Extract Constant Z.abs => "Big.abs".
-Extract Constant Z.min => "Big.min".
-Extract Constant Z.max => "Big.max".
-Extract Constant Z.compare => "Big.compare_case Eq Lt Gt".
-
-Extract Constant Z.of_N => "fun p -> p".
-Extract Constant Z.abs_N => "Big.abs".
-*)
-
 Extraction Language Scheme.
 
-Print Word.int.
-
-Print cast_unsigned.
-
-(* Extract Inductive Word.int => "integer" [ "word-mkint" ]. *)
 Extract Constant mkint => "word-mkint".
 Extract Constant Word.zero => "word-zero".
 Extract Constant Word.one => "word-one".
@@ -259,9 +225,9 @@ Extract Constant Word.add => "word-add".
 Extract Constant Word.eq => "word-eq".
 Extract Constant Word.repr => "word-mkint".
 Extract Constant cast_unsigned => "word-unsigned-cast".
-Extract Constant cast_signed => "(lambdas (bits n) (error 'signed-cast))".
-Extract Constant Word.unsigned => "(lambdas (bits n) (error 'unsigned))".
-Extract Constant Word.signed => "(lambdas (bits n) (error 'signed))".
+Extract Constant cast_signed => "(lambda (srcBits dstBits x) (error 'signed-cast))".
+Extract Constant Word.unsigned => "(lambda (bits x) (error 'unsigned))".
+Extract Constant Word.signed => "(lambda (bits x) (error 'signed))".
 
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
@@ -271,8 +237,6 @@ Instance freeInt n : @Free rosette (int n) := {|
   free := freeIntSpace n; 
   freeOk := freeIntSpaceOk n 
 |}.
-
-Compute (maxInt 31).
 
 Definition findWordProposition (bits:nat) (x:int bits) : option (int bits).
   refine (if Word.eq x (maxInt bits) then Some x else None).
@@ -298,10 +262,10 @@ Defined.
 
 Definition initRTLState (_:unit) := init_rtl_state.
 
-Definition instructionVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32 * int32).
+Definition cast8AddVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32 * int32).
   refine (let n := fst nm in _).
   refine (let m := snd nm in _).
-  refine (let s := run (add n m) in _).
+  refine (let s := run (cast8_add n m) in _).
   refine (let r' := Word.add n m in _).
   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
   refine (match fst s with 
@@ -311,26 +275,8 @@ Definition instructionVerificationProposition (nm:int32 * int32) : option (int32
   refine (if Word.eq r r' then None else Some (n,m,r,r')).
 Defined.
 
-(*
-Goal forall nm, instructionVerificationProposition nm = None.
-  intros [n m].
-  unfold instructionVerificationProposition.
-  unfold run.
-  unfold RTL_step_list.
-
-  match goal with |- (if ?A then _ else _) = None => destruct A eqn:h end.
-  simpl.
-  reflexivity.
-  exfalso.
-
-  Check unsigned.
-  
-
-  break_match.
-*)
-
 Existing Instance freeProd.
 
-Definition instructionVerification (_:unit) := verifyForall instructionVerificationProposition.
+Definition cast8AddVerification (_:unit) := verifyForall cast8AddVerificationProposition.
 
-Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord findWordProposition instructionVerificationProposition initRTLState.
+Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState.

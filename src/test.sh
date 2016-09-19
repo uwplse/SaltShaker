@@ -12,7 +12,7 @@ $main word-verification 32
 echo 
 $main init-rtl-state
 echo 
-$main instruction-verification-proposition
+$main cast8-add-verification-proposition
 echo 
-$main instruction-verification
+$main cast8-add-verification
 
