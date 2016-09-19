@@ -33,8 +33,10 @@
   (displayln (@ wordVerification (number->unary (- bits 1)))))
 
 (define (instruction-verification-proposition)
-  (displayln "Instruction verification proposition:")
-  (displayln (@ instructionVerificationProposition `(Pair ,(bv 5 32) ,(bv 8 32)))))
+  (displayln "Instruction verification proposition (good):")
+  (displayln (@ instructionVerificationProposition `(Pair ,(bv 5 32) ,(bv 8 32))))
+  (displayln "Instruction verification proposition (bad):")
+  (displayln (@ instructionVerificationProposition `(Pair ,(bv 1000 32) ,(bv 700 32)))))
 
 (define (init-rtl-state)
   (displayln "Init RTL state:")

@@ -1,3 +1,6 @@
+git submodule init
+git submodule update
+
 Build Environment
 
     docker build -t x86sem .
@@ -8,7 +11,7 @@ Run Environment
 
 Build Project
 
-    cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make
+    cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
     cd /CPUmodels/x86model/Model; make -j4
     make -C /src/extract
 

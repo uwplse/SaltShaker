@@ -112,45 +112,6 @@ Defined.
 (* Imm_op = Immediate operand = constant *)
 Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
 
-(*
-Print imm_rtl_exp.
-
-  Fixpoint interp_rtl_exp s (e:rtl_exp s) (rs:rtl_state) : int s := 
-    match e with 
-      | arith_rtl_exp _ b e1 e2 =>
-        let v1 := interp_rtl_exp e1 rs in 
-        let v2 := interp_rtl_exp e2 rs in interp_arith b v1 v2
-      | test_rtl_exp _ t e1 e2 => 
-        let v1 := interp_rtl_exp e1 rs in
-        let v2 := interp_rtl_exp e2 rs in interp_test t v1 v2
-      | if_rtl_exp _ cd e1 e2 =>
-        let v := interp_rtl_exp cd rs in
-        if (Word.eq v Word.one) then interp_rtl_exp e1 rs
-        else interp_rtl_exp e2 rs
-      | cast_s_rtl_exp _ _ e =>
-        let v := interp_rtl_exp e rs in Word.repr (Word.signed v)
-      | cast_u_rtl_exp _ _ e => 
-        let v := interp_rtl_exp e rs in Word.repr (Word.unsigned v)
-      | imm_rtl_exp _ v => v
-      | get_loc_rtl_exp _ l => get_location l (rtl_mach_state rs)
-      | get_array_rtl_exp _ _ a e => 
-        let i := interp_rtl_exp e rs in array_sub a i (rtl_mach_state rs)
-      | get_byte_rtl_exp addr => 
-        let v := interp_rtl_exp addr rs in AddrMap.get v (rtl_memory rs)
-      | farith_rtl_exp _ _ hyp fop rm e1 e2 =>
-        let v1 := interp_rtl_exp e1 rs in let v2 := interp_rtl_exp e2 rs in
-        let vrm := interp_rtl_exp rm rs in
-        interp_farith hyp fop vrm v1 v2
-      | fcast_rtl_exp _ _ _ _ hyp1 hyp2 rm e =>
-        let v := interp_rtl_exp e rs in
-        let vrm := interp_rtl_exp rm rs in
-        interp_fcast hyp1 hyp2 vrm v
-      | get_random_rtl_exp _ => 
-        let oracle := rtl_oracle rs in
-        oracle_bits oracle _ (oracle_offset oracle)
-    end.
-*)
-
 Definition fast_eax_plus (n:int32) := [set_loc_rtl 
   (cast_u_rtl_exp 31
     (arith_rtl_exp add_op
@@ -288,6 +249,8 @@ Extraction Language Scheme.
 
 Print Word.int.
 
+Print cast_unsigned.
+
 (* Extract Inductive Word.int => "integer" [ "word-mkint" ]. *)
 Extract Constant mkint => "word-mkint".
 Extract Constant Word.zero => "word-zero".
@@ -295,15 +258,10 @@ Extract Constant Word.one => "word-one".
 Extract Constant Word.add => "word-add".
 Extract Constant Word.eq => "word-eq".
 Extract Constant Word.repr => "word-mkint".
+Extract Constant cast_unsigned => "word-unsigned-cast".
+Extract Constant cast_signed => "(lambdas (bits n) (error 'signed-cast))".
 Extract Constant Word.unsigned => "(lambdas (bits n) (error 'unsigned))".
 Extract Constant Word.signed => "(lambdas (bits n) (error 'signed))".
-
-(*
-Check Word.signed.
-
-        let v := interp_rtl_exp e rs in Word.repr (Word.signed v)
-        let v := interp_rtl_exp e rs in Word.repr (Word.unsigned v)
-*)
 
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
@@ -340,16 +298,17 @@ Defined.
 
 Definition initRTLState (_:unit) := init_rtl_state.
 
-Definition instructionVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32).
+Definition instructionVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32 * int32).
   refine (let n := fst nm in _).
   refine (let m := snd nm in _).
   refine (let s := run (add n m) in _).
+  refine (let r' := Word.add n m in _).
   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
   refine (match fst s with 
   | Okay_ans _ => _
-  | _ => Some (n,m,r)
+  | _ => Some (n,m,r,r')
   end).
-  refine (if Word.eq (Word.add n m) r then None else Some (n,m,r)).
+  refine (if Word.eq r r' then None else Some (n,m,r,r')).
 Defined.
 
 (*
@@ -372,7 +331,6 @@ Goal forall nm, instructionVerificationProposition nm = None.
 
 Existing Instance freeProd.
 
-Definition instructionVerification (_:unit) : option (int32 * int32 * int32) :=
-  verifyForall instructionVerificationProposition.
+Definition instructionVerification (_:unit) := verifyForall instructionVerificationProposition.
 
 Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord findWordProposition instructionVerificationProposition initRTLState.

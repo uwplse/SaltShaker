@@ -2,7 +2,7 @@
 
 (require "extraction.rkt")
 
-(provide word-zero word-mkint word-add word-eq word-free word-one
+(provide word-zero word-mkint word-add word-eq word-free word-one word-unsigned-cast
          unary->number number->unary positive->number z->number)
 
 (define (number->unary n)
@@ -47,6 +47,10 @@
   (define-symbolic* x (bitvector (word-bits->bv-bits bits)))
   x))
 
-
-
-
+(define word-unsigned-cast (lambdas (srcBits dstBits x)
+  (define srcBits* (word-bits->bv-bits srcBits))
+  (define dstBits* (word-bits->bv-bits dstBits))
+  (if (>= srcBits* dstBits*)
+    (extract dstBits* 0 x)
+    (zero-extend x (bitvector dstBits*)))))
+    
