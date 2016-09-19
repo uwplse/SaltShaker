@@ -3,3 +3,4 @@ src/.build/
 src/coq/#*#
 src/coq/*~
 src/coq/*.scm
+src/compiled

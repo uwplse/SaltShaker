@@ -22,6 +22,4 @@ $(BUILD)/x86sem.rkt: $(COQ_SRC)/*.v $(RKT_SRC)/header.rkt
 	tail -n +4 $(BUILD)/x86sem.scm >> $(BUILD)/x86sem.rkt
 	sed -i.bak "s/(define __ (lambda (_) __))/(define __ (void))/g" $(BUILD)/x86sem.rkt
 	sed -i.bak 's/(error "AXIOM TO BE REALIZED")/(void)/g' $(BUILD)/x86sem.rkt
-	sed -i.bak 's/`(Mkint ,/(word-mkint /g' $(BUILD)/x86sem.rkt
-
 

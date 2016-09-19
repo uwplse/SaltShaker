@@ -16,6 +16,24 @@ Import Pos.
 
 (* initialize state, inspired by see simulator/test.ml *)
 
+Definition mkint := Word.mkint.
+Notation "# n" := (mkint _ n _) (at level 45).
+
+Lemma maxIntIsInt bits : 
+   BinInt.Z.le 0 (max_unsigned bits) /\
+   BinInt.Z.lt (max_unsigned bits) (modulus bits).
+Proof.
+  unfold max_unsigned.
+  split.
+  - compute; congruence.
+  - omega.
+Qed.
+
+Definition maxInt bits : int bits.
+  refine (# (Word.max_unsigned bits)).
+  apply maxIntIsInt.
+Defined.
+
 Definition bii := id (A:=nat).
 
 Definition empty_mem : AddrMap.t int8 := (@Word.zero (bii 7), PTree.empty _).
@@ -34,8 +52,7 @@ Definition init_machine : core_state.
   refine {|
     gp_regs := empty_reg;
     seg_regs_starts := empty_seg;
-    seg_regs_limits := (fun seg_reg=>(@Word.repr (bii 31) (Word.max_unsigned
-                                                           (bii 31))));
+    seg_regs_limits := (fun seg_reg=>maxInt (bii 31));
     flags_reg := (fun f => @Word.zero (bii 0));
     control_regs := (fun c => @Word.zero (bii 31));
     debug_regs :=  (fun d => @Word.zero (bii 31));
@@ -70,6 +87,7 @@ Definition init_rtl_state : rtl_state.
   |}.
 Defined.
 
+
 (* Define an instruction *)
 
 (*
@@ -79,8 +97,6 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
-Definition mkint := Word.mkint.
-Notation "# n" := (mkint _ n _) (at level 45).
 Definition four : int32. 
   refine (#4).
   compute.
@@ -95,6 +111,45 @@ Defined.
 
 (* Imm_op = Immediate operand = constant *)
 Definition eax_plus n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
+
+(*
+Print imm_rtl_exp.
+
+  Fixpoint interp_rtl_exp s (e:rtl_exp s) (rs:rtl_state) : int s := 
+    match e with 
+      | arith_rtl_exp _ b e1 e2 =>
+        let v1 := interp_rtl_exp e1 rs in 
+        let v2 := interp_rtl_exp e2 rs in interp_arith b v1 v2
+      | test_rtl_exp _ t e1 e2 => 
+        let v1 := interp_rtl_exp e1 rs in
+        let v2 := interp_rtl_exp e2 rs in interp_test t v1 v2
+      | if_rtl_exp _ cd e1 e2 =>
+        let v := interp_rtl_exp cd rs in
+        if (Word.eq v Word.one) then interp_rtl_exp e1 rs
+        else interp_rtl_exp e2 rs
+      | cast_s_rtl_exp _ _ e =>
+        let v := interp_rtl_exp e rs in Word.repr (Word.signed v)
+      | cast_u_rtl_exp _ _ e => 
+        let v := interp_rtl_exp e rs in Word.repr (Word.unsigned v)
+      | imm_rtl_exp _ v => v
+      | get_loc_rtl_exp _ l => get_location l (rtl_mach_state rs)
+      | get_array_rtl_exp _ _ a e => 
+        let i := interp_rtl_exp e rs in array_sub a i (rtl_mach_state rs)
+      | get_byte_rtl_exp addr => 
+        let v := interp_rtl_exp addr rs in AddrMap.get v (rtl_memory rs)
+      | farith_rtl_exp _ _ hyp fop rm e1 e2 =>
+        let v1 := interp_rtl_exp e1 rs in let v2 := interp_rtl_exp e2 rs in
+        let vrm := interp_rtl_exp rm rs in
+        interp_farith hyp fop vrm v1 v2
+      | fcast_rtl_exp _ _ _ _ hyp1 hyp2 rm e =>
+        let v := interp_rtl_exp e rs in
+        let vrm := interp_rtl_exp rm rs in
+        interp_fcast hyp1 hyp2 vrm v
+      | get_random_rtl_exp _ => 
+        let oracle := rtl_oracle rs in
+        oracle_bits oracle _ (oracle_offset oracle)
+    end.
+*)
 
 Definition fast_eax_plus (n:int32) := [set_loc_rtl 
   (cast_u_rtl_exp 31
@@ -236,17 +291,19 @@ Print Word.int.
 (* Extract Inductive Word.int => "integer" [ "word-mkint" ]. *)
 Extract Constant mkint => "word-mkint".
 Extract Constant Word.zero => "word-zero".
-Extract Constant Word.zero => "word-zero".
+Extract Constant Word.one => "word-one".
 Extract Constant Word.add => "word-add".
 Extract Constant Word.eq => "word-eq".
+Extract Constant Word.repr => "word-mkint".
+Extract Constant Word.unsigned => "(lambdas (bits n) (error 'unsigned))".
+Extract Constant Word.signed => "(lambdas (bits n) (error 'signed))".
 
-Inductive Num :=
-| Zero : Num
-| Succ : Num -> Num.
+(*
+Check Word.signed.
 
-Extract Inductive Num => "__" [ "0" "(lambda (n) (+ n 1))" ].
-
-Definition num : Num := Succ (Succ (Zero)).
+        let v := interp_rtl_exp e rs in Word.repr (Word.signed v)
+        let v := interp_rtl_exp e rs in Word.repr (Word.unsigned v)
+*)
 
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
@@ -257,31 +314,16 @@ Instance freeInt n : @Free rosette (int n) := {|
   freeOk := freeIntSpaceOk n 
 |}.
 
-Lemma maxIntIsInt bits : 
-   BinInt.Z.le 0 (max_unsigned bits) /\
-   BinInt.Z.lt (max_unsigned bits) (modulus bits).
-Proof.
-  unfold max_unsigned.
-  split.
-  - compute; congruence.
-  - omega.
-Qed.
-
-Definition maxInt bits : int bits.
-  refine (# (Word.max_unsigned bits)).
-  apply maxIntIsInt.
-Defined.
-
 Compute (maxInt 31).
 
-Definition findWordProposition (bits:nat) (x:int bits) : bool.
-  refine (Word.eq x (maxInt bits)).
+Definition findWordProposition (bits:nat) (x:int bits) : option (int bits).
+  refine (if Word.eq x (maxInt bits) then Some x else None).
 Defined.
 
-Definition verifyForall {A} `{Free A} (p:A -> bool) : option A.
+Definition verifyForall {A} {B} `{Free A} (p:A -> option B) : option B.
   refine (search _).
-  refine (bind (free A) (fun x => _)).
-  refine (if p x then single x else empty).
+  refine (bind (free A) (fun a => _)).
+  refine (match p a with Some b => single b | None => empty end).
 Defined.
 
 Definition findWord (bits:nat) : option (int bits) :=
@@ -296,17 +338,41 @@ Definition wordVerification (bits:nat) : option (int bits * int bits).
           else single (x, y)).
 Defined.
 
-Definition instructionVerification (_:nat) : option (int32 * int32 * int32).
-  refine (search _).
-  refine (bind (free int32) (fun n => _)).
-  refine (bind (free int32) (fun m => _)).
+Definition initRTLState (_:unit) := init_rtl_state.
+
+Definition instructionVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32).
+  refine (let n := fst nm in _).
+  refine (let m := snd nm in _).
   refine (let s := run (add n m) in _).
   refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
   refine (match fst s with 
   | Okay_ans _ => _
-  | _ => single (n,m,r)
+  | _ => Some (n,m,r)
   end).
-  refine (if Word.eq (Word.add n m) r then empty else single (n,m,r)).
+  refine (if Word.eq (Word.add n m) r then None else Some (n,m,r)).
 Defined.
 
-Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord maxInt num findWordProposition.
+(*
+Goal forall nm, instructionVerificationProposition nm = None.
+  intros [n m].
+  unfold instructionVerificationProposition.
+  unfold run.
+  unfold RTL_step_list.
+
+  match goal with |- (if ?A then _ else _) = None => destruct A eqn:h end.
+  simpl.
+  reflexivity.
+  exfalso.
+
+  Check unsigned.
+  
+
+  break_match.
+*)
+
+Existing Instance freeProd.
+
+Definition instructionVerification (_:unit) : option (int32 * int32 * int32) :=
+  verifyForall instructionVerificationProposition.
+
+Extraction "x86sem" constructPositiveSpace wordVerification instructionVerification trivialPositiveVerification findWord findWordProposition instructionVerificationProposition initRTLState.

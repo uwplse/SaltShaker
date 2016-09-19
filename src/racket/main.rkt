@@ -32,6 +32,14 @@
   (displayln (string-append "Word verification with " (~a bits) " bits:"))
   (displayln (@ wordVerification (number->unary (- bits 1)))))
 
+(define (instruction-verification-proposition)
+  (displayln "Instruction verification proposition:")
+  (displayln (@ instructionVerificationProposition `(Pair ,(bv 5 32) ,(bv 8 32)))))
+
+(define (init-rtl-state)
+  (displayln "Init RTL state:")
+  (displayln (@ initRTLState (void))))
+
 (define (instruction-verification)
   (displayln "Instruction verification:")
   (displayln (@ instructionVerification (void))))
@@ -43,6 +51,7 @@
 (if (equal? command "find-word-proposition") (find-word-proposition)
 (if (equal? command "find-word") (find-word)
 (if (equal? command "word-verification") (word-verification)
+(if (equal? command "instruction-verification-proposition") (instruction-verification-proposition)
+(if (equal? command "init-rtl-state") (init-rtl-state)
 (if (equal? command "instruction-verification") (instruction-verification)
-(void)))))))
-
+(void)))))))))

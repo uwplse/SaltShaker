@@ -73,6 +73,22 @@ Section SpaceSearch.
     apply singleOk.
     reflexivity.
   Defined.
+
+  Instance freeProd {A B} `{@Free A} `{@Free B} : @Free (A * B).
+    refine {|
+      free := bind (free A) (fun a => 
+              bind (free B) (fun b =>
+              single (a, b)))
+    |}.
+  Proof.
+    intros [a b].
+    rewrite <- bindOk; eexists.
+    constructor; [apply freeOk|].
+    rewrite <- bindOk; eexists.
+    constructor; [apply freeOk|].
+    apply singleOk.
+    reflexivity.
+  Defined.
 End SpaceSearch.
 
 Arguments free [_] _ [_].

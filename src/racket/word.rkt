@@ -2,9 +2,7 @@
 
 (require "extraction.rkt")
 
-; (require base/bitvector)
-
-(provide word-zero word-mkint word-add word-eq word-free 
+(provide word-zero word-mkint word-add word-eq word-free word-one
          unary->number number->unary positive->number z->number)
 
 (define (number->unary n)
@@ -33,16 +31,22 @@
 (define word-zero (lambdas (bits)
   (bv 0 (word-bits->bv-bits bits))))
 
-(define word-mkint (lambdas (bits n)
-  (bv (z->number n) (word-bits->bv-bits bits))))
+(define word-one (lambdas (bits)
+  (bv 1 (word-bits->bv-bits bits))))
 
-(define word-add (lambdas (_ n m)
-  (bvadd n m)))
+(define word-mkint (lambdas (bits z)
+  (bv (z->number z) (word-bits->bv-bits bits))))
 
-(define word-eq (lambdas (_ n m)
-  (if (bveq n m) '(True) '(False))))
+(define word-add (lambdas (_ x y)
+  (bvadd x y)))
+
+(define word-eq (lambdas (_ x y)
+  (if (bveq x y) '(True) '(False))))
 
 (define word-free (lambdas (bits _)
-  (define-symbolic* v (bitvector (word-bits->bv-bits bits)))
-  v))
+  (define-symbolic* x (bitvector (word-bits->bv-bits bits)))
+  x))
+
+
+
 

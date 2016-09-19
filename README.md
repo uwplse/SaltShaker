@@ -4,11 +4,13 @@ Build Environment
 
 Run Environment
     
-    docker rm -f x86sem; docker run --name x86sem -v $(pwd)/src:/src/extract -ti x86sem
+    docker rm -f x86sem; docker run --name x86sem -v $(pwd)/src:/src/extract -v $(pwd)/CPUmodels:/CPUmodels -ti x86sem
 
 Build Project
 
-    docker exec x86sem make -C /src/extract
+    cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make
+    cd /CPUmodels/x86model/Model; make -j4
+    make -C /src/extract
 
 Develop with emacs locally
 
