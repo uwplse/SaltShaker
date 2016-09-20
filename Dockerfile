@@ -67,7 +67,7 @@ RUN git clone https://github.com/emina/rosette.git && \
                 raco pkg install
 
 # install x86 semantics
-# ADD CPUmodels /CPUmodels
-# RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
-# RUN cd /CPUmodels/x86model/Model; make -j4
+ADD CPUmodels /CPUmodels
+RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
+RUN cd /CPUmodels/x86model/Model; make -j4
 

@@ -46,6 +46,16 @@
   (displayln "Cast8 add verification:")
   (displayln (@ cast8AddVerification (void))))
 
+(define (not-verification-proposition)
+  (displayln "Not verification proposition (good1):")
+  (displayln (@ notVerificationProposition (bv 0 32)))
+  (displayln "Not verification proposition (good2):")
+  (displayln (@ notVerificationProposition (bv -1 32))))
+
+(define (not-verification)
+  (displayln "Not verification:")
+  (displayln (@ notVerification (void))))
+
 (define command (vector-ref (current-command-line-arguments) 0))
 
 (if (equal? command "construct-positive-space") (construct-positive-space)
@@ -56,4 +66,6 @@
 (if (equal? command "cast8-add-verification-proposition") (cast8-add-verification-proposition)
 (if (equal? command "init-rtl-state") (init-rtl-state)
 (if (equal? command "cast8-add-verification") (cast8-add-verification)
-(void)))))))))
+(if (equal? command "not-verification-proposition") (not-verification-proposition)
+(if (equal? command "not-verification") (not-verification)
+(void)))))))))))

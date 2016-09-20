@@ -15,4 +15,8 @@ echo
 $main cast8-add-verification-proposition
 echo 
 $main cast8-add-verification
+echo 
+$main not-verification-proposition
+echo 
+$main not-verification
 

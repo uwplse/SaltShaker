@@ -2,7 +2,11 @@
 
 (require "extraction.rkt")
 
-(provide word-zero word-mkint word-add word-eq word-free word-one word-unsigned-cast
+(provide word-free word-mkint word-zero word-one word-mone 
+         word-eq
+         word-add 
+         word-unsigned-cast
+         word-and word-or word-xor word-shl
          unary->number number->unary positive->number z->number)
 
 (define (number->unary n)
@@ -34,6 +38,9 @@
 (define word-one (lambdas (bits)
   (bv 1 (word-bits->bv-bits bits))))
 
+(define word-mone (lambdas (bits)
+  (bv -1 (word-bits->bv-bits bits))))
+
 (define word-mkint (lambdas (bits z)
   (bv (z->number z) (word-bits->bv-bits bits))))
 
@@ -51,6 +58,18 @@
   (define srcBits* (word-bits->bv-bits srcBits))
   (define dstBits* (word-bits->bv-bits dstBits))
   (if (>= srcBits* dstBits*)
-    (extract dstBits* 0 x)
+    (extract (sub1 dstBits*) 0 x)
     (zero-extend x (bitvector dstBits*)))))
-    
+
+(define word-or (lambdas (_ x y)
+  (bvor x y)))
+
+(define word-and (lambdas (_ x y)
+  (bvand x y)))
+
+(define word-xor (lambdas (bits x y)
+  (bvxor x y)))
+
+(define word-shl (lambdas (_ x y)
+  (bvshl x y)))
+

@@ -89,65 +89,27 @@ Definition init_rtl_state : rtl_state.
   |}.
 Defined.
 
-
-(* Define an instruction *)
-
-(*
-Finally, an instruction can have one instruction prefixes from each of the four groups: (1) lock and repeat prefixes, (2) segment override prefixes, (3) operand-size override prefix, and (4) address-size override prefix. In 64-bit mode, REX prefixes are used for specifying GPRs and SSE registers, 64-bit operand size, and extended control registers. Each instruction can have only one REX prefix at a time.
-
-http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
-*)
-Definition no_prefix : prefix := mkPrefix None None false false.
-
-(* Imm_op = Immediate operand = constant *)
-Definition eax_cast8_add n := instr_to_rtl no_prefix (ADD false (Reg_op EAX) (Imm_op n)).
-
-Definition fast_eax_cast8_add (n:int32) := [set_loc_rtl 
+Definition rtl_eax_cast8_add (n:int32) := [set_loc_rtl 
   (cast_u_rtl_exp 31
     (arith_rtl_exp add_op
       (cast_u_rtl_exp 7 (get_loc_rtl_exp (reg_loc EAX)))
       (cast_u_rtl_exp 7 (imm_rtl_exp n)))) 
   (reg_loc EAX)].
 
-Definition cast8_add n m := fast_eax_cast8_add n ++ fast_eax_cast8_add m.
+Definition cast8_add n m := rtl_eax_cast8_add n ++ rtl_eax_cast8_add m.
 
 Definition run p := RTL_step_list p init_rtl_state.
 
-(* Run the instruction *)
-Definition four : int32. 
-  refine (#4).
-  compute.
-  constructor; congruence.
-Defined.
+Check run.
 
-Definition six : int32. 
-  refine (#6).
-  compute.
-  constructor; congruence.
-Defined.
-
-Definition four_plus_six :=
-  let s := run (cast8_add four six) in
+Definition get_eax (i:list rtl_instr) :=
+  let s := run i in
     (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
 
-Compute four_plus_six.
+Compute get_eax (cast8_add (repr 4) (repr 6)).
 
-Definition fivehundredten : int32.
-  compute.
-  refine {| Word.intval := 510 |}.
-  compute.
-  intuition congruence.
-Defined.
-
-Definition fivehundredten_plus_four :=
-  let s := run (cast8_add fivehundredten four) in
-    (fst s, gp_regs (core (rtl_mach_state (snd s))) EAX).
-
-(* 510 % 256 = 254 
-   4   % 256 = 4
-   254 + 4   = 258
-   258 % 256 = 2 *)
-Compute fivehundredten_plus_four.
+(* 510 % 256 = 254, 254 + 4 = 258, 258 % 256 = 2 *)
+Compute get_eax (cast8_add (repr 510) (repr 4)).
 
 (* Existing Instance listSpaceSearch. *)
 Existing Instance rosette.
@@ -219,15 +181,137 @@ Defined.
 Extraction Language Scheme.
 
 Extract Constant mkint => "word-mkint".
+Extract Constant Word.repr => "word-mkint".
 Extract Constant Word.zero => "word-zero".
 Extract Constant Word.one => "word-one".
-Extract Constant Word.add => "word-add".
+Extract Constant Word.mone => "word-mone".
 Extract Constant Word.eq => "word-eq".
-Extract Constant Word.repr => "word-mkint".
+Extract Constant Word.lt => "(lambdas (_) (error 'lt))".
+Extract Constant Word.ltu => "(lambdas (_) (error 'ltu))".
+
 Extract Constant cast_unsigned => "word-unsigned-cast".
-Extract Constant cast_signed => "(lambda (srcBits dstBits x) (error 'signed-cast))".
-Extract Constant Word.unsigned => "(lambda (bits x) (error 'unsigned))".
-Extract Constant Word.signed => "(lambda (bits x) (error 'signed))".
+Extract Constant cast_signed => "(lambdas (srcBits dstBits x) (error 'signed-cast))".
+Extract Constant Word.unsigned => "(lambdas (_) (error 'unsigned))".
+Extract Constant Word.signed => "(lambdas (_) (error 'signed))".
+
+Extract Constant Word.add => "word-add".
+Extract Constant Word.sub => "(lambdas (_) (error 'sub))".
+Extract Constant Word.mul => "(lambdas (_) (error 'mul))".
+Extract Constant Word.divs => "(lambdas (_) (error 'divs))".
+Extract Constant Word.divu => "(lambdas (_) (error 'divu))".
+Extract Constant Word.modu => "(lambdas (_) (error 'modu))".
+Extract Constant Word.mods => "(lambdas (_) (error 'mods))".
+Extract Constant Word.and => "word-and".
+Extract Constant Word.or => "word-or".
+Extract Constant Word.xor => "word-xor".
+Extract Constant Word.shl => "word-shl".
+Extract Constant Word.shr => "(lambdas (_) (error 'shr))".
+Extract Constant Word.shru => "(lambdas (_) (error 'shru))".
+Extract Constant Word.ror => "(lambdas (_) (error 'ror))".
+Extract Constant Word.rol => "(lambdas (_) (error 'rol))".
+
+(* Define an instruction *)
+
+(*
+Finally, an instruction can have one instruction prefixes from each of the four groups: (1) lock and repeat prefixes, (2) segment override prefixes, (3) operand-size override prefix, and (4) address-size override prefix. In 64-bit mode, REX prefixes are used for specifying GPRs and SSE registers, 64-bit operand size, and extended control registers. Each instruction can have only one REX prefix at a time.
+
+Imm_op = Immediate operand = constant
+
+The boolean passed to instructions toggels betweeen 8bit (false) and 32bit (true)
+
+http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
+*)
+Definition no_prefix : prefix := mkPrefix None None false false.
+
+Definition instr_eax_add n := 
+  instr_to_rtl no_prefix (ADD true (Reg_op EAX) (Imm_op n)).
+
+Definition instr_not_8bit n := 
+  set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
+  instr_to_rtl no_prefix (NOT false (Reg_op EAX)).
+
+Definition instr_not_32bit n := 
+  set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
+  instr_to_rtl no_prefix (NOT true (Reg_op EAX)).
+
+Goal unit.
+  (* Print instr. *)
+  refine ((fun n : int32 => _) zero).
+  refine (let i := instr_to_rtl no_prefix (NOT true (Reg_op EAX)) in _).
+  unfold instr_to_rtl in *.
+  simpl in *.
+  unfold runConv in *.
+  simpl in *.
+Abort.
+
+Compute (get_eax (instr_not_8bit (repr 126))).
+
+(*
+  Fixpoint interp_rtl_exp s (e:rtl_exp s) (rs:rtl_state) : int s :=
+    match e with 
+      | arith_rtl_exp _ b e1 e2 =>
+        let v1 := interp_rtl_exp e1 rs in 
+        let v2 := interp_rtl_exp e2 rs in interp_arith b v1 v2
+      | test_rtl_exp _ t e1 e2 => 
+        let v1 := interp_rtl_exp e1 rs in
+        let v2 := interp_rtl_exp e2 rs in interp_test t v1 v2
+      | if_rtl_exp _ cd e1 e2 =>
+        let v := interp_rtl_exp cd rs in
+        if (Word.eq v Word.one) then interp_rtl_exp e1 rs
+        else interp_rtl_exp e2 rs
+      | cast_s_rtl_exp _ _ e =>
+        let v := interp_rtl_exp e rs in cast_signed v
+      | cast_u_rtl_exp _ _ e => 
+        let v := interp_rtl_exp e rs in cast_unsigned v
+      | imm_rtl_exp _ v => v
+      | get_loc_rtl_exp _ l => get_location l (rtl_mach_state rs)
+      | get_array_rtl_exp _ _ a e => 
+        let i := interp_rtl_exp e rs in array_sub a i (rtl_mach_state rs)
+      | get_byte_rtl_exp addr => 
+        let v := interp_rtl_exp addr rs in AddrMap.get v (rtl_memory rs)
+      | farith_rtl_exp _ _ hyp fop rm e1 e2 =>
+        let v1 := interp_rtl_exp e1 rs in let v2 := interp_rtl_exp e2 rs in
+        let vrm := interp_rtl_exp rm rs in
+        interp_farith hyp fop vrm v1 v2
+      | fcast_rtl_exp _ _ _ _ hyp1 hyp2 rm e =>
+        let v := interp_rtl_exp e rs in
+        let vrm := interp_rtl_exp rm rs in
+        interp_fcast hyp1 hyp2 vrm v
+      | get_random_rtl_exp _ => 
+        let oracle := rtl_oracle rs in
+        oracle_bits oracle _ (oracle_offset oracle)
+    end.
+
+  Definition interp_arith s (b:bit_vector_op)(v1 v2:int s) : int s := 
+    match b with 
+      | add_op => Word.add v1 v2
+      | sub_op => Word.sub v1 v2
+      | mul_op => Word.mul v1 v2
+      | divs_op => Word.divs v1 v2
+      | divu_op => Word.divu v1 v2
+      | modu_op => Word.modu v1 v2
+      | mods_op => Word.mods v1 v2
+      | and_op => Word.and v1 v2
+      | or_op => Word.or v1 v2
+      | xor_op => Word.xor v1 v2
+      | shl_op => Word.shl v1 v2
+      | shr_op => Word.shr v1 v2
+      | shru_op => Word.shru v1 v2
+      | ror_op => Word.ror v1 v2
+      | rol_op => Word.rol v1 v2
+    end.
+
+  Definition interp_test s (t:test_op)(v1 v2:int s) : int size1 := 
+    if (match t with 
+      | eq_op => Word.eq v1 v2 
+      | lt_op => Word.lt v1 v2
+      | ltu_op => Word.ltu v1 v2
+        end) then Word.one else Word.zero.
+
+*)
+
+(*
+Opaque Word.signed. *)
 
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
@@ -265,18 +349,27 @@ Definition initRTLState (_:unit) := init_rtl_state.
 Definition cast8AddVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32 * int32).
   refine (let n := fst nm in _).
   refine (let m := snd nm in _).
-  refine (let s := run (cast8_add n m) in _).
-  refine (let r' := Word.add n m in _).
-  refine (let r := gp_regs (core (rtl_mach_state (snd s))) EAX in _).
-  refine (match fst s with 
-  | Okay_ans _ => _
-  | _ => Some (n,m,r,r')
+  refine (let expected := Word.add n m in _).
+  refine (match get_eax (cast8_add n m) with
+  | (Okay_ans tt, result) => _
+  | (_, result) => Some (nm,result,expected)
   end).
-  refine (if Word.eq r r' then None else Some (n,m,r,r')).
+  refine (if Word.eq result expected then None else Some (nm,result,expected)).
 Defined.
 
 Existing Instance freeProd.
 
 Definition cast8AddVerification (_:unit) := verifyForall cast8AddVerificationProposition.
 
-Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState.
+Definition notVerificationProposition (n:int32) : option (int32 * int32 * int32).
+  refine (let expected := Word.not n in _).
+  refine (match get_eax (instr_not_32bit n) with
+  | (Okay_ans tt, result) => _
+  | (_, result) => Some (n,result,expected)
+  end).
+  refine (if Word.eq result expected then None else Some (n,result,expected)).
+Defined.
+
+Definition notVerification (_:unit) := verifyForall notVerificationProposition.
+
+Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification.
