@@ -3,10 +3,10 @@
 (require "extraction.rkt")
 
 (provide word-free word-mkint word-zero word-one word-mone 
-         word-eq
+         word-eq word-lt word-ltu
          word-add 
          word-unsigned-cast
-         word-and word-or word-xor word-shl
+         word-and word-or word-xor word-shl word-shr word-shru
          unary->number number->unary positive->number z->number)
 
 (define (number->unary n)
@@ -50,6 +50,12 @@
 (define word-eq (lambdas (_ x y)
   (if (bveq x y) '(True) '(False))))
 
+(define word-lt (lambdas (_ x y)
+  (if (bvslt x y) '(True) '(False))))
+
+(define word-ltu (lambdas (_ x y)
+  (if (bvult x y) '(True) '(False))))
+
 (define word-free (lambdas (bits _)
   (define-symbolic* x (bitvector (word-bits->bv-bits bits)))
   x))
@@ -67,9 +73,15 @@
 (define word-and (lambdas (_ x y)
   (bvand x y)))
 
-(define word-xor (lambdas (bits x y)
+(define word-xor (lambdas (_ x y)
   (bvxor x y)))
 
 (define word-shl (lambdas (_ x y)
   (bvshl x y)))
+
+(define word-shr (lambdas (_ x y)
+  (bvlshr x y)))
+
+(define word-shru (lambdas (_ x y)
+  (bvashr x y)))
 

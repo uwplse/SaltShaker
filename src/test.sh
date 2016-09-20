@@ -19,4 +19,7 @@ echo
 $main not-verification-proposition
 echo 
 $main not-verification
-
+echo 
+$main and-verification-proposition
+echo 
+$main and-verification

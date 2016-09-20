@@ -186,8 +186,8 @@ Extract Constant Word.zero => "word-zero".
 Extract Constant Word.one => "word-one".
 Extract Constant Word.mone => "word-mone".
 Extract Constant Word.eq => "word-eq".
-Extract Constant Word.lt => "(lambdas (_) (error 'lt))".
-Extract Constant Word.ltu => "(lambdas (_) (error 'ltu))".
+Extract Constant Word.lt => "word-lt".
+Extract Constant Word.ltu => "word-ltu".
 
 Extract Constant cast_unsigned => "word-unsigned-cast".
 Extract Constant cast_signed => "(lambdas (srcBits dstBits x) (error 'signed-cast))".
@@ -205,8 +205,8 @@ Extract Constant Word.and => "word-and".
 Extract Constant Word.or => "word-or".
 Extract Constant Word.xor => "word-xor".
 Extract Constant Word.shl => "word-shl".
-Extract Constant Word.shr => "(lambdas (_) (error 'shr))".
-Extract Constant Word.shru => "(lambdas (_) (error 'shru))".
+Extract Constant Word.shr => "word-shr".
+Extract Constant Word.shru => "word-shru".
 Extract Constant Word.ror => "(lambdas (_) (error 'ror))".
 Extract Constant Word.rol => "(lambdas (_) (error 'rol))".
 
@@ -223,24 +223,32 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
-Definition instr_eax_add n := 
-  instr_to_rtl no_prefix (ADD true (Reg_op EAX) (Imm_op n)).
+Definition instr_add n m := 
+  set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
+  instr_to_rtl no_prefix (ADD true (Reg_op EAX) (Imm_op m)).
 
 Definition instr_not_8bit n := 
   set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
   instr_to_rtl no_prefix (NOT false (Reg_op EAX)).
 
-Definition instr_not_32bit n := 
+Definition instr_not n := 
   set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
   instr_to_rtl no_prefix (NOT true (Reg_op EAX)).
+
+Definition instr_and n m := 
+  set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
+  instr_to_rtl no_prefix (AND true (Reg_op EAX) (Imm_op m)).
 
 Goal unit.
   (* Print instr. *)
   refine ((fun n : int32 => _) zero).
-  refine (let i := instr_to_rtl no_prefix (NOT true (Reg_op EAX)) in _).
-  unfold instr_to_rtl in *.
-  simpl in *.
-  unfold runConv in *.
+  refine (let i := instr_to_rtl no_prefix (AND true (Reg_op EAX) (Imm_op n)) in _);
+(*
+  refine (let i := instr_to_rtl no_prefix (OR true (Reg_op EAX) (Imm_op n)) in _);
+  refine (let i := instr_to_rtl no_prefix (ADD true (Reg_op EAX) (Imm_op n)) in _). 
+  refine (let i := instr_to_rtl no_prefix (NOT true (Reg_op EAX)) in _). *)
+
+  unfold instr_to_rtl in *; simpl in *; unfold runConv in *; 
   simpl in *.
 Abort.
 
@@ -310,9 +318,6 @@ Compute (get_eax (instr_not_8bit (repr 126))).
 
 *)
 
-(*
-Opaque Word.signed. *)
-
 Parameter freeIntSpace : forall n, Space (int n).
 Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
 Extract Constant freeIntSpace => "word-free".
@@ -363,7 +368,7 @@ Definition cast8AddVerification (_:unit) := verifyForall cast8AddVerificationPro
 
 Definition notVerificationProposition (n:int32) : option (int32 * int32 * int32).
   refine (let expected := Word.not n in _).
-  refine (match get_eax (instr_not_32bit n) with
+  refine (match get_eax (instr_not n) with
   | (Okay_ans tt, result) => _
   | (_, result) => Some (n,result,expected)
   end).
@@ -372,4 +377,18 @@ Defined.
 
 Definition notVerification (_:unit) := verifyForall notVerificationProposition.
 
-Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification.
+Definition andVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32).
+  refine (let n := fst nm in _).
+  refine (let m := snd nm in _).
+  refine (let expected := Word.and n m in _).
+  refine (match get_eax (instr_and n m) with
+  | (Okay_ans tt, result) => _
+  | (_, result) => Some (n,result,expected)
+  end).
+  refine (if Word.eq result expected then None else Some (n,result,expected)).
+Defined.
+
+Definition andVerification (_:unit) := verifyForall andVerificationProposition.
+
+Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification andVerificationProposition andVerification.
+

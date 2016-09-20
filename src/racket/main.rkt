@@ -56,6 +56,16 @@
   (displayln "Not verification:")
   (displayln (@ notVerification (void))))
 
+(define (and-verification-proposition)
+  (displayln "And verification proposition (good1):")
+  (displayln (@ andVerificationProposition `(Pair ,(bv 6 32) ,(bv 4 32))))
+  (displayln "And verification proposition (good2):")
+  (displayln (@ andVerificationProposition `(Pair ,(bv 21303 32) ,(bv 4 32)))))
+
+(define (and-verification)
+  (displayln "And verification:")
+  (displayln (@ andVerification (void))))
+
 (define command (vector-ref (current-command-line-arguments) 0))
 
 (if (equal? command "construct-positive-space") (construct-positive-space)
@@ -68,4 +78,6 @@
 (if (equal? command "cast8-add-verification") (cast8-add-verification)
 (if (equal? command "not-verification-proposition") (not-verification-proposition)
 (if (equal? command "not-verification") (not-verification)
-(void)))))))))))
+(if (equal? command "and-verification-proposition") (and-verification-proposition)
+(if (equal? command "and-verification") (and-verification)
+(void)))))))))))))
