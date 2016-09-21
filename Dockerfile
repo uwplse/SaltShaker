@@ -66,55 +66,43 @@ RUN git clone https://github.com/emina/rosette.git && \
     cd rosette; git checkout 2.2 && \
                 raco pkg install
 
+# install stoke dependencies
 RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:ubuntu-toolchain-r/test
-
-RUN apt-get update && \
+    apt-get install -y software-properties-common apt-transport-https && \
+    add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    apt-get update && \
     apt-get install -y \
       bison ccache cmake doxygen exuberant-ctags flex g++-4.9 g++-multilib \
       gcc-4.9 ghc git libantlr3c-dev libboost-dev libboost-filesystem-dev \
       libboost-thread-dev libcln-dev libghc-regex-compat-dev \
       libghc-regex-tdfa-dev libghc-split-dev libjsoncpp-dev python subversion \
-      libiml-dev libgmp-dev libboost-regex-dev
+      libiml-dev libgmp-dev libboost-regex-dev && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
-RUN git clone https://github.com/StanfordPL/strata.git
-RUN git clone https://github.com/StanfordPL/strata-data.git
+# install stoke
 RUN git clone https://github.com/StanfordPL/stoke.git && \
-    cd stoke && git checkout feature-strata
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
-RUN rmdir /strata/stoke && ln -s /stoke /strata/stoke
-RUN cd stoke && ./configure.sh && make
-
-RUN apt-get update && apt-get install -y apt-transport-https
-RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
-RUN apt-get update && apt-get install -y sbt
-
-RUN cd strata && make
+    cd stoke && git checkout feature-strata && \
+    ./configure.sh && make
 ENV PATH /stoke/bin:$PATH
 
-#     git submodule update --init --recursive
-# 
+# install sbt
+RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
+    apt-get update && \
+    apt-get install -y sbt
 
 # install strata
-# RUN git clone https://github.com/StanfordPL/strata.git 
-# RUN git clone https://github.com/StanfordPL/strata-data.git
+RUN git clone https://github.com/StanfordPL/strata.git && \
+    git clone https://github.com/StanfordPL/strata-data.git && \
+    rmdir /strata/stoke && ln -s /stoke /strata/stoke && \
+    cd strata && make
 
-# RUN apt-get update && \
-#     apt-get install -y \
-#       g++-4.9
-# #      bison ccache cmake doxygen exuberant-ctags flex 
-# #      ghc git libantlr3c-dev libboost-dev libboost-filesystem-dev
-# #      libboost-thread-dev libcln-dev libghc-regex-compat-dev 
-# #      libghc-regex-tdfa-dev libghc-split-dev libjsoncpp-dev python subversion 
-# #      libiml-dev libgmp-dev libboost-regex-dev
-# 
-# RUN cd strata && make
-# 
-# # install x86 semantics
-# ADD CPUmodels /CPUmodels
-# RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
-# RUN cd /CPUmodels/x86model/Model; make -j4
+# test strata / stoke
+RUN stoke debug circuit --strata_path "/strata-data/circuits" --code "addss %xmm0, %xmm1"
+
+# install x86 semantics
+ADD CPUmodels /CPUmodels
+RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
+RUN cd /CPUmodels/x86model/Model; make -j4
 
 
