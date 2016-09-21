@@ -27,12 +27,12 @@ Proof.
   - omega.
 Qed.
 
-Definition maxInt bits : int bits.
+Definition maxInt {bits} : int bits.
   refine (# (Word.max_unsigned bits)).
   apply maxIntIsInt.
 Defined.
 
-Compute (maxInt 31).
+Compute (@maxInt 31).
 
 (* initialize state, inspired by see simulator/test.ml *)
 
@@ -54,7 +54,7 @@ Definition init_machine : core_state.
   refine {|
     gp_regs := empty_reg;
     seg_regs_starts := empty_seg;
-    seg_regs_limits := (fun seg_reg=>maxInt (bii 31));
+    seg_regs_limits := (fun seg_reg=>@maxInt (bii 31));
     flags_reg := (fun f => @Word.zero (bii 0));
     control_regs := (fun c => @Word.zero (bii 31));
     debug_regs :=  (fun d => @Word.zero (bii 31));
@@ -328,7 +328,7 @@ Instance freeInt n : @Free rosette (int n) := {|
 |}.
 
 Definition findWordProposition (bits:nat) (x:int bits) : option (int bits).
-  refine (if Word.eq x (maxInt bits) then Some x else None).
+  refine (if Word.eq x maxInt then Some x else None).
 Defined.
 
 Definition verifyForall {A} {B} `{Free A} (p:A -> option B) : option B.
@@ -380,7 +380,7 @@ Definition notVerification (_:unit) := verifyForall notVerificationProposition.
 Definition andVerificationProposition (nm:int32 * int32) : option (int32 * int32 * int32).
   refine (let n := fst nm in _).
   refine (let m := snd nm in _).
-  refine (let expected := Word.and n m in _).
+  refine (let expected := Word.not (Word.or (Word.not n) (Word.not m)) in _).
   refine (match get_eax (instr_and n m) with
   | (Okay_ans tt, result) => _
   | (_, result) => Some (n,result,expected)
@@ -388,7 +388,12 @@ Definition andVerificationProposition (nm:int32 * int32) : option (int32 * int32
   refine (if Word.eq result expected then None else Some (n,result,expected)).
 Defined.
 
+Definition andSpace : Space (int32 * int32 * int32).
+  refine (bind (free (int32 * int32)) (fun nm => _)).
+  refine (match andVerificationProposition nm with Some r => single r | None => empty end).
+Defined.
+
 Definition andVerification (_:unit) := verifyForall andVerificationProposition.
 
-Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification andVerificationProposition andVerification.
+Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification andVerificationProposition andVerification andSpace.
 

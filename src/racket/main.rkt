@@ -66,6 +66,10 @@
   (displayln "And verification:")
   (displayln (@ andVerification (void))))
 
+(define (and-space)
+  (displayln "And space")
+  (displayln (@ andSpace (void))))
+
 (define command (vector-ref (current-command-line-arguments) 0))
 
 (if (equal? command "construct-positive-space") (construct-positive-space)
@@ -80,4 +84,5 @@
 (if (equal? command "not-verification") (not-verification)
 (if (equal? command "and-verification-proposition") (and-verification-proposition)
 (if (equal? command "and-verification") (and-verification)
-(void)))))))))))))
+(if (equal? command "and-space") (and-space)
+(void))))))))))))))

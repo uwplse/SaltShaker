@@ -22,4 +22,6 @@ $main not-verification
 echo 
 $main and-verification-proposition
 echo 
+$main and-space
+echo 
 $main and-verification
