@@ -1,4 +1,4 @@
-main=.build/main.rkt
+main=/src/extract/.build/main.rkt
 
 $main construct-positive-space 32
 echo 
