@@ -100,6 +100,12 @@ RUN git clone https://github.com/StanfordPL/strata.git && \
 # test strata / stoke
 RUN stoke debug circuit --strata_path "/strata-data/circuits" --code "addss %xmm0, %xmm1"
 
+# enable rosette debugging
+RUN cd rosette && \
+    sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
+    raco pkg remove rosette && \
+    raco pkg install
+
 # install x86 semantics
 ADD CPUmodels /CPUmodels
 RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
