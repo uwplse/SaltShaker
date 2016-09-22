@@ -1,4 +1,4 @@
-main=/src/extract/.build/main.rkt
+main=/src/extract/racket/main.rkt
 
 $main construct-positive-space 32
 echo 
@@ -25,3 +25,5 @@ echo
 $main and-space
 echo 
 $main and-verification
+echo 
+$main instr-eq-space

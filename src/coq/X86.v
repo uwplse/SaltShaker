@@ -14,6 +14,8 @@ Import Word.
 Require Import Coq.PArith.BinPos.
 Import Pos.
 
+Print prefix.
+
 Definition mkint := Word.mkint.
 Notation "# n" := (mkint _ n _) (at level 45).
 
@@ -36,12 +38,33 @@ Compute (@maxInt 31).
 
 (* initialize state, inspired by see simulator/test.ml *)
 
+Parameter freeIntSpace : forall n, Space (int n).
+Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
+Extract Constant freeIntSpace => "word-free".
+
+Instance freeInt n : @Free rosette (int n) := {| 
+  free := freeIntSpace n; 
+  freeOk := freeIntSpaceOk n 
+|}.
+
+Arguments free {_ _ _}.
+
+Existing Instance freeProd.
+
 Definition bii := id (A:=nat).
 
 Definition empty_mem : AddrMap.t int8 := (@Word.zero (bii 7), PTree.empty _).
 Definition empty_reg : fmap register int32 := (fun reg => @Word.zero (bii 31)).
 Definition empty_seg : fmap segment_register int32 := (fun seg => @Word.zero (bii 31)).
 Definition pc := @Word.zero (bii 31).
+
+Definition symbolic_reg : Space (fmap register int32) :=
+  bind free (fun x => single (fun _ => x)).
+
+Definition empty_flags : fmap flag int1 := fun f => @Word.zero (bii 0).
+
+Definition symbolic_flags : Space (fmap flag int1) :=
+  bind free (fun x => single (fun _ => x)).
 
 Definition empty_oracle : oracle.
   refine {|
@@ -55,11 +78,25 @@ Definition init_machine : core_state.
     gp_regs := empty_reg;
     seg_regs_starts := empty_seg;
     seg_regs_limits := (fun seg_reg=>@maxInt (bii 31));
-    flags_reg := (fun f => @Word.zero (bii 0));
+    flags_reg := empty_flags;
     control_regs := (fun c => @Word.zero (bii 31));
     debug_regs :=  (fun d => @Word.zero (bii 31));
     pc_reg := pc
   |}.
+Defined.
+
+Definition symbolic_machine : Space core_state. 
+  refine (bind symbolic_reg (fun gprs => _)).
+  refine (bind symbolic_flags (fun flags => _)).
+  refine (single {|
+    gp_regs := gprs;
+    seg_regs_starts := empty_seg;
+    seg_regs_limits := (fun seg_reg=>@maxInt (bii 31));
+    flags_reg := flags;
+    control_regs := (fun c => @Word.zero (bii 31));
+    debug_regs :=  (fun d => @Word.zero (bii 31));
+    pc_reg := pc
+  |}).
 Defined.
 
 Definition empty_fpu_machine : fpu_state.
@@ -81,6 +118,14 @@ Definition init_full_machine : mach_state.
   |}.
 Defined.
 
+Definition symbolic_full_machine : Space mach_state.
+  refine (bind symbolic_machine (fun m => _)).
+  refine (single {|
+   core := m;
+   fpu := empty_fpu_machine
+  |}).
+Defined.
+
 Definition init_rtl_state : rtl_state.
   refine {|
     rtl_oracle := empty_oracle;
@@ -88,6 +133,155 @@ Definition init_rtl_state : rtl_state.
     rtl_memory := empty_mem
   |}.
 Defined.
+
+Definition symbolic_rtl_state : Space rtl_state.
+  refine (bind symbolic_full_machine (fun m => _)).
+  refine (single {|
+    rtl_oracle := empty_oracle;
+    rtl_mach_state := m;
+    rtl_memory := empty_mem
+  |}).
+Defined.
+
+
+(*
+
+### General Purpose Registers
+
+Rocksalt (see `register` type) and Stocke have all GRPs:
+
+    rax rcx rdx rbx rsp rbp rsi rdi
+
+### Flags
+
+Rocksalt (see `flag` type) has a superset of Stoke's flags. They share:
+
+    cf pf af zf sf of
+
+But only Rocksalt has:
+
+
+    ID | VIP | VIF | AC | VM | RF | NT | IOPL | DF | IF_flag | TF 
+
+### Other
+
+Only Rocksalt has `segment_register`, `control_register`, 
+
+Only Stoke has the 64bit registers:
+
+    r8 r9 r10 r11 r12 r13 r14 r15
+
+Only Stoke has the SIMD registers:
+
+    ymm0 ymm1 ymm2 ymm3 ymm4 ymm5 ymm6 ymm7 ymm8 ymm9 
+    ymm10 ymm11 ymm12 ymm13 ymm14 ymm15
+
+*)
+
+Record SharedState := { 
+  rax : int64;
+  rcx : int64; 
+  rdx : int64; 
+  rbx : int64; 
+  rsp : int64;
+  rbp : int64;
+  rsi : int64;
+  rdi : int64;
+
+  cf : int1; 
+  pf : int1; 
+  af : int1;
+  zf : int1;
+  sf : int1;
+  of : int1
+}.
+
+Definition symbolicSharedState : Space SharedState.
+  refine (bind free (fun rax' => _)).
+  refine (bind free (fun rcx' => _)).
+  refine (bind free (fun rdx' => _)).
+  refine (bind free (fun rbx' => _)).
+  refine (bind free (fun rsp' => _)).
+  refine (bind free (fun rbp' => _)).
+  refine (bind free (fun rsi' => _)).
+  refine (bind free (fun rdi' => _)).
+  refine (bind free (fun cf' => _)).
+  refine (bind free (fun pf' => _)).
+  refine (bind free (fun af' => _)).
+  refine (bind free (fun zf' => _)).
+  refine (bind free (fun sf' => _)).
+  refine (bind free (fun of' => _)). 
+  refine (single {| 
+    rax := rax';
+    rcx := rcx'; 
+    rdx := rdx'; 
+    rbx := rbx'; 
+    rsp := rsp';
+    rbp := rbp';
+    rsi := rsi';
+    rdi := rdi';
+    cf := cf'; 
+    pf := pf'; 
+    af := af';
+    zf := zf';
+    sf := sf';
+    of := of'
+  |}).
+Defined.
+
+Section SharedState.
+  Variable (s:SharedState).
+
+  Definition shared_reg : fmap register int32 :=
+    fun r => match r with
+    | EAX => cast_unsigned (rax s)
+    | ECX => cast_unsigned (rcx s)
+    | EDX => cast_unsigned (rdx s)
+    | EBX => cast_unsigned (rbx s)
+    | ESP => cast_unsigned (rsp s)
+    | EBP => cast_unsigned (rbp s)
+    | ESI => cast_unsigned (rsi s)
+    | EDI => cast_unsigned (rdi s)
+    end.
+
+  Definition shared_flags : fmap flag int1 :=
+    fun f => match f with
+    | OF => of s
+    | SF => sf s
+    | ZF => zf s
+    | AF => af s
+    | PF => pf s
+    | CF => cf s
+    | _ => Word.zero
+    end.
+
+  Definition shared_machine : core_state. 
+    refine {|
+      gp_regs := shared_reg;
+      seg_regs_starts := empty_seg;
+      seg_regs_limits := (fun seg_reg=>@maxInt (bii 31));
+      flags_reg := shared_flags;
+      control_regs := (fun c => @Word.zero (bii 31));
+      debug_regs :=  (fun d => @Word.zero (bii 31));
+      pc_reg := pc
+    |}.
+  Defined.
+
+  Definition shared_full_machine : mach_state.
+    refine {|
+     core := shared_machine;
+     fpu := empty_fpu_machine
+    |}.
+  Defined.
+ 
+  Definition shared_rtl_state : rtl_state.
+    refine {|
+      rtl_oracle := empty_oracle;
+      rtl_mach_state := shared_full_machine;
+      rtl_memory := empty_mem
+    |}.
+  Defined.
+End SharedState.
 
 Definition rtl_eax_cast8_add (n:int32) := [set_loc_rtl 
   (cast_u_rtl_exp 31
@@ -99,8 +293,6 @@ Definition rtl_eax_cast8_add (n:int32) := [set_loc_rtl
 Definition cast8_add n m := rtl_eax_cast8_add n ++ rtl_eax_cast8_add m.
 
 Definition run p := RTL_step_list p init_rtl_state.
-
-Check run.
 
 Definition get_eax (i:list rtl_instr) :=
   let s := run i in
@@ -318,22 +510,13 @@ Compute (get_eax (instr_not_8bit (repr 126))).
 
 *)
 
-Parameter freeIntSpace : forall n, Space (int n).
-Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
-Extract Constant freeIntSpace => "word-free".
-
-Instance freeInt n : @Free rosette (int n) := {| 
-  free := freeIntSpace n; 
-  freeOk := freeIntSpaceOk n 
-|}.
-
 Definition findWordProposition (bits:nat) (x:int bits) : option (int bits).
   refine (if Word.eq x maxInt then Some x else None).
 Defined.
 
 Definition verifyForall {A} {B} `{Free A} (p:A -> option B) : option B.
   refine (search _).
-  refine (bind (free A) (fun a => _)).
+  refine (bind free (fun a : A => _)).
   refine (match p a with Some b => single b | None => empty end).
 Defined.
 
@@ -342,8 +525,8 @@ Definition findWord (bits:nat) : option (int bits) :=
 
 Definition wordVerification (bits:nat) : option (int bits * int bits).
   refine (search _).
-  refine (bind (free (int bits)) (fun x => _)).
-  refine (bind (free (int bits)) (fun y => _)).
+  refine (bind free (fun x : int bits => _)).
+  refine (bind free (fun y : int bits => _)).
   refine (if Word.eq (Word.add x y) (Word.add y x) 
           then empty
           else single (x, y)).
@@ -361,8 +544,6 @@ Definition cast8AddVerificationProposition (nm:int32 * int32) : option (int32 * 
   end).
   refine (if Word.eq result expected then None else Some (nm,result,expected)).
 Defined.
-
-Existing Instance freeProd.
 
 Definition cast8AddVerification (_:unit) := verifyForall cast8AddVerificationProposition.
 
@@ -389,11 +570,91 @@ Definition andVerificationProposition (nm:int32 * int32) : option (int32 * int32
 Defined.
 
 Definition andSpace : Space (int32 * int32 * int32).
-  refine (bind (free (int32 * int32)) (fun nm => _)).
+  refine (bind free (fun nm : int32 * int32 => _)).
   refine (match andVerificationProposition nm with Some r => single r | None => empty end).
 Defined.
 
 Definition andVerification (_:unit) := verifyForall andVerificationProposition.
 
-Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification andVerificationProposition andVerification andSpace.
+Parameter runStoke : prefix -> instr -> SharedState -> SharedState.
+
+Extract Constant runStoke => "run-stoke".
+
+Definition rtl_state_shared (s:rtl_state) : SharedState.
+  refine (let gpr := gp_regs (core (rtl_mach_state s)) in _).
+  refine (let fgs := flags_reg (core (rtl_mach_state s)) in _).
+  refine (
+  {| 
+    rax := cast_unsigned (gpr EAX);
+    rcx := cast_unsigned (gpr ECX); 
+    rdx := cast_unsigned (gpr EDX); 
+    rbx := cast_unsigned (gpr EBX); 
+    rsp := cast_unsigned (gpr ESP);
+    rbp := cast_unsigned (gpr EBP);
+    rsi := cast_unsigned (gpr ESI);
+    rdi := cast_unsigned (gpr EDI);
+    cf := fgs CF; 
+    pf := fgs PF; 
+    af := fgs AF;
+    zf := fgs ZF;
+    sf := fgs SF;
+    of := fgs OF
+  |}).
+Defined.
+
+Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState.
+  refine (let r := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
+  refine (match r with 
+  | (Okay_ans tt, s') => Some (rtl_state_shared s')
+  | _ => None
+  end).
+Defined.
+
+Require Import Bool.
+
+Definition shared_state_eq (s0 s1:SharedState) : bool.
+  refine (Word.eq (rax s0) (rax s1) && _).
+  refine (Word.eq (rcx s0) (rcx s1) && _).
+  refine (Word.eq (rdx s0) (rdx s1) && _).
+  refine (Word.eq (rbx s0) (rbx s1) && _).
+  refine (Word.eq (rsp s0) (rsp s1) && _).
+  refine (Word.eq (rbp s0) (rbp s1) && _).
+  refine (Word.eq (rsi s0) (rsi s1) && _).
+  refine (Word.eq (rdi s0) (rdi s1) && _).
+  refine (Word.eq (cf s0) (cf s1) && _).
+  refine (Word.eq (cf s0) (cf s1) && _).
+  refine (Word.eq (pf s0) (pf s1) && _).
+  refine (Word.eq (af s0) (af s1) && _).
+  refine (Word.eq (zf s0) (zf s1) && _).
+  refine (Word.eq (sf s0) (sf s1) && _).
+  refine (Word.eq (of s0) (of s1)).
+Defined.
+
+Definition instrEq (p:prefix) (i:instr) (s:SharedState) : option (SharedState * SharedState * option SharedState).
+  refine (let rs := runRocksalt p i s in _).
+  refine (let ss := runStoke p i s in _).
+  refine (let error := Some (s, ss, rs) in _).
+  refine (match rs with 
+  | None =>  error
+  | Some rs' => _ 
+  end).
+  refine (if shared_state_eq rs' ss 
+          then None
+          else error).
+Defined.  
+
+Definition instrEqSpace (p:prefix) (i:instr) : Space (SharedState * SharedState * option SharedState).
+  refine (bind symbolicSharedState (fun s => _)).
+  refine (match instrEq p i s with Some r => single r | None => empty end).
+Defined.
+
+Definition verifyInstrEq (p:prefix) (i:instr) : option (SharedState * SharedState * option SharedState).
+  refine (search (instrEqSpace p i)).
+Defined.
+
+Definition andEaxEbx : instr := AND true (Reg_op EAX) (Reg_op EBX).
+
+Definition notEax : instr := NOT true (Reg_op EAX).
+
+Extraction "x86sem" constructPositiveSpace wordVerification cast8AddVerification trivialPositiveVerification findWord findWordProposition cast8AddVerificationProposition initRTLState notVerificationProposition notVerification andVerificationProposition andVerification andSpace symbolicSharedState instrEq instrEqSpace verifyInstrEq andEaxEbx notEax no_prefix.
 

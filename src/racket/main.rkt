@@ -70,6 +70,10 @@
   (displayln "And space")
   (displayln (@ andSpace (void))))
 
+(define (instr-eq-space)
+  (displayln "Instr eq space")
+  (displayln (@ instrEqSpace no_prefix notEax (void))))
+
 (define command (vector-ref (current-command-line-arguments) 0))
 
 (if (equal? command "construct-positive-space") (construct-positive-space)
@@ -85,4 +89,6 @@
 (if (equal? command "and-verification-proposition") (and-verification-proposition)
 (if (equal? command "and-verification") (and-verification)
 (if (equal? command "and-space") (and-space)
-(void))))))))))))))
+(if (equal? command "instr-eq-space") (instr-eq-space)
+(void)))))))))))))))
+

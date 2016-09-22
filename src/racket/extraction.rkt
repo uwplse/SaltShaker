@@ -14,7 +14,7 @@
 
 (define-syntax match
   (syntax-rules ()
-    [(match e) void]
+    [(match e) 'non-exhaustive-match]
     [(match e ((t as ...) f) cs ...)
       (if (eq? 't (car e)) 
         (apply (lambda (as ...) f) (cdr e))

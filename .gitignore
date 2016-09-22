@@ -1,6 +1,12 @@
 .cabal-sandbox/
-src/.build/
 **#*#
 **~
-src/coq/*.scm
-src/compiled
+src/**/*.scm
+src/coq/Makefile
+src/**/*.glob
+src/**/*.v.d
+src/**/*.vo
+src/**/compiled
+src/racket/stoke/
+src/racket/x86sem.rkt*
+

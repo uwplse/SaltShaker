@@ -6,6 +6,6 @@
 ; (current-bitwidth 10)
 ; (current-solver (new z3%))
 
-(require "extraction.rkt" "rosette.rkt" "word.rkt")
+(require "extraction.rkt" "rosette.rkt" "word.rkt" "stoke.rkt")
 
 (provide (all-defined-out))
