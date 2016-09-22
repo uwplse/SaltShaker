@@ -1,8 +1,8 @@
 .PHONY: main clean
 
-main: racket/x86sem.rkt racket/stoke
-	raco make racket/main.rkt
-	chmod +x racket/main.rkt 
+racket/compare.rkt: racket/x86sem.rkt racket/stoke
+	raco make racket/compare.rkt
+	chmod +x racket/compare.rkt 
 
 clean:
 	make -C coq clean
