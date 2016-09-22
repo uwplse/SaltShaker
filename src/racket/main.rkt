@@ -71,7 +71,7 @@
   (displayln (@ andSpace (void))))
 
 (define (pretty-bv64 x)
-  (build-string 64 (lambda (i) (if (bveq (bv 1 1) (extract i i x)) #\1 #\0))))
+  (build-string 64 (lambda (i) (if (bveq (bv 1 1) (extract (- 63 i) (- 63 i) x)) #\1 #\0))))
 
 (define (pretty-bool b)
   (if b "1" "0"))

@@ -433,20 +433,22 @@ Definition instr_and n m :=
   set_loc_rtl (imm_rtl_exp n) (reg_loc EAX) ::
   instr_to_rtl no_prefix (AND true (Reg_op EAX) (Imm_op m)).
 
-Goal unit.
-  (* Print instr. *)
+Definition resultOfAnd (n:Z) : int1.
   refine ((fun n : int32 => _) zero).
-  refine (let i := instr_to_rtl no_prefix (AND true (Reg_op EAX) (Imm_op n)) in _);
-(*
-  refine (let i := instr_to_rtl no_prefix (OR true (Reg_op EAX) (Imm_op n)) in _);
-  refine (let i := instr_to_rtl no_prefix (ADD true (Reg_op EAX) (Imm_op n)) in _). 
-  refine (let i := instr_to_rtl no_prefix (NOT true (Reg_op EAX)) in _). *)
+  refine (let i := instr_to_rtl no_prefix (OR true (Reg_op EAX) (Reg_op EBX)) in _).
+  refine (let i' := [set_loc_rtl (imm_rtl_exp (repr n)) (reg_loc EAX);
+                     set_loc_rtl (imm_rtl_exp (repr n)) (reg_loc EBX)] in _).
+  unfold instr_to_rtl in i; unfold runConv in i; simpl in i.
+  refine (let s := run (i' ++ i) in _).
+  refine (flags_reg (core (rtl_mach_state (snd s))) PF).
+Defined.
 
-  unfold instr_to_rtl in *; simpl in *; unfold runConv in *; 
-  simpl in *.
-Abort.
-
-Compute (get_eax (instr_not_8bit (repr 126))).
+Compute (resultOfAnd 0). (* 1 *)
+Compute (resultOfAnd 1). (* 1 *)
+Compute (resultOfAnd 2). (* 1 *)
+Compute (resultOfAnd 3). (* 1 *)
+Compute (resultOfAnd 4). (* 1 *)
+Compute (resultOfAnd 5). (* 1 *)
 
 (*
   Fixpoint interp_rtl_exp s (e:rtl_exp s) (rs:rtl_state) : int s :=
@@ -614,6 +616,8 @@ Defined.
 
 Require Import Bool.
 
+Print SharedState.
+
 Definition shared_state_eq (s0 s1:SharedState) : bool.
   refine (Word.eq (eax s0) (eax s1) && _).
   refine (Word.eq (ecx s0) (ecx s1) && _).
@@ -623,7 +627,6 @@ Definition shared_state_eq (s0 s1:SharedState) : bool.
   refine (Word.eq (ebp s0) (ebp s1) && _).
   refine (Word.eq (esi s0) (esi s1) && _).
   refine (Word.eq (edi s0) (edi s1) && _).
-  refine (Word.eq (cf s0) (cf s1) && _).
   refine (Word.eq (cf s0) (cf s1) && _).
   refine (Word.eq (pf s0) (pf s1) && _).
   refine (Word.eq (af s0) (af s1) && _).
