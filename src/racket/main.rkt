@@ -70,10 +70,6 @@
   (displayln "And space")
   (displayln (@ andSpace (void))))
 
-(define (instr-eq-space)
-  (displayln "Instr eq space")
-  (displayln (@ instrEqSpace no_prefix notEax (void))))
-
 (define (pretty-bv64 x)
   (build-string 64 (lambda (i) (if (bveq (bv 1 1) (extract i i x)) #\1 #\0))))
 
@@ -117,6 +113,10 @@
             (string-append (pretty-state "original" x)
         	           (pretty-state "stoke" y)
                            (pretty-state "rocksalt" z)))))))))))
+
+(define (instr-eq-space)
+  (displayln "Instr eq space")
+  (displayln (@ instrEqSpace no_prefix notEax (void))))
 
 (define (verify-instr-eq)
   (displayln "Verify instr eq")

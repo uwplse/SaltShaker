@@ -14,8 +14,6 @@ Import Word.
 Require Import Coq.PArith.BinPos.
 Import Pos.
 
-Print prefix.
-
 Definition mkint := Word.mkint.
 Notation "# n" := (mkint _ n _) (at level 45).
 
@@ -178,15 +176,15 @@ Only Stoke has the SIMD registers:
 
 *)
 
-Record SharedState := { 
-  rax : int64;
-  rcx : int64; 
-  rdx : int64; 
-  rbx : int64; 
-  rsp : int64;
-  rbp : int64;
-  rsi : int64;
-  rdi : int64;
+Record SharedState := sharedState { 
+  eax : int32;
+  ecx : int32; 
+  edx : int32; 
+  ebx : int32; 
+  esp : int32;
+  ebp : int32;
+  esi : int32;
+  edi : int32;
 
   cf : int1; 
   pf : int1; 
@@ -197,14 +195,14 @@ Record SharedState := {
 }.
 
 Definition symbolicSharedState : Space SharedState.
-  refine (bind free (fun rax' => _)).
-  refine (bind free (fun rcx' => _)).
-  refine (bind free (fun rdx' => _)).
-  refine (bind free (fun rbx' => _)).
-  refine (bind free (fun rsp' => _)).
-  refine (bind free (fun rbp' => _)).
-  refine (bind free (fun rsi' => _)).
-  refine (bind free (fun rdi' => _)).
+  refine (bind free (fun eax' => _)).
+  refine (bind free (fun ecx' => _)).
+  refine (bind free (fun edx' => _)).
+  refine (bind free (fun ebx' => _)).
+  refine (bind free (fun esp' => _)).
+  refine (bind free (fun ebp' => _)).
+  refine (bind free (fun esi' => _)).
+  refine (bind free (fun edi' => _)).
   refine (bind free (fun cf' => _)).
   refine (bind free (fun pf' => _)).
   refine (bind free (fun af' => _)).
@@ -212,14 +210,14 @@ Definition symbolicSharedState : Space SharedState.
   refine (bind free (fun sf' => _)).
   refine (bind free (fun of' => _)). 
   refine (single {| 
-    rax := rax';
-    rcx := rcx'; 
-    rdx := rdx'; 
-    rbx := rbx'; 
-    rsp := rsp';
-    rbp := rbp';
-    rsi := rsi';
-    rdi := rdi';
+    eax := eax';
+    ecx := ecx'; 
+    edx := edx'; 
+    ebx := ebx'; 
+    esp := esp';
+    ebp := ebp';
+    esi := esi';
+    edi := edi';
     cf := cf'; 
     pf := pf'; 
     af := af';
@@ -234,14 +232,14 @@ Section SharedState.
 
   Definition shared_reg : fmap register int32 :=
     fun r => match r with
-    | EAX => cast_unsigned (rax s)
-    | ECX => cast_unsigned (rcx s)
-    | EDX => cast_unsigned (rdx s)
-    | EBX => cast_unsigned (rbx s)
-    | ESP => cast_unsigned (rsp s)
-    | EBP => cast_unsigned (rbp s)
-    | ESI => cast_unsigned (rsi s)
-    | EDI => cast_unsigned (rdi s)
+    | EAX => eax s
+    | ECX => ecx s
+    | EDX => edx s
+    | EBX => ebx s
+    | ESP => esp s
+    | EBP => ebp s
+    | ESI => esi s
+    | EDI => edi s
     end.
 
   Definition shared_flags : fmap flag int1 :=
@@ -585,14 +583,14 @@ Definition rtl_state_shared (s:rtl_state) : SharedState.
   refine (let fgs := flags_reg (core (rtl_mach_state s)) in _).
   refine (
   {| 
-    rax := cast_unsigned (gpr EAX);
-    rcx := cast_unsigned (gpr ECX); 
-    rdx := cast_unsigned (gpr EDX); 
-    rbx := cast_unsigned (gpr EBX); 
-    rsp := cast_unsigned (gpr ESP);
-    rbp := cast_unsigned (gpr EBP);
-    rsi := cast_unsigned (gpr ESI);
-    rdi := cast_unsigned (gpr EDI);
+    eax := gpr EAX;
+    ecx := gpr ECX; 
+    edx := gpr EDX; 
+    ebx := gpr EBX; 
+    esp := gpr ESP;
+    ebp := gpr EBP;
+    esi := gpr ESI;
+    edi := gpr EDI;
     cf := fgs CF; 
     pf := fgs PF; 
     af := fgs AF;
@@ -613,14 +611,14 @@ Defined.
 Require Import Bool.
 
 Definition shared_state_eq (s0 s1:SharedState) : bool.
-  refine (Word.eq (rax s0) (rax s1) && _).
-  refine (Word.eq (rcx s0) (rcx s1) && _).
-  refine (Word.eq (rdx s0) (rdx s1) && _).
-  refine (Word.eq (rbx s0) (rbx s1) && _).
-  refine (Word.eq (rsp s0) (rsp s1) && _).
-  refine (Word.eq (rbp s0) (rbp s1) && _).
-  refine (Word.eq (rsi s0) (rsi s1) && _).
-  refine (Word.eq (rdi s0) (rdi s1) && _).
+  refine (Word.eq (eax s0) (eax s1) && _).
+  refine (Word.eq (ecx s0) (ecx s1) && _).
+  refine (Word.eq (edx s0) (edx s1) && _).
+  refine (Word.eq (ebx s0) (ebx s1) && _).
+  refine (Word.eq (esp s0) (esp s1) && _).
+  refine (Word.eq (ebp s0) (ebp s1) && _).
+  refine (Word.eq (esi s0) (esi s1) && _).
+  refine (Word.eq (edi s0) (edi s1) && _).
   refine (Word.eq (cf s0) (cf s1) && _).
   refine (Word.eq (cf s0) (cf s1) && _).
   refine (Word.eq (pf s0) (pf s1) && _).
