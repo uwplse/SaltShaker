@@ -6,7 +6,10 @@ main: racket/x86sem.rkt racket/stoke
 
 clean:
 	make -C coq clean
-	rm racket/x86sem.rkt
+	rm -f coq/Makefile
+	rm -f coq/x86sem.scm racket/x86sem.rkt
+	rm -rf racket/compiled 
+	rm -rf racket/stoke
 
 racket/x86sem.rkt: coq/*.v racket/header.rkt
 	cd coq; find . -name '*.v' -exec coq_makefile -R . "Main" -I /CPUmodels/x86model/Model -o Makefile {} +
@@ -14,7 +17,8 @@ racket/x86sem.rkt: coq/*.v racket/header.rkt
 	cp racket/header.rkt racket/x86sem.rkt
 	tail -n +4 coq/x86sem.scm >> racket/x86sem.rkt
 	sed -i.bak "s/(define __ (lambda (_) __))/(define __ 'underscore)/g" racket/x86sem.rkt
-	sed -i.bak 's/(error "AXIOM TO BE REALIZED")/'axiom-to-be-realized/g' racket/x86sem.rkt
+	sed -i.bak 's/(error "AXIOM TO BE REALIZED")/void/g' racket/x86sem.rkt
+	rm racket/x86sem.rkt.bak
 
 racket/stoke:
 	mkdir racket/stoke

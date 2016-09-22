@@ -14,7 +14,7 @@
 
 (define-syntax match
   (syntax-rules ()
-    [(match e) 'non-exhaustive-match]
+    [(match e) (error (string-append (~a 'non-exhaustive-match) (~a e)))]
     [(match e ((t as ...) f) cs ...)
       (if (eq? 't (car e)) 
         (apply (lambda (as ...) f) (cdr e))
