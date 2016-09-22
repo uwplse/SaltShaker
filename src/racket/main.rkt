@@ -116,11 +116,12 @@
 
 (define (instr-eq-space)
   (displayln "Instr eq space")
-  (displayln (@ instrEqSpace no_prefix notEax (void))))
+  (displayln (@ instrEqSpace no_prefix andEaxEbx (void))))
 
 (define (verify-instr-eq)
   (displayln "Verify instr eq")
-  (define r (@ verifyInstrEq no_prefix notEax))
+  (define r (@ verifyInstrEq no_prefix andEaxEbx))
+  (displayln r)
   (displayln (pretty-result r)))
 
 (define command (vector-ref (current-command-line-arguments) 0))

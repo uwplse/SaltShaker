@@ -64,6 +64,10 @@ Definition empty_flags : fmap flag int1 := fun f => @Word.zero (bii 0).
 Definition symbolic_flags : Space (fmap flag int1) :=
   bind free (fun x => single (fun _ => x)).
 
+Check oracle_bits.
+
+Print oracle.
+
 Definition empty_oracle : oracle.
   refine {|
     oracle_bits := (fun a b => @Word.zero (bii a)); (* originally: zero_big_int) *)

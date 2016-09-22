@@ -26,6 +26,7 @@ for f in formula:
   if f != "":
     (dst, code) = re.match("^%([a-z0-9]+) *: (.+)$", f).groups()
     code = re.sub("%([a-z0-9]+)", "(state-\\1 s)", code)
+    code = re.sub("TMP_BOOL_[0-9]+", "#f", code)
     registers.append(dst)
     print "  (define new-" + dst + " " + code + ")"
 

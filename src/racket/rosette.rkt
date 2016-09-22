@@ -2,28 +2,23 @@
 
 (provide solve/evaluate/concretize)
 
-(define (concretize-solution m consts)
+(define (concretize-solution sol consts)
   (sat (for/hash ([c consts])
-         (match (m c)
-           [(constant _ (== integer?))
+         (match (sol c)
+           [(and (? constant?) (? integer?)) 
             (values c 0)]
-           [(constant _ (== boolean?))
+           [(and (? constant?) (? boolean?))
             (values c #f)]
-       ;   [(constant _ (? enum? t))
-       ;    (values c (enum-first t))]
-           [val (values c val)]))))
+           [(and (? constant?) (? (bitvector 32)))
+            (values c (bv 0 32))]
+           [(and (? constant?) (? (bitvector 1)))
+            (values c (bv 0 1))]
+           [val 
+            (values c val)]))))
 
 (define-syntax-rule (solve/evaluate/concretize expr)
   (let* ([out (void)]
          [sol (solve (set! out (expr (void))))])
     (if (unsat? sol) '(None)
-      `(Some ,(evaluate out sol)))))
-
-; (let ([v (solve (expr void))])
-;   (if (unsat? v) '(None)
-;     `(Some ,(void)))))
-
-;   (let ([v (solve/evaluate (expr void))])
-;     `(Some ,(evaluate v (concretize-solution (current-solution) (symbolics v)))))
-
+      `(Some ,(evaluate out (concretize-solution sol (symbolics out)))))))
 

@@ -23,4 +23,5 @@ racket/x86sem.rkt: coq/*.v racket/header.rkt
 racket/stoke:
 	mkdir racket/stoke
 	python/instr2racket.py "notl %eax" > racket/stoke/not-eax.rkt
+	python/instr2racket.py "andl %ebx, %eax" > racket/stoke/and-eax-ebx.rkt
 
