@@ -1,4 +1,4 @@
-main=/src/extract/racket/main.rkt
+main=/src/racket/main.rkt
 
 # $main construct-positive-space 32
 # echo 

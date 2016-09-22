@@ -99,7 +99,7 @@ RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make instal
 RUN cd /CPUmodels/x86model/Model; make -j4
 
 # test verification
-ADD src /src/extract
-RUN make -C /src/extract
+ADD src /src
+RUN make -C /src
 
-ENTRYPOINT /src/extract/test.sh
+ENTRYPOINT /src/test.sh
