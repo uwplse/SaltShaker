@@ -4,6 +4,7 @@ Running
 Checkout the project with:
 
     git clone --recursive https://github.com/uwplse/x86semantics
+    cd x86semantics; git clone git@github.com:konne88/stoke
 
 Build with: 
 
@@ -18,7 +19,7 @@ Development
 
 Run development environment console:
     
-    docker rm -f x86sem; docker run --name x86sem -v $(pwd)/src:/src/extract -v $(pwd)/CPUmodels:/CPUmodels --entrypoint /bin/bash -ti x86sem
+    docker rm -f x86sem; docker run --name x86sem -v $(pwd)/src:/src/extract -v $(pwd)/CPUmodels:/CPUmodels -v $(pwd)/stoke:/stoke --entrypoint /bin/bash -ti x86sem
 
 Build project in development environment console:
 

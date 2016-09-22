@@ -79,32 +79,19 @@ RUN apt-get update && \
       libiml-dev libgmp-dev libboost-regex-dev && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
-# install stoke
-RUN git clone https://github.com/StanfordPL/stoke.git && \
-    cd stoke && git checkout feature-strata && \
-    ./configure.sh && make
-ENV PATH /stoke/bin:$PATH
-
-# install sbt
-RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 && \
-    apt-get update && \
-    apt-get install -y sbt
-
-# install strata
-RUN git clone https://github.com/StanfordPL/strata.git && \
-    git clone https://github.com/StanfordPL/strata-data.git && \
-    rmdir /strata/stoke && ln -s /stoke /strata/stoke && \
-    cd strata && make
-
-# test strata / stoke
-RUN stoke debug circuit --strata_path "/strata-data/circuits" --code "addss %xmm0, %xmm1"
-
 # enable rosette debugging
 RUN cd rosette && \
     sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
     raco pkg remove rosette && \
     raco pkg install
+
+# install stoke
+ENV PATH /stoke/bin:$PATH
+ADD stoke /stoke
+RUN cd stoke && ./configure.sh && make
+
+# test stoke
+RUN stoke debug formula --smtlib_format --code "addl %eax, %edx"
 
 # install x86 semantics
 ADD CPUmodels /CPUmodels
