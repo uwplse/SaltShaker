@@ -3,7 +3,7 @@ Running
 
 Checkout the project with:
 
-    git clone --recursive https://github.com/uwplse/x86semantics
+    git clone --recursive git@github.com:uwplse/x86semantics
     cd x86semantics; git clone git@github.com:konne88/stoke
 
 Build with: 
