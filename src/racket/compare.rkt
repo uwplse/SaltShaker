@@ -1,7 +1,11 @@
 #!/usr/bin/env racket
 #lang s-exp rosette
 
-(require "x86sem.rkt" "rosette.rkt" "word.rkt" "extraction.rkt" "state.rkt")
+(require "state.rkt")
+
+(define-namespace-anchor a)
+
+(require "x86sem.rkt" "rosette.rkt" "word.rkt" "extraction.rkt")
 
 (define (pretty-bv64 x)
   (build-string 64 (lambda (i) (if (bveq (bv 1 1) (extract (- 63 i) (- 63 i) x)) #\1 #\0))))
@@ -40,28 +44,49 @@
     ((Some r) 
       (match r  ((Pair xy z)
       (match xy ((Pair x y)
-        (match z
-    	  ((None) "error occured in rocksalt semantics")
-          ((Some z)
-            (string-append (pretty-state "original" x)
-        	           (pretty-state "stoke" y)
-                           (pretty-state "rocksalt" z)))))))))))
+        (match y ((None) "error occured in stoke semantics") ((Some y)
+        (match z ((None) "error occured in rocksalt semantics") ((Some z)
+          (string-append (pretty-state "original" x)
+                         (pretty-state "stoke" y)
+                         (pretty-state "rocksalt" z)))))))))))))
 
-(define (lookup-instr name)
-  (if (equal? name "andl %ebx, %eax") andEaxEbx
-  (if (equal? name "notl %eax") notEax
-  (error "Invalid Instruction"))))
+(define (rocksalt-operator op)
+  (define name (second (regexp-match #rx"^([a-z]+)l$" op)))
+  `(,(string->symbol (string-upcase name)) (True)))
 
-(define name (vector-ref (current-command-line-arguments) 0))
-(define instr (lookup-instr name))
+(define (rocksalt-operand op)
+  (define reg (second (regexp-match #rx"^%([a-z0-9]+)$" op)))
+  `(Reg_op (,(string->symbol (string-upcase reg)))))
 
-(displayln (string-append "Verifying instruction: " name))
+(define (rocksalt-instr instr)
+  (define is (regexp-split #rx"[ ,]+" instr))
+  (append (rocksalt-operator (car is)) 
+          (reverse (map rocksalt-operand (cdr is)))))
 
-(displayln "Counterexample Space:")
-(displayln (@ instrEqSpace no_prefix andEaxEbx (void)))
+(define (run-rocksalt instr)
+  (@ runRocksalt no_prefix (rocksalt-instr instr)))
+
+(define (run-stoke instr)
+  (define file (make-temporary-file))
+  (system* "/src/python/instr2racket.py" instr file)
+  (define ns (namespace-anchor->namespace a))
+  (parameterize ([current-namespace ns])
+    (load file)
+    (eval 'run)))
+
+(define instr (vector-ref (current-command-line-arguments) 0))
+
+(displayln (string-append "Verifying instruction: " instr "\n"))
+
+(define stoke (run-stoke instr))
+(define rocksalt (run-rocksalt instr))
+
 (displayln "")
-
+(displayln "Counterexample Space:")
+(displayln (@ instrEqSpace stoke rocksalt (void)))
+(displayln "")
+  
 (displayln "Verification Outcome:")
-(define r (@ verifyInstrEq no_prefix andEaxEbx))
+(define r (@ verifyInstrEq stoke rocksalt))
 (displayln (pretty-result r))
-
+ 

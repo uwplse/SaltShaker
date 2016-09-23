@@ -7,6 +7,5 @@ src/**/*.glob
 src/**/*.v.d
 src/**/*.vo
 src/**/compiled
-src/racket/stoke/
 src/racket/x86sem.rkt*
 

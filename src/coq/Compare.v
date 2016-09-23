@@ -41,8 +41,14 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
-Parameter runStoke : prefix -> instr -> SharedState -> SharedState.
+(*
+Parameter Instruction : Type.
+Extract Constant Instruction => "__".
+Parameter toRocksaltInstruction : Instruction -> (prefix * instr).
+Extract Constant toRocksaltInstruction => "rocksalt-instruction".
+Parameter runStoke : Instruction -> SharedState -> SharedState.
 Extract Constant runStoke => "run-stoke".
+*)
 
 Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState.
   refine (let r := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
@@ -52,31 +58,25 @@ Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState
   end).
 Defined.
 
-Definition instrEq (p:prefix) (i:instr) (s:SharedState) : option (SharedState * SharedState * option SharedState).
-  refine (let rs := runRocksalt p i s in _).
-  refine (let ss := runStoke p i s in _).
-  refine (let error := Some (s, ss, rs) in _).
-  refine (match rs with 
-  | None =>  error
-  | Some rs' => _ 
-  end).
-  refine (if shared_state_eq rs' ss 
-          then None
-          else error).
-Defined.  
-
-Definition instrEqSpace (p:prefix) (i:instr) : Space (SharedState * SharedState * option SharedState).
-  refine (bind symbolicSharedState (fun s => _)).
-  refine (match instrEq p i s with Some r => single r | None => empty end).
+Definition instrEq (run0 run1 : SharedState -> option SharedState) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
+  refine (let s0 := run0 s in _).
+  refine (let s1 := run1 s in _).
+  refine (let error := Some (s, s0, s1) in _).
+  refine (match s0 with None =>  error | Some s0' => _ end).
+  refine (match s1 with None =>  error | Some s1' => _ end).
+  refine (if shared_state_eq s0' s1' then None else error).
 Defined.
 
-Definition verifyInstrEq (p:prefix) (i:instr) : option (SharedState * SharedState * option SharedState).
-  refine (search (instrEqSpace p i)).
+Definition instrEqSpace (run0 run1 : SharedState -> option SharedState) : Space (SharedState * option SharedState * option SharedState).
+  refine (bind symbolicSharedState (fun s => _)).
+  refine (match instrEq run0 run1 s with Some r => single r | None => empty end).
+Defined.
+
+Definition verifyInstrEq (run0 run1 : SharedState -> option SharedState) : option (SharedState * option SharedState * option SharedState).
+  refine (search (instrEqSpace run0 run1)).
 Defined.
 
 Definition andEaxEbx : instr := AND true (Reg_op EAX) (Reg_op EBX).
-
 Definition notEax : instr := NOT true (Reg_op EAX).
 
-Extraction "x86sem" instrEq instrEqSpace verifyInstrEq andEaxEbx notEax no_prefix.
-
+Extraction "x86sem" instrEq instrEqSpace verifyInstrEq andEaxEbx runRocksalt notEax no_prefix.

@@ -6,6 +6,7 @@ import re
 import sys
 
 instr = sys.argv[1] # try: "addl %eax, %edx"
+file_ = sys.argv[2] # try: "out.rkt"
 
 stokeout = subprocess.check_output(["stoke", "debug", "formula", "--smtlib_format", "--show_unchanged", "--code", instr]).split('\n')
 
@@ -13,14 +14,11 @@ formula = list(itertools.dropwhile(lambda l: l != "Formula:", stokeout))[2:-5]
 
 registers = []
 
-print "#lang s-exp rosette"
-print
-print "; This file was automatically generated; do not edit!"
-print
-print "(require \"../state.rkt\")"
-print "(provide run)"
-print
-print "(define (run s)"
+output = """
+; This file was automatically generated; do not edit!"
+
+(define (run s)
+"""
 
 for f in formula:
   if f != "":
@@ -28,8 +26,12 @@ for f in formula:
     code = re.sub("%([a-z0-9]+)", "(state-\\1 s)", code)
     code = re.sub("TMP_BOOL_[0-9]+", "#f", code)
     registers.append(dst)
-    print "  (define new-" + dst + " " + code + ")"
+    output += "  (define new-%s %s)" % (dst, code)
 
-print
-print "  (state " + " ".join(["new-"+r for r in registers]) + "))"
+output += "  (state %s))" % " ".join(["new-"+r for r in registers])
 
+f = open(file_, "w")
+f.write(output)
+f.close()
+
+print "stoke semantics written to %s" % file_

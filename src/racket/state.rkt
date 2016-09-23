@@ -20,11 +20,11 @@
   ymm0 ymm1 ymm2 ymm3 ymm4 ymm5 ymm6 ymm7 ymm8 ymm9 
   ymm10 ymm11 ymm12 ymm13 ymm14 ymm15 
   cf pf af zf sf of)
-  `(SharedState ,(bit64->bit32 rax) ,(bit64->bit32 rcx) ,(bit64->bit32 rdx)
-                ,(bit64->bit32 rbx) ,(bit64->bit32 rsp) ,(bit64->bit32 rbp)
-                ,(bit64->bit32 rsi) ,(bit64->bit32 rdi) 
-                ,(bool->bit cf) ,(bool->bit pf) ,(bool->bit af) 
-                ,(bool->bit zf) ,(bool->bit sf) ,(bool->bit of)))
+  `(Some (SharedState ,(bit64->bit32 rax) ,(bit64->bit32 rcx) ,(bit64->bit32 rdx)
+                      ,(bit64->bit32 rbx) ,(bit64->bit32 rsp) ,(bit64->bit32 rbp)
+                      ,(bit64->bit32 rsi) ,(bit64->bit32 rdi) 
+                      ,(bool->bit cf) ,(bool->bit pf) ,(bool->bit af) 
+                      ,(bool->bit zf) ,(bool->bit sf) ,(bool->bit of))))
 
 (define (state-rax s) (bit32->bit64 (list-ref s 1)))
 (define (state-rcx s) (bit32->bit64 (list-ref s 2)))
