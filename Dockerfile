@@ -80,10 +80,11 @@ RUN apt-get update && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
 # enable rosette debugging
-# RUN cd rosette && \
-#     sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
-#     raco pkg remove rosette && \
-#     raco pkg install
+RUN cd rosette && \
+#   sed -i "s/;(printf/(printf/g" rosette/base/core/effects.rkt && \
+#   sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
+    raco pkg remove rosette && \
+    raco pkg install
 
 # install stoke
 ENV PATH /stoke/bin:$PATH

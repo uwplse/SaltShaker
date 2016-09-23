@@ -7,8 +7,19 @@
 
 (require "x86sem.rkt" "rosette.rkt" "word.rkt" "extraction.rkt")
 
-(define (pretty-bv64 x)
-  (build-string 64 (lambda (i) (if (bveq (bv 1 1) (extract (- 63 i) (- 63 i) x)) #\1 #\0))))
+(define (pretty-bits i j x)
+  (build-string (+ (- i j) 1) (lambda (k)
+    (if (bveq (bv 1 1) (extract (- i k) (- i k) x))
+      #\1 #\0))))
+
+(define (pretty-bv32 x)
+  (string-append
+    (pretty-bits 31 24 x) " "
+    (pretty-bits 23 16 x) " "
+    (pretty-bits 15 8 x) " "
+    (pretty-bits 7 0 x) "   "
+    (~a (bitvector->natural x) #:align 'right #:min-width 15)
+    (~a (bitvector->integer (extract 31 0 x)) #:align 'right #:min-width 15)))
 
 (define (pretty-bool b)
   (if b "1" "0"))
@@ -17,14 +28,14 @@
 
 (define (state->map s)
   (make-immutable-hash `(
-    (rax . ,(pretty-bv64 (state-rax s)))
-    (rcx . ,(pretty-bv64 (state-rcx s)))
-    (rdx . ,(pretty-bv64 (state-rdx s)))
-    (rbx . ,(pretty-bv64 (state-rbx s)))
-    (rsp . ,(pretty-bv64 (state-rsp s)))
-    (rbp . ,(pretty-bv64 (state-rbp s)))
-    (rsi . ,(pretty-bv64 (state-rsi s)))
-    (rdi . ,(pretty-bv64 (state-rdi s)))
+    (rax . ,(pretty-bv32 (state-rax s)))
+    (rcx . ,(pretty-bv32 (state-rcx s)))
+    (rdx . ,(pretty-bv32 (state-rdx s)))
+    (rbx . ,(pretty-bv32 (state-rbx s)))
+    (rsp . ,(pretty-bv32 (state-rsp s)))
+    (rbp . ,(pretty-bv32 (state-rbp s)))
+    (rsi . ,(pretty-bv32 (state-rsi s)))
+    (rdi . ,(pretty-bv32 (state-rdi s)))
     (cf . ,(pretty-bool (state-cf s)))
     (pf . ,(pretty-bool (state-pf s)))
     (af . ,(pretty-bool (state-af s)))
@@ -76,17 +87,23 @@
 
 (define instr (vector-ref (current-command-line-arguments) 0))
 
-(displayln (string-append "Verifying instruction: " instr "\n"))
+(displayln (string-append "Verifying instruction: " instr))
+(displayln "======================================================\n")
 
 (define stoke (run-stoke instr))
+(displayln (rocksalt-instr instr))
 (define rocksalt (run-rocksalt instr))
 
 (displayln "")
-(displayln "Counterexample Space:")
-(displayln (@ instrEqSpace stoke rocksalt (void)))
+(displayln "Testing Outcome")
+(define t (@ testInstrEq stoke rocksalt))
+(displayln (pretty-result t))
 (displayln "")
-  
 (displayln "Verification Outcome:")
 (define r (@ verifyInstrEq stoke rocksalt))
 (displayln (pretty-result r))
+(displayln "")
+(displayln "Counterexample Space:")
+(displayln (@ spaceInstrEq stoke rocksalt (void)))
+(displayln "")
  

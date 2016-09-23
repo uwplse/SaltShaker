@@ -26,7 +26,7 @@ for f in formula:
     code = re.sub("%([a-z0-9]+)", "(state-\\1 s)", code)
     code = re.sub("TMP_BOOL_[0-9]+", "#f", code)
     registers.append(dst)
-    output += "  (define new-%s %s)" % (dst, code)
+    output += "  (define new-%s %s)\n" % (dst, code)
 
 output += "  (state %s))" % " ".join(["new-"+r for r in registers])
 

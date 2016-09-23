@@ -41,15 +41,6 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
-(*
-Parameter Instruction : Type.
-Extract Constant Instruction => "__".
-Parameter toRocksaltInstruction : Instruction -> (prefix * instr).
-Extract Constant toRocksaltInstruction => "rocksalt-instruction".
-Parameter runStoke : Instruction -> SharedState -> SharedState.
-Extract Constant runStoke => "run-stoke".
-*)
-
 Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState.
   refine (let r := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
   refine (match r with 
@@ -67,16 +58,26 @@ Definition instrEq (run0 run1 : SharedState -> option SharedState) (s:SharedStat
   refine (if shared_state_eq s0' s1' then None else error).
 Defined.
 
-Definition instrEqSpace (run0 run1 : SharedState -> option SharedState) : Space (SharedState * option SharedState * option SharedState).
+Definition testSharedState : SharedState := {| 
+  eax := repr 129786124931; ecx := repr 456123421348; 
+  edx := repr 982483124977; ebx := repr 123497821934; 
+  esp := repr 321497821397; ebp := repr 194378923143;
+  esi := repr 102394758154; edi := repr 195263126789;
+  cf := repr 1; pf := repr 0; af := repr 1;
+  zf := repr 0; sf := repr 1; of := repr 0
+|}.
+
+Definition testInstrEq (run0 run1 : SharedState -> option SharedState) : option (SharedState * option SharedState * option SharedState).
+  exact (instrEq run0 run1 testSharedState).
+Defined.
+
+Definition spaceInstrEq (run0 run1 : SharedState -> option SharedState) : Space (SharedState * option SharedState * option SharedState).
   refine (bind symbolicSharedState (fun s => _)).
   refine (match instrEq run0 run1 s with Some r => single r | None => empty end).
 Defined.
 
 Definition verifyInstrEq (run0 run1 : SharedState -> option SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (search (instrEqSpace run0 run1)).
+  refine (search (spaceInstrEq run0 run1)).
 Defined.
 
-Definition andEaxEbx : instr := AND true (Reg_op EAX) (Reg_op EBX).
-Definition notEax : instr := NOT true (Reg_op EAX).
-
-Extraction "x86sem" instrEq instrEqSpace verifyInstrEq andEaxEbx runRocksalt notEax no_prefix.
+Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq runRocksalt no_prefix.

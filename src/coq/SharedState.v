@@ -195,5 +195,6 @@ Definition shared_state_eq (s0 s1:SharedState) : bool.
   refine (Word.eq (af s0) (af s1) && _).
   refine (Word.eq (zf s0) (zf s1) && _).
   refine (Word.eq (sf s0) (sf s1) && _).
-  refine (Word.eq (of s0) (of s1)).
+  refine (Word.eq (of s0) (of s1) && _).
+  exact true.
 Defined.

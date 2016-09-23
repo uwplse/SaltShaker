@@ -1,6 +1,6 @@
-.PHONY: main clean
+.PHONY: compare clean
 
-racket/compare.rkt: racket/x86sem.rkt
+compare: racket/* racket/x86sem.rkt
 	raco make racket/compare.rkt
 	chmod +x racket/compare.rkt 
 

@@ -4,7 +4,7 @@
 
 (provide word-free word-mkint word-zero word-one word-mone 
          word-eq word-lt word-ltu
-         word-add 
+         word-add word-sub word-mul word-divu word-divs
          word-unsigned-cast
          word-and word-or word-xor word-shl word-shr word-shru
          unary->number number->unary positive->number z->number)
@@ -46,6 +46,18 @@
 
 (define word-add (lambdas (_ x y)
   (bvadd x y)))
+
+(define word-sub (lambdas (_ x y)
+  (bvsub x y)))
+
+(define word-mul (lambdas (_ x y)
+  (bvmul x y)))
+
+(define word-divu (lambdas (_ x y)
+  (bvudiv x y)))
+
+(define word-divs (lambdas (_ x y)
+  (bvsdiv x y)))
 
 (define word-eq (lambdas (_ x y)
   (if (bveq x y) '(True) '(False))))
