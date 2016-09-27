@@ -1,4 +1,4 @@
-compare=/src/racket/compare.rkt
+compare=/x86sem/src/racket/compare.rkt
 
 # Broken only for parity
 $compare "notl %ebx"

@@ -2,6 +2,7 @@ Require Import Bits.
 Import Word.
 Require Import SpaceSearch.
 Require Import Rosette.
+Require Import Full.
 
 Extract Constant Word.repr => "word-mkint".
 Extract Constant Word.zero => "word-zero".
@@ -31,13 +32,14 @@ Extract Constant Word.shru => "word-shru".
 Extract Constant Word.ror => "(lambdas (_) (error 'ror))".
 Extract Constant Word.rol => "(lambdas (_) (error 'rol))".
 
-Parameter freeIntSpace : forall n, Space (int n).
-Axiom freeIntSpaceOk : forall n (a : int n), contains a (freeIntSpace n). 
-Extract Constant freeIntSpace => "word-free".
+Parameter fullIntSpace : forall n, Space (int n).
+Axiom fullIntSpaceOk : forall n, ⟦ fullIntSpace n ⟧ = Full_set (int n).
 
-Instance freeInt n : @Free rosette (int n) := {| 
-  free := freeIntSpace n; 
-  freeOk := freeIntSpaceOk n 
+Extract Constant fullIntSpace => "word-free".
+
+Instance fullInt n : @Full rosette (int n) := {| 
+  full := fullIntSpace n; 
+  denoteFullOk := fullIntSpaceOk n
 |}.
 
 Notation "# n" := (mkint _ n _) (at level 45).

@@ -13,12 +13,10 @@ Import Pos.
 Import BinNums.
 Import Word.
 Require Import SpaceSearch.
+Require Import Full.
 Require Import Rosette.
 Require Import ExtractWord.
 Require Import InitState.
-
-Arguments mone {_}.
-Arguments free {_ _ _}.
 
 (*
 Shared state between Rocksalt and Stoke.
@@ -73,20 +71,20 @@ Record SharedState := sharedState {
 }.
 
 Definition symbolicSharedState : Space SharedState.
-  refine (bind free (fun eax' => _)).
-  refine (bind free (fun ecx' => _)).
-  refine (bind free (fun edx' => _)).
-  refine (bind free (fun ebx' => _)).
-  refine (bind free (fun esp' => _)).
-  refine (bind free (fun ebp' => _)).
-  refine (bind free (fun esi' => _)).
-  refine (bind free (fun edi' => _)).
-  refine (bind free (fun cf' => _)).
-  refine (bind free (fun pf' => _)).
-  refine (bind free (fun af' => _)).
-  refine (bind free (fun zf' => _)).
-  refine (bind free (fun sf' => _)).
-  refine (bind free (fun of' => _)). 
+  refine (bind full (fun eax' => _)).
+  refine (bind full (fun ecx' => _)).
+  refine (bind full (fun edx' => _)).
+  refine (bind full (fun ebx' => _)).
+  refine (bind full (fun esp' => _)).
+  refine (bind full (fun ebp' => _)).
+  refine (bind full (fun esi' => _)).
+  refine (bind full (fun edi' => _)).
+  refine (bind full (fun cf' => _)).
+  refine (bind full (fun pf' => _)).
+  refine (bind full (fun af' => _)).
+  refine (bind full (fun zf' => _)).
+  refine (bind full (fun sf' => _)).
+  refine (bind full (fun of' => _)). 
   refine (single {| 
     eax := eax';
     ecx := ecx'; 
@@ -192,7 +190,7 @@ Definition shared_state_eq (s0 s1:SharedState) : bool.
   refine (Word.eq (edi s0) (edi s1) && _).
   refine (Word.eq (cf s0) (cf s1) && _).
   refine (Word.eq (pf s0) (pf s1) && _).
-  refine (Word.eq (af s0) (af s1) && _).
+(*  refine (Word.eq (af s0) (af s1) && _). *)
   refine (Word.eq (zf s0) (zf s1) && _).
   refine (Word.eq (sf s0) (sf s1) && _).
   refine (Word.eq (of s0) (of s1) && _).

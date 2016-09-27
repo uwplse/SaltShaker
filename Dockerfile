@@ -42,9 +42,9 @@ RUN mkdir smten && cd smten && \
     tar -xf smten-minisat-4.1.0.0.tar.gz && cd smten-minisat-4.1.0.0 && cabal install && cd -
 
 # install coq
-RUN curl -O https://coq.inria.fr/distrib/8.4pl3/files/coq-8.4pl3.tar.gz && \
-    tar -xvf coq-8.4pl3.tar.gz && \
-    cd coq-8.4pl3; ./configure \
+RUN curl -O https://coq.inria.fr/distrib/8.5pl2/files/coq-8.5pl2.tar.gz && \
+    tar -xvf coq-*.tar.gz && \
+    cd coq-*; ./configure \
                      -bindir /usr/local/bin \
                      -libdir /usr/local/lib/coq \
                      -configdir /etc/xdg/coq \
@@ -78,6 +78,7 @@ RUN apt-get update && \
       libghc-regex-tdfa-dev libghc-split-dev libjsoncpp-dev python subversion \
       libiml-dev libgmp-dev libboost-regex-dev && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+ENV PATH /x86sem/lib/stoke/bin:$PATH
 
 # enable rosette debugging
 RUN cd rosette && \
@@ -86,21 +87,9 @@ RUN cd rosette && \
     raco pkg remove rosette && \
     raco pkg install
 
-# install stoke
-ENV PATH /stoke/bin:$PATH
-ADD stoke /stoke
-RUN cd stoke && ./configure.sh && make
 
-# test stoke
-RUN stoke debug formula --smtlib_format --code "addl %eax, %edx"
+# install
+# ADD . /x86sem
+# RUN make -C /x86sem
 
-# install x86 semantics
-ADD CPUmodels /CPUmodels
-RUN cd /CPUmodels/x86model/Model/flocq-2.1.0; ./configure; make -j4; make install
-RUN cd /CPUmodels/x86model/Model; make -j4
-
-# test verification
-ADD src /src
-RUN make -C /src
-
-ENTRYPOINT /src/test.sh
+# ENTRYPOINT /src/test.sh

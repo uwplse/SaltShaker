@@ -79,7 +79,7 @@
 
 (define (run-stoke instr)
   (define file (make-temporary-file))
-  (system* "/src/python/instr2racket.py" instr file)
+  (system* "/x86sem/src/python/instr2racket.py" instr file)
   (define ns (namespace-anchor->namespace a))
   (parameterize ([current-namespace ns])
     (load file)
