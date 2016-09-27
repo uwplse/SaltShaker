@@ -77,8 +77,9 @@ RUN cd rosette && \
     raco pkg remove rosette && \
     raco pkg install
 
-# install
-# ADD . /x86sem
-# RUN make -C /x86sem
+ENTRYPOINT /x86sem/src/test.sh
 
-# ENTRYPOINT /src/test.sh
+# install
+ADD . /x86sem
+RUN make -C /x86sem
+
