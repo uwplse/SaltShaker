@@ -4,7 +4,6 @@ Running
 Checkout the project with:
 
     git clone --recursive git@github.com:uwplse/x86semantics
-    cd x86semantics/lib; git clone git@github.com:konne88/stoke
 
 Build with: 
 
@@ -27,15 +26,15 @@ If you like the `fish` shell (i do) run:
 
 Build project in development environment console:
     
-    make -C /src
+    make -C /x86sem
 
 Connect emacs to development environment locally:
 
-    emacs /docker:x86sem:/src/coq/Compare.v
+    emacs /docker:x86sem:/x86sem/src/coq/Compare.v
 
 Connect emacs to development environment remotely:
 
-    emacs "/ssh:user@machine|docker:x86sem:/src/coq/Compare.v"
+    emacs "/ssh:user@machine|docker:x86sem:/x86sem/src/coq/Compare.v"
 
 Make sure your emacs has `ProofGeneral` and `docker-tramp` installed, and
 `enable-remote-dir-locals` must be set.
