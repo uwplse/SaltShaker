@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 compare=/x86sem/src/racket/compare.rkt
 
 # Broken only for parity

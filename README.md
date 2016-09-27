@@ -19,7 +19,11 @@ Development
 
 Run development environment console:
     
-    docker rm -f x86sem; docker run --name x86sem -v $(pwd):/x86sem --entrypoint /bin/bash -ti x86sem
+    docker rm -f x86sem; docker run --name x86sem --entrypoint /bin/bash -v $(pwd):/x86sem -ti x86sem
+
+If you like the `fish` shell (i do) run:
+
+    docker rm -f x86sem; docker run --name x86sem --entrypoint /usr/bin/fish -v (pwd):/x86sem -ti x86sem
 
 Build project in development environment console:
     

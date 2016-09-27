@@ -29,8 +29,13 @@ spacesearch:
 	make -C lib/SpaceSearch
 
 clean:
-	make -C coq clean
+	make -C src/coq clean || true
 	rm -f src/coq/Makefile
 	rm -f src/coq/x86sem.scm src/racket/x86sem.rkt
 	rm -rf src/racket/compiled 
 
+clean-all: clean
+	make -C lib/SpaceSearch clean
+	make -C lib/stoke clean || true
+	make -C lib/CPUmodels/x86model/Model clean
+	cd lib/CPUmodels/x86model/Model/flocq-2.5.1; ./remake clean

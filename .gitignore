@@ -6,6 +6,7 @@ src/coq/Makefile
 src/**/*.glob
 src/**/*.v.d
 src/**/*.vo
+src/**/*.aux
 src/**/compiled
 src/racket/x86sem.rkt*
 
