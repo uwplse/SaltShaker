@@ -41,19 +41,34 @@ Definition no_prefix : prefix := mkPrefix None None false false.
 Goal False.
   refine (let p := no_prefix in _).
   refine (let i : instr := ADD true (Reg_op EAX) (Reg_op EBX) in _).
-  refine (let r := [set_loc_rtl
-            (arith_rtl_exp xor_op (imm_rtl_exp (repr 1))
-               (arith_rtl_exp xor_op
-                  (test_rtl_exp lt_op (imm_rtl_exp (repr 0))
-                     (get_loc_rtl_exp (reg_loc EAX)))
-                  (test_rtl_exp lt_op (imm_rtl_exp (repr 0))
-                     (get_loc_rtl_exp (reg_loc EBX))))) (flag_loc OF)] in _).
-
   refine (let r := instr_to_rtl p i in _).
   unfold instr_to_rtl, runConv in r; simpl in r.
   refine (let s : SharedState := {| 
-    eax := repr 4194272; ecx := repr 0; 
-    edx := repr 0; ebx := repr 2147483664;
+    eax := one;    ecx := repr 0; 
+    edx := repr 0; ebx := mone;
+    esp := repr 0; ebp := repr 0;
+    esi := repr 0; edi := repr 0;
+    cf := repr 0; pf := repr 0; af := repr 0;
+    zf := repr 0; sf := repr 0; of := repr 0
+  |} in _).
+  refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
+  refine (let gpr := gp_regs (core (rtl_mach_state (snd s'))) in _).
+  refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
+  Compute (gpr EAX).
+  Compute (fgs ZF).
+Abort.
+
+
+
+(* Debug an instruction in here: *)
+Goal False.
+  refine (let p := no_prefix in _).
+  refine (let i : instr := SUB true (Reg_op EAX) (Reg_op EBX) in _).
+  refine (let r := instr_to_rtl p i in _).
+  unfold instr_to_rtl, runConv in r; simpl in r.
+  refine (let s : SharedState := {| 
+    eax := repr 2147483645; ecx := repr 0; 
+    edx := repr 0; ebx := repr 2147483648;
     esp := repr 0; ebp := repr 0;
     esi := repr 0; edi := repr 0;
     cf := repr 0; pf := repr 0; af := repr 0;
@@ -74,13 +89,18 @@ Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState
   end).
 Defined.
 
-Definition instrEq (run0 run1 : SharedState -> option SharedState) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
+Section InstrEq.
+
+Variable eq:SharedState -> SharedState -> bool.
+Variable run0 run1 : SharedState -> option SharedState.
+
+Definition instrEq (s:SharedState) : option (SharedState * option SharedState * option SharedState).
   refine (let s0 := run0 s in _).
   refine (let s1 := run1 s in _).
   refine (let error := Some (s, s0, s1) in _).
   refine (match s0 with None =>  error | Some s0' => _ end).
   refine (match s1 with None =>  error | Some s1' => _ end).
-  refine (if shared_state_eq s0' s1' then None else error).
+  refine (if eq s0' s1' then None else error).
 Defined.
 
 Definition testSharedState : SharedState := {| 
@@ -92,20 +112,24 @@ Definition testSharedState : SharedState := {|
   zf := repr 0; sf := repr 1; of := repr 0
 |}.
 
-Definition testInstrEq (run0 run1 : SharedState -> option SharedState) : option (SharedState * option SharedState * option SharedState).
-  exact (instrEq run0 run1 testSharedState).
+Definition testInstrEq : option (SharedState * option SharedState * option SharedState).
+  exact (instrEq testSharedState).
 Defined.
 
-Definition spaceInstrEq (run0 run1 : SharedState -> option SharedState) : Space (SharedState * option SharedState * option SharedState).
+Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
   refine (bind symbolicSharedState (fun s => _)).
-  refine (match instrEq run0 run1 s with Some r => single r | None => empty end).
+  refine (match instrEq s with Some r => single r | None => empty end).
 Defined.
 
 Definition listToOption {A} (l:list A) : option A :=
   match l with [] => None | a::_ => Some a end.
 
-Definition verifyInstrEq (run0 run1 : SharedState -> option SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (listToOption (search (spaceInstrEq run0 run1))).
+Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
+  refine (listToOption (search spaceInstrEq)).
 Defined.
 
-Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq runRocksalt no_prefix.
+End InstrEq.
+
+Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
+  runRocksalt no_prefix 
+  shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf af zf sf of.

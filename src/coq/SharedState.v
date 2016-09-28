@@ -179,20 +179,8 @@ Definition rtl_state_shared (s:rtl_state) : SharedState.
   |}).
 Defined.
 
-Definition shared_state_eq (s0 s1:SharedState) : bool.
-  refine (Word.eq (eax s0) (eax s1) && _).
-  refine (Word.eq (ecx s0) (ecx s1) && _).
-  refine (Word.eq (edx s0) (edx s1) && _).
-  refine (Word.eq (ebx s0) (ebx s1) && _).
-  refine (Word.eq (esp s0) (esp s1) && _).
-  refine (Word.eq (ebp s0) (ebp s1) && _).
-  refine (Word.eq (esi s0) (esi s1) && _).
-  refine (Word.eq (edi s0) (edi s1) && _).
-  refine (Word.eq (cf s0) (cf s1) && _).
-  refine (Word.eq (pf s0) (pf s1) && _).
-(*  refine (Word.eq (af s0) (af s1) && _). *)
-  refine (Word.eq (zf s0) (zf s1) && _).
-  refine (Word.eq (sf s0) (sf s1) && _).
-  refine (Word.eq (of s0) (of s1) && _).
-  exact true.
+Definition shared_state_eq (l:list {n : nat & SharedState -> int n}) (s0 s1:SharedState) : bool.
+  refine (forallb (fun nf => Word.eq _ _) l).
+  refine ((projT2 nf) s0).
+  refine ((projT2 nf) s1).
 Defined.

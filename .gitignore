@@ -9,4 +9,5 @@ src/**/*.vo
 src/**/*.aux
 src/**/compiled
 src/racket/x86sem.rkt*
-
+src/racket/extraction.rkt
+src/racket/rosette.rkt

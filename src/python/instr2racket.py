@@ -8,7 +8,10 @@ import sys
 instr = sys.argv[1] # try: "addl %eax, %edx"
 file_ = sys.argv[2] # try: "out.rkt"
 
-stokeout = subprocess.check_output(["stoke", "debug", "formula", "--smtlib_format", "--show_unchanged", "--code", instr]).split('\n')
+stokeout = subprocess.check_output(["stoke", "debug", "formula", 
+  "--smtlib_format", "--show_unchanged", "--code", instr,
+  "--di", "{ %rax %rcx %rdx %rsi %rdi %r8 %r9 %xmm0 %xmm1 %xmm2 %xmm3 %xmm4 %xmm5 %xmm6 %xmm7 }",
+  "--lo", "{ %rax %rdx %xmm0 %xmm1 }"]).split('\n')
 
 formula = list(itertools.dropwhile(lambda l: l != "Formula:", stokeout))[2:-5]
 
@@ -33,5 +36,3 @@ output += "  (state %s))" % " ".join(["new-"+r for r in registers])
 f = open(file_, "w")
 f.write(output)
 f.close()
-
-print "stoke semantics written to %s" % file_

@@ -5,7 +5,9 @@
 
 (require "extraction.rkt" "rosette.rkt" "word.rkt")
 
-(provide instrEq testInstrEq spaceInstrEq verifyInstrEq runRocksalt no_prefix)
+(provide instrEq testInstrEq spaceInstrEq verifyInstrEq 
+         runRocksalt no_prefix 
+         shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf af zf sf of)
 
 ; if anything is below this line, this file was automatically 
 ; generated; do not edit it!

@@ -8,7 +8,7 @@ compare: src/racket/* src/racket/x86sem.rkt stoke lib/SpaceSearch/src/racket/*
 src/racket/x86sem.rkt: src/coq/*.v src/racket/header.rkt spacesearch rocksalt
 	cd src/coq; find . -name '*.v' -exec coq_makefile \
 	                   -R . Main \
-	                   -R ../../lib/CPUmodels/x86model/Model x86model \
+	                   -R ../../lib/CPUmodels/x86model/Model X86Model \
 	                   -R ../../lib/SpaceSearch/src/coq SpaceSearch \
 	                   -o Makefile {} +
 	make -j4 -C src/coq
@@ -22,8 +22,8 @@ stoke:
 	cd lib/stoke && ./configure.sh && make
 
 rocksalt:
-	cd lib/CPUmodels/x86model/Model/flocq-2.5.1; ./configure; ./remake -j4; ./remake install
-	cd lib/CPUmodels/x86model/Model; make -j4
+	cd lib/CPUmodels/x86model/Model/flocq-2.5.1; ./configure; ./remake; ./remake install
+	cd lib/CPUmodels/x86model/Model; make
 
 spacesearch:
 	make -C lib/SpaceSearch
