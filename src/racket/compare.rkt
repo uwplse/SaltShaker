@@ -79,18 +79,32 @@
     (match z ((None) "rocksalt error") ((Some z)
       (string-append (diff-state y z)))))))))))
 
+(define (needs-w? op)
+  (not (member op (list "bsfl" "bsrl" "btl" "nopl"))))
+
 (define (rocksalt-operator op)
-  (define name (second (regexp-match #rx"^([a-z]+)l$" op)))
-  `(,(string->symbol (string-upcase name)) (True)))
+  (define name (string->symbol (string-upcase (second (regexp-match #rx"^([a-z]+)l$" op)))))
+  (if (needs-w? op) `(,name (True)) `(,name)))
 
 (define (rocksalt-operand op)
   (define reg (second (regexp-match #rx"^%([a-z0-9]+)$" op)))
   `(Reg_op (,(string->symbol (string-upcase reg)))))
 
+(define (generic-rocksalt-instr op args)
+  (append (rocksalt-operator op) 
+          (reverse (map rocksalt-operand args))))
+
+(define (rocksalt-imull args)
+  (if (= 1 (length args))
+    `(IMUL (True) ,(rocksalt-operand (first args)) (None) (None))
+    `(IMUL (True) ,(rocksalt-operand (second args)) (Some ,(rocksalt-operand (first args))) (None))))
+
 (define (rocksalt-instr instr)
   (define is (regexp-split #rx"[ ,]+" instr))
-  (append (rocksalt-operator (car is)) 
-          (reverse (map rocksalt-operand (cdr is)))))
+  (define op (car is))
+  (define args (cdr is))
+  (if (equal? op "imull") (rocksalt-imull args)
+                          (generic-rocksalt-instr op args)))
 
 (define (run-rocksalt instr)
   (@ runRocksalt no_prefix (rocksalt-instr instr)))
@@ -117,14 +131,17 @@
 
 (define instr (vector-ref (current-command-line-arguments) 0))
 (define ignoreRegs (cdr (vector->list (current-command-line-arguments))))
-(define details #f)
+(define details #t)
 
 (printf (~a instr #:align 'left #:min-width 20))
+(printf "Rocksalt Instruction: ~a\n" (rocksalt-instr instr))
+
 (flush-output)
 
 (define stoke (run-stoke instr))
 (define rocksalt (run-rocksalt instr))
 (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
+  
 
 ; testing the instruction, just to make sure the code runs
 (define _ (@ testInstrEq eq stoke rocksalt))

@@ -20,7 +20,7 @@ Require Import InitState.
 Require Import SharedState.
 
 Extract Constant cast_unsigned => "word-unsigned-cast".
-Extract Constant cast_signed => "(lambdas (srcBits dstBits x) (error 'signed-cast))".
+Extract Constant cast_signed => "word-signed-cast".
 
 Existing Instance rosette.
 
@@ -37,10 +37,12 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
+Set Printing Width 78.
+
 (* Debug an instruction in here: *)
 Goal False.
   refine (let p := no_prefix in _).
-  refine (let i : instr := ADD true (Reg_op EAX) (Reg_op EBX) in _).
+  refine (let i : instr := BSF (Reg_op EAX) (Reg_op EBX) in _).
   refine (let r := instr_to_rtl p i in _).
   unfold instr_to_rtl, runConv in r; simpl in r.
   refine (let s : SharedState := {| 
@@ -56,29 +58,6 @@ Goal False.
   refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
   Compute (gpr EAX).
   Compute (fgs ZF).
-Abort.
-
-
-
-(* Debug an instruction in here: *)
-Goal False.
-  refine (let p := no_prefix in _).
-  refine (let i : instr := SUB true (Reg_op EAX) (Reg_op EBX) in _).
-  refine (let r := instr_to_rtl p i in _).
-  unfold instr_to_rtl, runConv in r; simpl in r.
-  refine (let s : SharedState := {| 
-    eax := repr 2147483645; ecx := repr 0; 
-    edx := repr 0; ebx := repr 2147483648;
-    esp := repr 0; ebp := repr 0;
-    esi := repr 0; edi := repr 0;
-    cf := repr 0; pf := repr 0; af := repr 0;
-    zf := repr 0; sf := repr 0; of := repr 0
-  |} in _).
-  refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
-  refine (let gpr := gp_regs (core (rtl_mach_state (snd s'))) in _).
-  refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
-  Compute (gpr EAX).
-  Compute (fgs OF).
 Abort.
 
 Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState.

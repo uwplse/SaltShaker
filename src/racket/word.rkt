@@ -4,8 +4,8 @@
 
 (provide word-free word-mkint word-zero word-one word-mone 
          word-eq word-lt word-ltu
-         word-add word-sub word-mul word-divu word-divs
-         word-unsigned-cast
+         word-add word-sub word-mul word-divu word-divs word-modu word-mods
+         word-unsigned-cast word-signed-cast
          word-and word-or word-xor word-shl word-shr word-shru
          unary->number number->unary positive->number z->number)
 
@@ -59,6 +59,12 @@
 (define word-divs (lambdas (_ x y)
   (bvsdiv x y)))
 
+(define word-modu (lambdas (_ x y)
+  (bvsmod x y)))  ; what is the unsigned version of this?
+
+(define word-mods (lambdas (_ x y)
+  (bvsmod x y)))
+
 (define word-eq (lambdas (_ x y)
   (if (bveq x y) '(True) '(False))))
 
@@ -78,6 +84,13 @@
   (if (>= srcBits* dstBits*)
     (extract (sub1 dstBits*) 0 x)
     (zero-extend x (bitvector dstBits*)))))
+
+(define word-signed-cast (lambdas (srcBits dstBits x)
+  (define srcBits* (word-bits->bv-bits srcBits))
+  (define dstBits* (word-bits->bv-bits dstBits))
+  (if (>= srcBits* dstBits*)
+    (extract (sub1 dstBits*) 0 x)
+    (sign-extend x (bitvector dstBits*)))))
 
 (define word-or (lambdas (_ x y)
   (bvor x y)))

@@ -15,14 +15,13 @@ Extract Constant Word.ltu => "word-ltu".
 Extract Constant Word.unsigned => "(lambdas (_) (error 'unsigned))".
 Extract Constant Word.signed => "(lambdas (_) (error 'signed))".
 
-Extract Constant Word.add => "(lambdas (_) (error 'add))".
 Extract Constant Word.add => "word-add".
 Extract Constant Word.sub => "word-sub".
 Extract Constant Word.mul => "word-mul".
 Extract Constant Word.divs => "word-divs".
 Extract Constant Word.divu => "word-divu".
-Extract Constant Word.modu => "(lambdas (_) (error 'modu))".
-Extract Constant Word.mods => "(lambdas (_) (error 'mods))".
+Extract Constant Word.modu => "word-modu".
+Extract Constant Word.mods => "word-mods".
 Extract Constant Word.and => "word-and".
 Extract Constant Word.or => "word-or".
 Extract Constant Word.xor => "word-xor".
