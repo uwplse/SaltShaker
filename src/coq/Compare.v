@@ -37,22 +37,33 @@ http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
 Definition no_prefix : prefix := mkPrefix None None false false.
 
+Definition testSharedState : SharedState := {| 
+  eax := repr 129786124931; ecx := repr 456123421348; 
+  edx := repr 982483124977; ebx := repr 123497821934; 
+  esp := repr 321497821397; ebp := repr 194378923143;
+  esi := repr 102394758154; edi := repr 195263126789;
+  cf := repr 1; pf := repr 0; af := repr 1;
+  zf := repr 0; sf := repr 1; of := repr 0
+|}.
+
 Set Printing Width 78.
 
 (* Debug an instruction in here: *)
 Goal False.
   refine (let p := no_prefix in _).
-  refine (let i : instr := BSF (Reg_op EAX) (Reg_op EBX) in _).
+  refine (let i : instr := LEAVE in _).
+  (* refine (let i : instr := BSF (Reg_op EAX) (Reg_op EBX) in _). *)
   refine (let r := instr_to_rtl p i in _).
   unfold instr_to_rtl, runConv in r; simpl in r.
   refine (let s : SharedState := {| 
-    eax := one;    ecx := repr 0; 
-    edx := repr 0; ebx := mone;
+    eax := repr 0; ecx := repr 0; 
+    edx := repr 0; ebx := repr 1024;
     esp := repr 0; ebp := repr 0;
     esi := repr 0; edi := repr 0;
     cf := repr 0; pf := repr 0; af := repr 0;
     zf := repr 0; sf := repr 0; of := repr 0
   |} in _).
+  refine (let s := testSharedState in _).
   refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
   refine (let gpr := gp_regs (core (rtl_mach_state (snd s'))) in _).
   refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
@@ -81,15 +92,6 @@ Definition instrEq (s:SharedState) : option (SharedState * option SharedState * 
   refine (match s1 with None =>  error | Some s1' => _ end).
   refine (if eq s0' s1' then None else error).
 Defined.
-
-Definition testSharedState : SharedState := {| 
-  eax := repr 129786124931; ecx := repr 456123421348; 
-  edx := repr 982483124977; ebx := repr 123497821934; 
-  esp := repr 321497821397; ebp := repr 194378923143;
-  esi := repr 102394758154; edi := repr 195263126789;
-  cf := repr 1; pf := repr 0; af := repr 1;
-  zf := repr 0; sf := repr 1; of := repr 0
-|}.
 
 Definition testInstrEq : option (SharedState * option SharedState * option SharedState).
   exact (instrEq testSharedState).

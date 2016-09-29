@@ -11,10 +11,6 @@ Extract Constant Word.mone => "word-mone".
 Extract Constant Word.eq => "word-eq".
 Extract Constant Word.lt => "word-lt".
 Extract Constant Word.ltu => "word-ltu".
-
-Extract Constant Word.unsigned => "(lambdas (_) (error 'unsigned))".
-Extract Constant Word.signed => "(lambdas (_) (error 'signed))".
-
 Extract Constant Word.add => "word-add".
 Extract Constant Word.sub => "word-sub".
 Extract Constant Word.mul => "word-mul".
@@ -28,8 +24,11 @@ Extract Constant Word.xor => "word-xor".
 Extract Constant Word.shl => "word-shl".
 Extract Constant Word.shr => "word-shr".
 Extract Constant Word.shru => "word-shru".
-Extract Constant Word.ror => "(lambdas (_) (error 'ror))".
-Extract Constant Word.rol => "(lambdas (_) (error 'rol))".
+Extract Constant Word.ror => "word-ror".
+Extract Constant Word.rol => "word-rol".
+
+Extract Constant Word.unsigned => "(lambdas (_) (error 'unsigned))".
+Extract Constant Word.signed => "(lambdas (_) (error 'signed))".
 
 Parameter fullIntSpace : forall n, Space (int n).
 Axiom fullIntSpaceOk : forall n, ⟦ fullIntSpace n ⟧ = Full_set (int n).
