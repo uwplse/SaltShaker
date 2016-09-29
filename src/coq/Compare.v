@@ -112,5 +112,5 @@ Defined.
 End InstrEq.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
-  runRocksalt no_prefix 
+  runRocksalt no_prefix instr_to_rtl
   shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf af zf sf of.

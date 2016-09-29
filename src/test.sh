@@ -4,27 +4,33 @@ compare=/x86sem/src/racket/compare.rkt
 
 echo '===[ running ]==='
 
-$compare 'rcll $0x1, %ebx'
-$compare 'rcrl $0x1, %ebx'
-$compare 'roll $0x1, %ebx'
-$compare 'rorl $0x1, %ebx'
 $compare 'imull %ebx' 
 $compare 'imull %ecx, %ebx'
-$compare 'nopl %ebx' 
 $compare 'adcl %ecx, %ebx' 
+
+exit
+
 $compare 'cmpl %ecx, %ebx'
 $compare 'decl %ebx'
-$compare 'incl %ebx'
-$compare 'negl %ebx'
 $compare 'testl %ecx, %ebx'
 $compare 'xaddl %ecx, %ebx'
 $compare 'xchgl %eax, %ebx'
 $compare 'xchgl %ebx, %eax'
 $compare 'xchgl %ecx, %ebx'
+
+$compare 'rcll $0x1, %ebx'
+$compare 'rcrl $0x1, %ebx'
+$compare 'roll $0x1, %ebx'
+$compare 'rorl $0x1, %ebx'
 $compare 'sarl $0x1, %ebx'
 $compare 'sbbl %ecx, %ebx'
 $compare 'shll $0x1, %ebx'
 $compare 'shrl $0x1, %ebx'
+
+
+
+$compare 'incl %ebx'
+$compare 'negl %ebx'
 
 echo '===[ running and investigated ]==='
 
@@ -53,6 +59,7 @@ $compare 'xorl %ebx, %eax' pf
 $compare 'btl %ecx, %ebx'
 
 # correct
+$compare 'nopl %ebx' 
 $compare 'notl %ebx'
 $compare 'movl %ebx, %eax'
 $compare 'clc '       # 'clc'
@@ -120,8 +127,6 @@ $compare 'sall $0x1, %ebx'
 
 
 echo '===[ failing ]==='
-
-$compare 'leaveq '     # 'leave'
 
 # rosette can't execute this efficiently (even for fixed inputs)
 $compare 'bsfl %ecx, %ebx'

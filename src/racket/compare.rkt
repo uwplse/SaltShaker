@@ -93,6 +93,9 @@
 (define (racketList->coqList l)
   (if (null? l) '(Nil) `(Cons ,(car l) ,(racketList->coqList (cdr l)))))
 
+(define (coqList->racketList l)
+  (match l ((Nil) '()) ((Cons h t) (cons h (coqList->racketList t)))))
+
 (define (shared-state-regs ignoreRegs)
   (define regs (remove* ignoreRegs (map symbol->string registers)))
   (racketList->coqList (map 
@@ -102,9 +105,16 @@
       (parameterize ([current-namespace ns])
         `(ExistT (O) ,(eval reg*)))) regs)))
 
+(define replace-unary
+  (match-lambda
+    [`(O) 0]
+    [`(S ,n) (+ 1 (replace-unary n))]
+    [(? list? l) (map replace-unary l)]
+    [e e]))
+
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
 (define ignoreRegs (cdr (vector->list (current-command-line-arguments))))
-(define details #f)
+(define details #t)
 
 (printf (~a instr #:align 'left #:min-width 21))
 (flush-output)
@@ -130,8 +140,13 @@
 
 (when details
   (printf "Ignoring Registers: ~a\n" ignoreRegs)
+  (displayln "")
   (printf "Rocksalt Instruction: ~a\n" (rocksalt-instr instr))
-  (displayln "Verification Outcome: ")
+  (displayln "")
+  (displayln "Rocksalt Semantics:")
+  (for-each displayln (coqList->racketList (replace-unary (@ instr_to_rtl no_prefix (rocksalt-instr instr)))))
+  (displayln "")
+  (displayln "Verification Outcome:")
   (displayln (pretty-result pretty-reg result))
   (displayln "")
   (displayln "Counterexample Space:")
