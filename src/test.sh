@@ -27,9 +27,9 @@ $compare 'roll $0x1, %ebx'
 $compare 'rorl $0x1, %ebx'
 
 # rocksalt updates input before all flags are computed (UR)
+# rocksalt also computes the wrong carry flag (OF)
 $compare 'addl %ebx, %eax'
 $compare 'adcl %ecx, %ebx'
-$compare 'decl %ebx' 
 
 # rocksalt updates carry, which is then used to compute the result (UR)
 $compare 'sbbl %ecx, %ebx'
@@ -58,6 +58,7 @@ $compare 'orl %eax, %ebx'
 $compare 'xorl %ebx, %eax'
 $compare 'testl %ecx, %ebx'
 $compare 'incl %ebx'
+$compare 'decl %ebx' 
 
 # stoke is too nondeterministic (XX)
 $compare 'btl %ecx, %ebx'

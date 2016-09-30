@@ -4,8 +4,8 @@
 
 (provide word-free word-mkint word-zero word-one word-mone 
          word-eq word-lt word-ltu
-         word-add word-sub word-mul word-divu word-divs word-modu word-mods
-         word-unsigned-cast word-signed-cast
+         word-add word-sub word-mul word-divu word-divs word-mods
+         word-castu word-casts
          word-and word-or word-xor word-shl word-shr word-shru word-ror word-rol
          unary->number number->unary positive->number z->number)
 
@@ -31,6 +31,9 @@
 
 (define (word-bits->bv-bits n)
   (add1 (unary->number n)))
+
+(define word-free (lambdas (bits _)
+  (define-symbolic* x (bitvector (word-bits->bv-bits bits))) x))
 
 (define word-zero (lambdas (bits)
   (bv 0 (word-bits->bv-bits bits))))
@@ -59,9 +62,6 @@
 (define word-divs (lambdas (_ x y)
   (bvsdiv x y)))
 
-(define word-modu (lambdas (_ x y)
-  (bvumod x y)))
-
 (define word-mods (lambdas (_ x y)
   (bvsmod x y)))
 
@@ -74,23 +74,11 @@
 (define word-ltu (lambdas (_ x y)
   (if (bvult x y) '(True) '(False))))
 
-(define word-free (lambdas (bits _)
-  (define-symbolic* x (bitvector (word-bits->bv-bits bits)))
-  x))
+(define word-castu (lambdas (_ newBits x)
+  (bvucast (word-bits->bv-bits newBits) x)))
 
-(define word-unsigned-cast (lambdas (srcBits dstBits x)
-  (define srcBits* (word-bits->bv-bits srcBits))
-  (define dstBits* (word-bits->bv-bits dstBits))
-  (if (>= srcBits* dstBits*)
-    (extract (sub1 dstBits*) 0 x)
-    (zero-extend x (bitvector dstBits*)))))
-
-(define word-signed-cast (lambdas (srcBits dstBits x)
-  (define srcBits* (word-bits->bv-bits srcBits))
-  (define dstBits* (word-bits->bv-bits dstBits))
-  (if (>= srcBits* dstBits*)
-    (extract (sub1 dstBits*) 0 x)
-    (sign-extend x (bitvector dstBits*)))))
+(define word-casts (lambdas (_ newBits x)
+  (bvscast (word-bits->bv-bits newBits) x)))
 
 (define word-or (lambdas (_ x y)
   (bvor x y)))

@@ -19,8 +19,8 @@ Require Import ExtractWord.
 Require Import InitState.
 Require Import SharedState.
 
-Extract Constant cast_unsigned => "word-unsigned-cast".
-Extract Constant cast_signed => "word-signed-cast".
+Extract Constant cast_unsigned => "word-castu".
+Extract Constant cast_signed => "word-casts".
 
 Existing Instance rosette.
 
