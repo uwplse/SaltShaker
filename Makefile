@@ -22,7 +22,6 @@ stoke:
 	cd lib/stoke && ./configure.sh && make
 
 rocksalt:
-	cd lib/CPUmodels/x86model/Model/flocq-2.5.1; ./configure; ./remake; ./remake install
 	cd lib/CPUmodels/x86model/Model; make
 
 spacesearch:
@@ -38,4 +37,3 @@ clean-all: clean
 	make -C lib/SpaceSearch clean
 	make -C lib/stoke clean || true
 	make -C lib/CPUmodels/x86model/Model clean
-	cd lib/CPUmodels/x86model/Model/flocq-2.5.1; ./remake clean

@@ -70,6 +70,11 @@ RUN apt-get update && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 ENV PATH /x86sem/lib/stoke/bin:$PATH
 
+# install CPUModels dependencies
+RUN wget https://gforge.inria.fr/frs/download.php/file/36199/flocq-2.5.2.tar.gz && \
+    tar -xvf flocq-* && \
+    cd flocq-*; ./configure && ./remake && ./remake install
+
 # enable rosette debugging
 RUN cd rosette && \
 #   sed -i "s/;(printf/(printf/g" rosette/base/core/effects.rkt && \

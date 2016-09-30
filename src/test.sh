@@ -4,29 +4,23 @@ compare=/x86sem/src/racket/compare.rkt
 
 echo '===[ running ]==='
 
-exit
-
+$compare 'sarl $0x1, %ebx'
 $compare 'rcll $0x1, %ebx'
 $compare 'rcrl $0x1, %ebx'
-$compare 'sarl $0x1, %ebx'
-
-$compare 'incl %ebx'
-$compare 'negl %ebx'
 
 echo '===[ running and investigated ]==='
 
 # possible bugs exhibited:
 # PF = computes wrong parity flag
-# UR = read after update
+# UR = reads after update
 # OF = computes wrong overflow flag
 # CF = computes wrong carry flag
 # XX = misc
 
 # rocksalt sets zf, sf, pf to a nondeterministic value,
 # even though the spec says to compute those appropriately (XX)
-$compare 'shll $0x1, %ebx' details
-$compare 'shrl $0x1, %ebx' details
-
+$compare 'shll $0x1, %ebx' 
+$compare 'shrl $0x1, %ebx'
 
 # rocksalt unnecessarily sets zf, sf, pf to a nondeterministic value (XX)
 $compare 'roll $0x1, %ebx'
@@ -35,10 +29,10 @@ $compare 'rorl $0x1, %ebx'
 # rocksalt updates input before all flags are computed (UR)
 $compare 'addl %ebx, %eax'
 $compare 'adcl %ecx, %ebx'
-$compare 'decl %ebx' details
+$compare 'decl %ebx' 
 
 # rocksalt updates carry, which is then used to compute the result (UR)
-$compare 'sbbl %ecx, %ebx' details
+$compare 'sbbl %ecx, %ebx'
 
 # exchanges before anything is computed, so everything is wrong (UR)
 $compare 'xaddl %ecx, %ebx'
@@ -48,7 +42,8 @@ $compare 'xchgl %ecx, %ebx'
 
 # rocksalt computes wrong overflow (OF)
 $compare 'subl %ebx, %eax' 
-$compare 'cmpl %ecx, %ebx' details
+$compare 'cmpl %ecx, %ebx' 
+$compare 'negl %ebx'
 
 # stoke computes sf, which is supposed to be undefined (XX)
 $compare 'imull %ecx, %ebx'
@@ -62,6 +57,7 @@ $compare 'andl %ebx, %eax'
 $compare 'orl %eax, %ebx'
 $compare 'xorl %ebx, %eax'
 $compare 'testl %ecx, %ebx'
+$compare 'incl %ebx'
 
 # stoke is too nondeterministic (XX)
 $compare 'btl %ecx, %ebx'
