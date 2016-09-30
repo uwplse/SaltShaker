@@ -42,8 +42,8 @@ Definition testSharedState : SharedState := {|
   edx := repr 982483124977; ebx := repr 123497821934; 
   esp := repr 321497821397; ebp := repr 194378923143;
   esi := repr 102394758154; edi := repr 195263126789;
-  cf := repr 1; pf := repr 0; af := repr 1;
-  zf := repr 0; sf := repr 1; of := repr 0
+  cf := repr 1; pf := repr 0; zf := repr 0; 
+  sf := repr 1; of := repr 0
 |}.
 
 Set Printing Width 78.
@@ -60,8 +60,8 @@ Goal False.
     edx := repr 0; ebx := repr 1024;
     esp := repr 0; ebp := repr 0;
     esi := repr 0; edi := repr 0;
-    cf := repr 0; pf := repr 0; af := repr 0;
-    zf := repr 0; sf := repr 0; of := repr 0
+    cf := repr 0; pf := repr 0; zf := repr 0; 
+    sf := repr 0; of := repr 0
   |} in _).
   refine (let s := testSharedState in _).
   refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
@@ -113,4 +113,4 @@ End InstrEq.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
   runRocksalt no_prefix instr_to_rtl
-  shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf af zf sf of.
+  shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of.

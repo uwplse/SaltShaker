@@ -7,7 +7,7 @@
 
 (provide instrEq testInstrEq spaceInstrEq verifyInstrEq 
          runRocksalt no_prefix instr_to_rtl
-         shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf af zf sf of)
+         shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of)
 
 ; if anything is below this line, this file was automatically 
 ; generated; do not edit it!

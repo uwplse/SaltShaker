@@ -4,11 +4,7 @@ compare=/x86sem/src/racket/compare.rkt
 
 echo '===[ running ]==='
 
-$compare 'imull %ebx' 
-$compare 'imull %ecx, %ebx'
 $compare 'adcl %ecx, %ebx' 
-
-exit
 
 $compare 'cmpl %ecx, %ebx'
 $compare 'decl %ebx'
@@ -27,35 +23,30 @@ $compare 'sbbl %ecx, %ebx'
 $compare 'shll $0x1, %ebx'
 $compare 'shrl $0x1, %ebx'
 
-
-
 $compare 'incl %ebx'
 $compare 'negl %ebx'
 
 echo '===[ running and investigated ]==='
 
-# computes incorrect overflow
+# rocksalt computes wrong overflow
 $compare 'subl %ebx, %eax' 
-$compare 'subl %ebx, %eax' af pf of
 
-# input updated before all flags are computed
+# rocksalt updates input before all flags are computed
 $compare 'addl %ebx, %eax'
-$compare 'addl %ebx, %eax' af pf of
-$compare 'addl %ebx, %eax' af pf of sf
-$compare 'addl %ebx, %eax' af pf of sf cf zf
+
+# stoke computes sf, which is supposed to be undefined
+$compare 'imull %ecx, %ebx'
+# rocksalt edx reads updated ebx
+# rocksalt computes wrong carry and overflow
+$compare 'imull %ebx'
 $compare 'mull %ebx' 
-$compare 'mull %ebx' rdx
-$compare 'mull %ebx' of cf rdx
 
-# only parity broken
+# rocksalt computes wrong parity
 $compare 'andl %ebx, %eax'
-$compare 'andl %ebx, %eax' pf
 $compare 'orl %eax, %ebx'
-$compare 'orl %eax, %ebx' pf
 $compare 'xorl %ebx, %eax'
-$compare 'xorl %ebx, %eax' pf
 
-# too much nondeterminism in stoke
+# stoke is too nondeterministic
 $compare 'btl %ecx, %ebx'
 
 # correct
@@ -73,11 +64,11 @@ exit
 
 echo '===[ failing and investigated ]==='
 
-# uninterpreted functions in stoke 
+# stoke implements these with uninterpreted functions
 $compare 'divl %ebx'
 $compare 'idivl %ebx'
 
-# unsupported instruction in rocksalt
+# rocksalt does not support these instructions
 $compare 'blsil %ecx, %ebx' 
 $compare 'blsmskl %ecx, %ebx' 
 $compare 'blsrl %ecx, %ebx' 

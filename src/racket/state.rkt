@@ -23,8 +23,8 @@
   `(Some (SharedState ,(bit64->bit32 rax) ,(bit64->bit32 rcx) ,(bit64->bit32 rdx)
                       ,(bit64->bit32 rbx) ,(bit64->bit32 rsp) ,(bit64->bit32 rbp)
                       ,(bit64->bit32 rsi) ,(bit64->bit32 rdi) 
-                      ,(bool->bit cf) ,(bool->bit pf) ,(bool->bit af) 
-                      ,(bool->bit zf) ,(bool->bit sf) ,(bool->bit of))))
+                      ,(bool->bit cf) ,(bool->bit pf) ,(bool->bit zf) 
+                      ,(bool->bit sf) ,(bool->bit of))))
 
 (define (state-rax s) (bit32->bit64 (list-ref s 1)))
 (define (state-rcx s) (bit32->bit64 (list-ref s 2)))
@@ -60,8 +60,8 @@
 (define (state-ymm15 s) (bv 0 256))
 (define (state-cf s) (bit->bool (list-ref s 9)))
 (define (state-pf s) (bit->bool (list-ref s 10)))
-(define (state-af s) (bit->bool (list-ref s 11)))
-(define (state-zf s) (bit->bool (list-ref s 12)))
-(define (state-sf s) (bit->bool (list-ref s 13)))
-(define (state-of s) (bit->bool (list-ref s 14)))
+(define (state-af s) #f)
+(define (state-zf s) (bit->bool (list-ref s 11)))
+(define (state-sf s) (bit->bool (list-ref s 12)))
+(define (state-of s) (bit->bool (list-ref s 13)))
 

@@ -2,7 +2,6 @@
 #lang s-exp rosette
 
 (require "x86sem.rkt" "state.rkt" "bvex.rkt")
-
 (define-namespace-anchor a)
 
 (require "rosette.rkt" "word.rkt" "extraction.rkt" "rocksalt-instr.rkt")
@@ -25,21 +24,20 @@
     (((bitvector 1) x) (pretty-bits 0 0 x))
     (else "unsupported")))
 
-(define registers '(rax rcx rdx rbx rsp rbp rsi rdi cf pf af zf sf of))
+(define registers '(eax ecx edx ebx esp ebp esi edi cf pf zf sf of))
 
 (define (state->map s)
   (make-immutable-hash `(
-    (rax . ,(eax s))
-    (rcx . ,(ecx s))
-    (rdx . ,(edx s))
-    (rbx . ,(ebx s))
-    (rsp . ,(esp s))
-    (rbp . ,(ebp s))
-    (rsi . ,(esi s))
-    (rdi . ,(edi s))
+    (eax . ,(eax s))
+    (ecx . ,(ecx s))
+    (edx . ,(edx s))
+    (ebx . ,(ebx s))
+    (esp . ,(esp s))
+    (ebp . ,(ebp s))
+    (esi . ,(esi s))
+    (edi . ,(edi s))
     (cf . ,(cf s))
     (pf . ,(pf s))
-    (af . ,(af s))
     (zf . ,(zf s))
     (sf . ,(sf s))
     (of . ,(of s)))))
@@ -65,19 +63,17 @@
 (define (diff-state s0 s1)
   (define regs0 (state->map s0))
   (define regs1 (state->map s1))
-  (define res '())
-  (for-each 
-    (lambda (r) (unless (equal? (hash-ref regs0 r) (hash-ref regs1 r)) 
-                  (set! res (cons (~a r) res))))
-    registers)
-  (string-join res ", " #:before-first "broken "))
+  (filter  
+    (lambda (r) 
+      (not (equal? (hash-ref regs0 r) (hash-ref regs1 r)))) 
+    registers))
 
 (define (diff-result r)
   (match r  ((Pair xy z)
   (match xy ((Pair x y)
     (match y ((None) "stoke error") ((Some y)
     (match z ((None) "rocksalt error") ((Some z)
-      (string-append (diff-state y z)))))))))))
+      (diff-state y z))))))))))
 
 (define (run-rocksalt instr)
   (@ runRocksalt no_prefix (rocksalt-instr instr)))
@@ -97,13 +93,11 @@
   (match l ((Nil) '()) ((Cons h t) (cons h (coqList->racketList t)))))
 
 (define (shared-state-regs ignoreRegs)
-  (define regs (remove* ignoreRegs (map symbol->string registers)))
-  (racketList->coqList (map 
-    (lambda (reg)
-      (define reg* (string->symbol (regexp-replace #rx"r" reg "e")))
-      (define ns (namespace-anchor->namespace a))
-      (parameterize ([current-namespace ns])
-        `(ExistT (O) ,(eval reg*)))) regs)))
+  (define regs (remove* ignoreRegs registers))
+  (racketList->coqList (for/list ((reg regs)) 
+    (define ns (namespace-anchor->namespace a))
+    (parameterize ([current-namespace ns])
+      `(ExistT (O) ,(eval reg))))))
 
 (define replace-unary
   (match-lambda
@@ -113,44 +107,55 @@
     [e e]))
 
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
-(define ignoreRegs (cdr (vector->list (current-command-line-arguments))))
-(define details #t)
+(define ignoreRegs (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
+(define details #f)
 
 (printf (~a instr #:align 'left #:min-width 21))
 (flush-output)
 
 (define stoke (run-stoke instr))
 (define rocksalt (run-rocksalt instr))
-(define eq (shared_state_eq (shared-state-regs ignoreRegs)))
-
-; testing the instruction, just to make sure the code runs
-(define _ (@ testInstrEq eq stoke rocksalt))
-
-(define result (@ verifyInstrEq eq stoke rocksalt))
-
-(match result
-  ((None) (if (null? ignoreRegs)
-    (printf " is correct\n")
-    (printf " is correct   (modulo ~a)\n"
-            (string-join ignoreRegs ", "))))
-  ((Some r) 
-    (printf " is incorrect (~a)\n" 
-            (diff-result r))))
-(flush-output)
 
 (when details
-  (printf "Ignoring Registers: ~a\n" ignoreRegs)
-  (displayln "")
   (printf "Rocksalt Instruction: ~a\n" (rocksalt-instr instr))
   (displayln "")
   (displayln "Rocksalt Semantics:")
   (for-each displayln (coqList->racketList (replace-unary (@ instr_to_rtl no_prefix (rocksalt-instr instr)))))
   (displayln "")
-  (displayln "Verification Outcome:")
-  (displayln (pretty-result pretty-reg result))
-  (displayln "")
-  (displayln "Counterexample Space:")
-  (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
+  (flush-output))
+
+(define (verificationLoop ignoreRegs)
+  (when details
+    (printf "Verification Outcome (ignoring registers ~a):\n" ignoreRegs)
+    (flush-output))
+
+  (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
+  ; testing the instruction, just to make sure the code runs
+  (define _ (@ testInstrEq eq stoke rocksalt))
+  (define result (@ verifyInstrEq eq stoke rocksalt))
+
+  (when details
+    (displayln (pretty-result pretty-reg result))
+    (displayln "")
+    (flush-output))
+
+  (match result
+    ((None) ignoreRegs)
+    ((Some r)
+      (verificationLoop (remove-duplicates
+        (append ignoreRegs (diff-result r)))))))
+
+(define ignoredRegs (verificationLoop ignoreRegs))
+
+(if (null? ignoredRegs)
+  (printf " is equal\n")
+  (printf " is equal modulo ~a\n"
+    (string-join (map symbol->string ignoredRegs) ", ")))
+(flush-output)
+
+(when details
+; (displayln "Counterexample Space:")
+; (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
   (displayln "======================================================\n")
   (flush-output))
  

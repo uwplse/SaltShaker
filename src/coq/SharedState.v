@@ -31,11 +31,11 @@ Rocksalt (see `register` type) and Stoke have all GRPs:
 
 Rocksalt (see `flag` type) has a superset of Stoke's flags. They share:
 
-    cf pf af zf sf of
+    cf pf zf sf of
 
 But only Rocksalt has:
 
-    ID | VIP | VIF | AC | VM | RF | NT | IOPL | DF | IF_flag | TF 
+    AF | ID | VIP | VIF | AC | VM | RF | NT | IOPL | DF | IF_flag | TF 
 
 ### Other
 
@@ -64,7 +64,6 @@ Record SharedState := sharedState {
 
   cf : int1; 
   pf : int1; 
-  af : int1;
   zf : int1;
   sf : int1;
   of : int1
@@ -81,7 +80,6 @@ Definition symbolicSharedState : Space SharedState.
   refine (bind full (fun edi' => _)).
   refine (bind full (fun cf' => _)).
   refine (bind full (fun pf' => _)).
-  refine (bind full (fun af' => _)).
   refine (bind full (fun zf' => _)).
   refine (bind full (fun sf' => _)).
   refine (bind full (fun of' => _)). 
@@ -96,7 +94,6 @@ Definition symbolicSharedState : Space SharedState.
     edi := edi';
     cf := cf'; 
     pf := pf'; 
-    af := af';
     zf := zf';
     sf := sf';
     of := of'
@@ -123,7 +120,6 @@ Section SharedState.
     | OF => of s
     | SF => sf s
     | ZF => zf s
-    | AF => af s
     | PF => pf s
     | CF => cf s
     | _ => Word.zero
@@ -172,7 +168,6 @@ Definition rtl_state_shared (s:rtl_state) : SharedState.
     edi := gpr EDI;
     cf := fgs CF; 
     pf := fgs PF; 
-    af := fgs AF;
     zf := fgs ZF;
     sf := fgs SF;
     of := fgs OF
