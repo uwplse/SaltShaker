@@ -107,8 +107,8 @@
     [e e]))
 
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
-(define ignoreRegs (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
-(define details #f)
+(define details (= 2 (vector-length (current-command-line-arguments))))
+(define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
 (printf (~a instr #:align 'left #:min-width 21))
 (flush-output)
