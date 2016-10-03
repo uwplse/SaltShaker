@@ -147,6 +147,7 @@ Section SharedState.
   Definition shared_rtl_state : rtl_state.
     refine {|
       rtl_oracle := empty_oracle;
+      rtl_env := empty_env;
       rtl_mach_state := shared_full_machine;
       rtl_memory := empty_mem
     |}.
