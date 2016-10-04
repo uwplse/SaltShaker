@@ -46,9 +46,12 @@ $compare 'decl %ebx'
 
 # rocksalt edx reads updated ebx (UR)
 # rocksalt computes wrong carry and overflow (CF, OF)
+$compare 'mull %ebx' 
+
+# rocksalt edx reads updated ebx (UR)
+# rocksalt computes wrong carry and overflow (CF, OF)
 # rocksalt is too nondeterministic with the sign flag (ND)
 $compare 'imull %ebx'
-$compare 'mull %ebx' 
 
 # rocksalt is too nondeterministic with the sign flag (ND)
 $compare 'imull %ecx, %ebx'
