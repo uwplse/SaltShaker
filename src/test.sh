@@ -2,29 +2,19 @@
 
 compare=/x86sem/src/racket/compare.rkt
 
-echo '===[ running ]==='
-
-$compare 'sarl $0x1, %ebx'
-$compare 'rcll $0x1, %ebx'
-$compare 'rcrl $0x1, %ebx'
-
 echo '===[ running and investigated ]==='
 
-# possible bugs exhibited:
+# bugs exhibited:
 # PF = computes wrong parity flag
 # UR = reads after update
 # OF = computes wrong overflow flag
 # CF = computes wrong carry flag
-# XX = misc
+# SH = shift by wrong amount
+# ND = more non-determinism than necessary (not a bug)
 
-# rocksalt sets zf, sf, pf to a nondeterministic value,
-# even though the spec says to compute those appropriately (XX)
-$compare 'shll $0x1, %ebx' 
-$compare 'shrl $0x1, %ebx'
-
-# rocksalt unnecessarily sets zf, sf, pf to a nondeterministic value (XX)
-$compare 'roll $0x1, %ebx'
-$compare 'rorl $0x1, %ebx'
+# stoke shifts by wrong amount (SH)
+$compare 'rcll $0x1, %ebx'
+$compare 'rcrl $0x1, %ebx'
 
 # rocksalt updates input before all flags are computed (UR)
 # rocksalt also computes the wrong carry flag (OF)
@@ -32,6 +22,7 @@ $compare 'addl %ebx, %eax'
 $compare 'adcl %ecx, %ebx'
 
 # rocksalt updates carry, which is then used to compute the result (UR)
+# rocksalt also computes wrong overflow and carry flag (OF, CR)
 $compare 'sbbl %ecx, %ebx'
 
 # exchanges before anything is computed, so everything is wrong (UR)
@@ -45,13 +36,6 @@ $compare 'subl %ebx, %eax'
 $compare 'cmpl %ecx, %ebx' 
 $compare 'negl %ebx'
 
-# stoke computes sf, which is supposed to be undefined (XX)
-$compare 'imull %ecx, %ebx'
-# rocksalt edx reads updated ebx (UR)
-# rocksalt computes wrong carry and overflow (CF, OF)
-$compare 'imull %ebx'
-$compare 'mull %ebx' 
-
 # rocksalt computes wrong parity (PF)
 $compare 'andl %ebx, %eax'
 $compare 'orl %eax, %ebx'
@@ -60,7 +44,23 @@ $compare 'testl %ecx, %ebx'
 $compare 'incl %ebx'
 $compare 'decl %ebx' 
 
-# stoke is too nondeterministic (XX)
+# rocksalt edx reads updated ebx (UR)
+# rocksalt computes wrong carry and overflow (CF, OF)
+# rocksalt is too nondeterministic with the sign flag (ND)
+$compare 'imull %ebx'
+$compare 'mull %ebx' 
+
+# rocksalt is too nondeterministic with the sign flag (ND)
+$compare 'imull %ecx, %ebx'
+
+# rocksalt unnecessarily sets zf, sf, pf to a nondeterministic value (ND)
+$compare 'shll $0x1, %ebx' 
+$compare 'shrl $0x1, %ebx'
+$compare 'sarl $0x1, %ebx'
+$compare 'roll $0x1, %ebx'
+$compare 'rorl $0x1, %ebx'
+
+# stoke is too nondeterministic (ND)
 $compare 'btl %ecx, %ebx'
 
 # correct
@@ -73,6 +73,8 @@ $compare 'cmc '       # 'cmc'
 $compare 'cwtl '      # 'cwde'
 $compare 'stc '       # 'stc'
 $compare 'bswap %ebx' # 'bswap'
+$compare 'bsfl %ecx, %ebx' 
+$compare 'bsrl %ecx, %ebx' 
 
 exit
 
@@ -130,9 +132,3 @@ $compare 'andnl %edx, %ecx, %ebx'
 $compare 'bextrl %edx, %ecx, %ebx'
 $compare 'sall $0x1, %ebx'
 
-
-echo '===[ failing ]==='
-
-# rosette can't execute this efficiently (even for fixed inputs)
-$compare 'bsfl %ecx, %ebx'
-$compare 'bsrl %ecx, %ebx'
