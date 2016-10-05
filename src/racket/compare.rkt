@@ -75,8 +75,8 @@
     (match z ((None) "rocksalt error") ((Some z)
       (diff-state y z))))))))))
 
-(define (run-rocksalt instr)
-  (@ runRocksalt no_prefix (rocksalt-instr instr)))
+(define (run-rocksalt rocksaltInstr)
+  (@ runRocksalt no_prefix rocksaltInstr))
 
 (define (run-stoke instr)
   (define file (make-temporary-file))
@@ -110,52 +110,55 @@
 (define details (= 2 (vector-length (current-command-line-arguments))))
 (define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
-(printf (~a instr #:align 'left #:min-width 21))
+(printf (~a instr #:align 'left #:min-width 25))
 (flush-output)
 
-(define stoke (run-stoke instr))
-(define rocksalt (run-rocksalt instr))
+(define rocksaltInstr (rocksalt-instr instr))
 
-(when details
-  (printf "Rocksalt Instruction: ~a\n" (rocksalt-instr instr))
-  (displayln "")
-  (displayln "Rocksalt Semantics:")
-  (for-each displayln (coqList->racketList (replace-unary (@ instr_to_rtl no_prefix (rocksalt-instr instr)))))
-  (displayln "")
-  (flush-output))
-
-(define (verificationLoop ignoreRegs)
+(if (not rocksaltInstr) (displayln "unsupported opcode") (begin
+  (define stoke (run-stoke instr))
+  (define rocksalt (run-rocksalt rocksaltInstr))
+  
   (when details
-    (printf "Verification Outcome (ignoring registers ~a):\n" ignoreRegs)
-    (flush-output))
-
-  (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
-  ; testing the instruction, just to make sure the code runs
-  (define _ (@ testInstrEq eq stoke rocksalt))
-  (define result (@ verifyInstrEq eq stoke rocksalt))
-
-  (when details
-    (displayln (pretty-result pretty-reg result))
+    (printf "Rocksalt Instruction: ~a\n" rocksaltInstr)
+    (displayln "")
+    (displayln "Rocksalt Semantics:")
+    (for-each displayln (coqList->racketList (replace-unary (@ instr_to_rtl no_prefix rocksaltInstr))))
     (displayln "")
     (flush-output))
-
-  (match result
-    ((None) ignoreRegs)
-    ((Some r)
-      (verificationLoop (remove-duplicates
-        (append ignoreRegs (diff-result r)))))))
-
-(define ignoredRegs (verificationLoop ignoreRegs))
-
-(if (null? ignoredRegs)
-  (printf " is equal\n")
-  (printf " is equal modulo ~a\n"
-    (string-join (map symbol->string ignoredRegs) ", ")))
-(flush-output)
-
-(when details
-; (displayln "Counterexample Space:")
-; (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
-  (displayln "======================================================\n")
-  (flush-output))
- 
+  
+  (define (verificationLoop ignoreRegs)
+    (when details
+      (printf "Verification Outcome (ignoring registers ~a):\n" ignoreRegs)
+      (flush-output))
+  
+    (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
+    ; testing the instruction, just to make sure the code runs
+    (define _ (@ testInstrEq eq stoke rocksalt))
+    (define result (@ verifyInstrEq eq stoke rocksalt))
+  
+    (when details
+      (displayln (pretty-result pretty-reg result))
+      (displayln "")
+      (flush-output))
+  
+    (match result
+      ((None) ignoreRegs)
+      ((Some r)
+        (verificationLoop (remove-duplicates
+          (append ignoreRegs (diff-result r)))))))
+  
+  (define ignoredRegs (verificationLoop ignoreRegs))
+  
+  (if (null? ignoredRegs)
+    (printf "is equal\n")
+    (printf "is equal modulo ~a\n"
+      (string-join (map symbol->string ignoredRegs) ", ")))
+  (flush-output)
+  
+  (when details
+  ; (displayln "Counterexample Space:")
+  ; (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
+    (displayln "======================================================\n")
+    (flush-output))))
+   

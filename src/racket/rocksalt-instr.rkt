@@ -2,14 +2,14 @@
 
 (provide rocksalt-instr)
 
-(define (operand type op)
+(define ((operand bits) type op)
   (case type
-    ((immediate) `(Imm_op ,op))
+    ((immediate) `(Imm_op ,(bv op bits)))
     ((register)  `(Reg_op ,op))))
 
-(define (reg-or-immed type op)
+(define ((reg-or-immed bits) type op)
   (case type
-    ((immediate) `(Imm_ri ,op))
+    ((immediate) `(Imm_ri ,(bv op bits)))
     ((register)  `(Reg_ri ,op))))
 
 (define (register type op)
@@ -68,17 +68,17 @@
 (define specialOpcode 
   (make-immutable-hash `(
     ; at&t-name     intel-name  w-flag  operand-format (intel order)
-    ("rcll"       . ("rcl"        #t  (,reg-or-immed ,operand)))
-    ("rcrl"       . ("rcr"        #t  (,reg-or-immed ,operand)))
-    ("roll"       . ("rol"        #t  (,reg-or-immed ,operand)))
-    ("rorl"       . ("ror"        #t  (,reg-or-immed ,operand)))
-    ("sarl"       . ("sar"        #t  (,reg-or-immed ,operand)))
-    ("shll"       . ("shl"        #t  (,reg-or-immed ,operand)))
-    ("shrl"       . ("shr"        #t  (,reg-or-immed ,operand))) 
-    ("bsfl"       . ("bsf"        #f  (,operand ,operand)))
-    ("bsrl"       . ("bsr"        #f  (,operand ,operand)))
-    ("btl"        . ("bt"         #f  (,operand ,operand)))
-    ("nopl"       . ("nop"        #f  (,operand)))
+    ("rcll"       . ("rcl"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("rcrl"       . ("rcr"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("roll"       . ("rol"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("rorl"       . ("ror"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("sarl"       . ("sar"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("shll"       . ("shl"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("shrl"       . ("shr"        #t  (,(reg-or-immed 8) ,(operand 32))))
+    ("bsfl"       . ("bsf"        #f  (,(operand 32) ,(operand 32))))
+    ("bsrl"       . ("bsr"        #f  (,(operand 32) ,(operand 32))))
+    ("btl"        . ("bt"         #f  (,(operand 32) ,(operand 32))))
+    ("nopl"       . ("nop"        #f  (,(operand 32))))
     ("cltd"       . ("cdq"        #f  ()))
     ("cwtl"       . ("cwde"       #f  ()))
     ("leaveq"     . ("leave"      #f  ()))
@@ -95,7 +95,7 @@
             (third r))
     (values (second (regexp-match #rx"^([a-z]+)l$" op)) 
             #t 
-            (map (lambda (_) operand) args))))
+            (map (lambda (_) (operand 32)) args))))
 
 (define (rocksalt-operand op wrap)
   (define m (regexp-match #rx"^%([a-z0-9]+)$" op))
@@ -104,7 +104,7 @@
     (begin
       (define m (regexp-match #rx"^\\$0x([a-f0-9]+)$" op))
       (if m 
-        (wrap 'immediate (bv (string->number (second m)) 8))
+        (wrap 'immediate (string->number (second m) 16))
         (error "unsupported operand")))))
 
 (define (generic-rocksalt-instr op args)
@@ -116,14 +116,14 @@
 
 (define (imull args)
   (if (= 1 (length args))
-    `(IMUL (True) ,(rocksalt-operand (first args) operand) (None) (None))
-    `(IMUL (True) ,(rocksalt-operand (second args) operand) (Some ,(rocksalt-operand (first args) operand)) (None))))
+    `(IMUL (True) ,(rocksalt-operand (first args) (operand 32))  (None)                                               (None))
+    `(IMUL (True) ,(rocksalt-operand (second args) (operand 32)) (Some ,(rocksalt-operand (first args) (operand 32))) (None))))
 
 (define (rocksalt-instr instr)
   (define is (regexp-split #rx"[ ,]+" instr))
   (define op (car is))
   (define args (cdr is))
-  (when (member op unsupportedOpcode) (error "unsupported opcode"))
-  (if (equal? op "imull") (imull args)
-                          (generic-rocksalt-instr op args)))
+  (if (member op unsupportedOpcode) #f
+    (if (equal? op "imull") (imull args)
+                            (generic-rocksalt-instr op args))))
 
