@@ -71,8 +71,11 @@ Goal False.
   Compute (fgs ZF).
 Abort.
 
-Definition runRocksalt (p:prefix) (i:instr) (s:SharedState) : option SharedState.
-  refine (let r := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
+Definition instrToRTL (pi:prefix * instr) : list rtl_instr :=
+  instr_to_rtl (fst pi) (snd pi).
+
+Definition runRocksalt (pi:prefix * instr) (s:SharedState) : option SharedState.
+  refine (let r := RTL_step_list (instrToRTL pi) (shared_rtl_state s) in _).
   refine (match r with 
   | (Okay_ans tt, s') => Some (rtl_state_shared s')
   | _ => None
@@ -112,5 +115,5 @@ Defined.
 End InstrEq.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
-  runRocksalt no_prefix instr_to_rtl
+  runRocksalt instrToRTL
   shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of.
