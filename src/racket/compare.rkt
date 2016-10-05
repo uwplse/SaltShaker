@@ -104,15 +104,17 @@
     [e e]))
 
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
-(define details (= 2 (vector-length (current-command-line-arguments))))
+(define intel (string-trim (vector-ref (current-command-line-arguments) 1)))
+(define details (= 3 (vector-length (current-command-line-arguments))))
 (define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
 (printf (~a instr #:align 'left #:min-width 25))
 (flush-output)
 
-(define rocksaltInstr (rocksalt-instr instr))
+(with-handlers ([exn:fail? (lambda (exn) 
+  (if details (raise exn) (displayln exn)))])
 
-(if (not rocksaltInstr) (displayln "unsupported opcode") (begin
+  (define rocksaltInstr (rocksalt-instr instr intel))
   (define stoke (runStoke instr))
   (define rocksalt (runRocksalt rocksaltInstr))
   
@@ -157,5 +159,5 @@
   ; (displayln "Counterexample Space:")
   ; (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
     (displayln "======================================================\n")
-    (flush-output))))
+    (flush-output)))
    

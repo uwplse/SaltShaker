@@ -20,76 +20,29 @@
   (case type
     ((immediate) (bv op bits))))
 
-(define unsupportedOpcode '(
-  "blsil"
-  "blsmskl"
-  "blsrl"
-  "cmovael" 
-  "cmoval" 
-  "cmovbel"
-  "cmovbl"
-  "cmovcl"
-  "cmovel"
-  "cmovgel"
-  "cmovgl"
-  "cmovlel"
-  "cmovll"
-  "cmovnael"
-  "cmovnal"
-  "cmovnbel"
-  "cmovnbl"
-  "cmovncl"
-  "cmovnel"
-  "cmovngel"
-  "cmovngl"
-  "cmovnlel"
-  "cmovnll"
-  "cmovnol"
-  "cmovnpl"
-  "cmovnsl"
-  "cmovnzl"
-  "cmovol"
-  "cmovpel"
-  "cmovpl"
-  "cmovpol"
-  "cmovsl"
-  "cmovzl"
-  "popcntl"
-  "tzcntl"
-  "nop"    ; "nop"
-  "cbtw"   ; "cbw"
-  "cltq"   ; "cdqe"
-  "cqto"   ; "cqo"
-  "cwtd"   ; "cwd"
-  "vzeroall"   ; "vzeroall"
-  "vzeroupper" ; "vzeroupper"
-  "shrxl"
-  "andnl"
-  "bextrl"
-  "sall"
-))
-
 (define specialOpcode 
   (make-immutable-hash `(
-    ; at&t-name     intel-name  w-flag  operand-format (intel order)
-    ("rcll"       . ("rcl"        #t  (,reg-or-immed ,operand)))
-    ("rcrl"       . ("rcr"        #t  (,reg-or-immed ,operand)))
-    ("roll"       . ("rol"        #t  (,reg-or-immed ,operand)))
-    ("rorl"       . ("ror"        #t  (,reg-or-immed ,operand)))
-    ("sarl"       . ("sar"        #t  (,reg-or-immed ,operand)))
-    ("shll"       . ("shl"        #t  (,reg-or-immed ,operand)))
-    ("shrl"       . ("shr"        #t  (,reg-or-immed ,operand)))
-    ("bsfl"       . ("bsf"        #f  (,operand ,operand)))
-    ("bsrl"       . ("bsr"        #f  (,operand ,operand)))
-    ("btl"        . ("bt"         #f  (,operand ,operand)))
-    ("nopl"       . ("nop"        #f  (,operand)))
-    ("cltd"       . ("cdq"        #f  ()))
-    ("cwtl"       . ("cwde"       #f  ()))
-    ("leaveq"     . ("leave"      #f  ()))
-    ("cmc"        . ("cmc"        #f  ()))
-    ("stc"        . ("stc"        #f  ()))
-    ("clc"        . ("clc"        #f  ()))
-    ("bswap"      . ("bswap"      #f  (,register))))))
+    ; intel-name  w-flag  operand-format (intel order)
+    ("rcl"      . (#t  (,operand ,reg-or-immed)))
+    ("rcr"      . (#t  (,operand ,reg-or-immed)))
+    ("rol"      . (#t  (,operand ,reg-or-immed)))
+    ("ror"      . (#t  (,operand ,reg-or-immed)))
+    ("sar"      . (#t  (,operand ,reg-or-immed)))
+    ("shl"      . (#t  (,operand ,reg-or-immed)))
+    ("shr"      . (#t  (,operand ,reg-or-immed)))
+    ("shld"     . (#f  (,operand ,register ,reg-or-immed)))
+    ("shrd"     . (#f  (,operand ,register ,reg-or-immed)))
+    ("bsf"      . (#f  (,operand ,operand)))
+    ("bsr"      . (#f  (,operand ,operand)))
+    ("bt"       . (#f  (,operand ,operand)))
+    ("nop"      . (#f  (,operand)))
+    ("cdq"      . (#f  ()))
+    ("cwde"     . (#f  ()))
+    ("leave"    . (#f  ()))
+    ("cmc"      . (#f  ()))
+    ("stc"      . (#f  ()))
+    ("clc"      . (#f  ()))
+    ("bswap"    . (#f  (,register))))))
 
 (define (op->flags op)
   (define m (regexp-match #rx"^[a-z]+([bwl])$" op))
@@ -101,15 +54,11 @@
       [("w") (values '(True)  '(True) )]    ; 16bit
       [("l") (values '(False) '(True) )]))) ; 32bit
 
-(define (rocksalt-info op args)
-  (define r (hash-ref specialOpcode op #f))
+(define (rocksalt-info intel args)
+  (define r (hash-ref specialOpcode intel #f))
   (if r 
-    (values (first r) 
-            (second r)
-            (third r))
-    (values (second (regexp-match #rx"^([a-z]+)[bwl]$" op)) 
-            #t
-            (map (lambda (_) operand) args))))
+    (values (first r) (second r))
+    (values #t (map (lambda (_) operand) args))))
 
 (define (rocksalt-operand op wrap)
   (define m (regexp-match #rx"^\\$0x([a-f0-9]+)$" op))
@@ -132,13 +81,13 @@
   (define p `(MkPrefix (None) (None) ,op-over (False)))
   `(Pair ,p ,instr))
 
-(define (generic-rocksalt-instr op args)
-  (define-values (op* wflag? formats) (rocksalt-info op args))
+(define (generic-rocksalt-instr op intel args)
+  (define-values (wflag? formats) (rocksalt-info intel args))
   (define-values (op-over wflag) (op->flags op))
-  (define id (string->symbol (string-upcase op*)))
+  (define id (string->symbol (string-upcase intel)))
   (prefixed-instr op-over (append 
     (if wflag? `(,id ,wflag) `(,id))
-    (reverse (map rocksalt-operand args formats)))))
+    (map rocksalt-operand (reverse args) formats))))
 
 (define (imul op args)
   (define-values (op-over wflag) (op->flags op))
@@ -151,12 +100,11 @@
              (Some ,(rocksalt-operand (second args) operand))
              (Some ,(rocksalt-operand (first args) (immediate 32))))]))))
 
-(define (rocksalt-instr instr)
+(define (rocksalt-instr instr intel)
   (define is (regexp-split #rx"[ ,]+" instr))
   (define op (car is))
   (define args (cdr is))
-  (if (member op unsupportedOpcode) #f
-    (if (string-prefix? op "imul")
-      (imul op args)
-      (generic-rocksalt-instr op args))))
+  (if (equal? intel "imul") (imul op args)
+  (if (equal? op "nop") (error "nop without arguments is not supported")
+    (generic-rocksalt-instr op intel args))))
 
