@@ -14,7 +14,11 @@
 
 (define (register type op)
   (case type
-    ((register)  op)))
+    ((register) op)))
+
+(define ((immediate bits) type op)
+  (case type
+    ((immediate) (bv op bits))))
 
 (define unsupportedOpcode '(
   "blsil"
@@ -115,9 +119,13 @@
     (reverse (map rocksalt-operand args formats))))
 
 (define (imull args)
-  (if (= 1 (length args))
-    `(IMUL (True) ,(rocksalt-operand (first args) (operand 32))  (None)                                               (None))
-    `(IMUL (True) ,(rocksalt-operand (second args) (operand 32)) (Some ,(rocksalt-operand (first args) (operand 32))) (None))))
+  (case (length args)
+    [(1) `(IMUL (True) ,(rocksalt-operand (first args) (operand 32)) (None) (None))]
+    [(2) `(IMUL (True) ,(rocksalt-operand (second args) (operand 32))
+                       (Some ,(rocksalt-operand (first args) (operand 32))) (None))]
+    [(3) `(IMUL (True) ,(rocksalt-operand (third args) (operand 32))
+                       (Some ,(rocksalt-operand (second args) (operand 32)))
+                       (Some ,(rocksalt-operand (first args) (immediate 32))))]))
 
 (define (rocksalt-instr instr)
   (define is (regexp-split #rx"[ ,]+" instr))
