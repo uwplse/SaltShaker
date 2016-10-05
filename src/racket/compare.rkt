@@ -75,10 +75,7 @@
     (match z ((None) "rocksalt error") ((Some z)
       (diff-state y z))))))))))
 
-(define (run-rocksalt rocksaltInstr)
-  (@ runRocksalt no_prefix rocksaltInstr))
-
-(define (run-stoke instr)
+(define (runStoke instr)
   (define file (make-temporary-file))
   (system* "/x86sem/src/python/instr2racket.py" instr file)
   (define ns (namespace-anchor->namespace a))
@@ -116,14 +113,14 @@
 (define rocksaltInstr (rocksalt-instr instr))
 
 (if (not rocksaltInstr) (displayln "unsupported opcode") (begin
-  (define stoke (run-stoke instr))
-  (define rocksalt (run-rocksalt rocksaltInstr))
+  (define stoke (runStoke instr))
+  (define rocksalt (runRocksalt rocksaltInstr))
   
   (when details
     (printf "Rocksalt Instruction: ~a\n" rocksaltInstr)
     (displayln "")
     (displayln "Rocksalt Semantics:")
-    (for-each displayln (coqList->racketList (replace-unary (@ instr_to_rtl no_prefix rocksaltInstr))))
+    (for-each displayln (coqList->racketList (replace-unary (instrToRTL rocksaltInstr))))
     (displayln "")
     (flush-output))
   
