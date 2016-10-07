@@ -66,14 +66,14 @@
     (wrap 'immediate (string->number (second m) 16))
     (wrap 'register (list
       ((match-lambda 
-        [(regexp #rx"^%e?ax|al$") 'EAX]
-        [(regexp #rx"^%e?cx|cl$") 'ECX]
-        [(regexp #rx"^%e?dx|dl$") 'EDX]
-        [(regexp #rx"^%e?bx|bl$") 'EBX]
-        [(regexp #rx"^%e?sp$")    'ESP]
-        [(regexp #rx"^%e?bp$")    'EBP]
-        [(regexp #rx"^%e?si$")    'ESI]
-        [(regexp #rx"^%e?di$")    'EDI]
+        [(regexp #rx"^%a[xl]$")   'EAX]
+        [(regexp #rx"^%c[xl]$")   'ECX]
+        [(regexp #rx"^%d[xl]$")   'EDX]
+        [(regexp #rx"^%b[xl]$")   'EBX]
+        [(regexp #rx"^%(sp|ah)$") 'ESP]
+        [(regexp #rx"^%(bp|ch)$") 'EBP]
+        [(regexp #rx"^%(si|dh)$") 'ESI]
+        [(regexp #rx"^%(di|bh)$") 'EDI]
         [(regexp #rx"^%([a-z0-9]+)$" m)
           (string->symbol (string-upcase (second m)))]) op)))))
 
