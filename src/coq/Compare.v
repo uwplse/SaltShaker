@@ -12,8 +12,9 @@ Import PTree.
 Import Pos.
 Import BinNums.
 Import Word.
-Require Import SpaceSearch.
+Require Import Basic.
 Require Import Rosette.
+Require Import Precise.
 Require Import Full.
 Require Import ExtractWord.
 Require Import InitState.
@@ -22,7 +23,8 @@ Require Import SharedState.
 Extract Constant cast_unsigned => "word-castu".
 Extract Constant cast_signed => "word-casts".
 
-Existing Instance rosette.
+Existing Instance rosetteBasic.
+Existing Instance rosetteSearch.
 
 Extraction Language Scheme.
 
@@ -102,14 +104,17 @@ Defined.
 
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
   refine (bind symbolicSharedState (fun s => _)).
-  refine (match instrEq s with Some r => single r | None => empty end).
+  refine (match instrEq s with Some r => single r | None => Basic.empty end).
 Defined.
 
 Definition listToOption {A} (l:list A) : option A :=
   match l with [] => None | a::_ => Some a end.
 
 Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
-  refine (listToOption (search spaceInstrEq)).
+  refine (match Precise.search spaceInstrEq with 
+          | empty => None 
+          | solution a => Some a 
+          end).
 Defined.
 
 End InstrEq.

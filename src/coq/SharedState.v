@@ -12,7 +12,7 @@ Import PTree.
 Import Pos.
 Import BinNums.
 Import Word.
-Require Import SpaceSearch.
+Require Import Basic.
 Require Import Full.
 Require Import Rosette.
 Require Import ExtractWord.
@@ -70,19 +70,19 @@ Record SharedState := sharedState {
 }.
 
 Definition symbolicSharedState : Space SharedState.
-  refine (bind full (fun eax' => _)).
-  refine (bind full (fun ecx' => _)).
-  refine (bind full (fun edx' => _)).
-  refine (bind full (fun ebx' => _)).
-  refine (bind full (fun esp' => _)).
-  refine (bind full (fun ebp' => _)).
-  refine (bind full (fun esi' => _)).
-  refine (bind full (fun edi' => _)).
-  refine (bind full (fun cf' => _)).
-  refine (bind full (fun pf' => _)).
-  refine (bind full (fun zf' => _)).
-  refine (bind full (fun sf' => _)).
-  refine (bind full (fun of' => _)). 
+  refine (all (fun eax' => _)).
+  refine (all (fun ecx' => _)).
+  refine (all (fun edx' => _)).
+  refine (all (fun ebx' => _)).
+  refine (all (fun esp' => _)).
+  refine (all (fun ebp' => _)).
+  refine (all (fun esi' => _)).
+  refine (all (fun edi' => _)).
+  refine (all (fun cf' => _)).
+  refine (all (fun pf' => _)).
+  refine (all (fun zf' => _)).
+  refine (all (fun sf' => _)).
+  refine (all (fun of' => _)). 
   refine (single {| 
     eax := eax';
     ecx := ecx'; 

@@ -1,6 +1,6 @@
 Require Import Bits.
 Import Word.
-Require Import SpaceSearch.
+Require Import Basic.
 Require Import Rosette.
 Require Import Full.
 
@@ -35,7 +35,7 @@ Axiom fullIntSpaceOk : forall n, ⟦ fullIntSpace n ⟧ = Full_set (int n).
 
 Extract Constant fullIntSpace => "word-free".
 
-Instance fullInt n : @Full rosette (int n) := {| 
+Instance fullInt n : @Full rosetteBasic (int n) := {| 
   full := fullIntSpace n; 
   denoteFullOk := fullIntSpaceOk n
 |}.
