@@ -13,7 +13,7 @@ Import Pos.
 Import BinNums.
 Import Word.
 Require Import Basic.
-Require Import Rosette.
+Require Import Rosette.Unquantified.
 Require Import Precise.
 Require Import Full.
 Require Import ExtractWord.
@@ -112,7 +112,7 @@ Definition listToOption {A} (l:list A) : option A :=
 
 Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
   refine (match Precise.search spaceInstrEq with 
-          | empty => None 
+          | uninhabited => None 
           | solution a => Some a 
           end).
 Defined.
