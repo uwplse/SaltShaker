@@ -1,7 +1,7 @@
 Require Import Bits.
 Import Word.
 Require Import Basic.
-Require Import Rosette.
+Require Import Rosette.Unquantified.
 Require Import Full.
 
 Extract Constant Word.repr => "word-mkint".

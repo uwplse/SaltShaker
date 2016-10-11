@@ -14,7 +14,7 @@ Import BinNums.
 Import Word.
 Require Import Basic.
 Require Import Full.
-Require Import Rosette.
+Require Import Rosette.Unquantified.
 Require Import ExtractWord.
 Require Import InitState.
 
