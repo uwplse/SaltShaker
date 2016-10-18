@@ -108,7 +108,8 @@
 (define details (= 3 (vector-length (current-command-line-arguments))))
 (define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
-(printf (~a instr #:align 'left #:min-width 25))
+(printf "~a " (~a instr #:align 'left #:min-width 25))
+(printf "~a " (~a intel #:align 'left #:min-width 8))
 (flush-output)
 
 (with-handlers ([exn:fail? (lambda (exn) 
