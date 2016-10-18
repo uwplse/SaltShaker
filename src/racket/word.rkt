@@ -4,7 +4,7 @@
 
 (provide word-free word-mkint word-zero word-one word-mone 
          word-eq word-lt word-ltu
-         word-add word-sub word-mul word-divu word-divs word-mods
+         word-add word-sub word-mul word-divu word-divs word-modu word-mods
          word-castu word-casts
          word-and word-or word-xor word-shl word-shr word-shru word-ror word-rol
          unary->number number->unary positive->number z->number)
@@ -61,6 +61,9 @@
 
 (define word-divs (lambdas (_ x y)
   (bvsdiv x y)))
+
+(define word-modu (lambdas (_ x y)
+  (bvurem x y)))
 
 (define word-mods (lambdas (_ x y)
   (bvsmod x y)))

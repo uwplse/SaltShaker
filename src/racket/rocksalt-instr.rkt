@@ -44,15 +44,29 @@
     ("clc"      . (#f  ()))
     ("bswap"    . (#f  (,register))))))
 
-(define (op->flags op)
+(define (arg->flags arg)
+  ((match-lambda 
+                                     ; override   w-flag
+     [(regexp #rx"^%.[hl]$")   (values '(False) '(False))]        ;  8bit
+     [(regexp #rx"^%.[xpi]$")  (values '(True)  '(True) )]        ; 16bit
+     [(regexp #rx"^%e.[xpi]$") (values '(False) '(True) )]) arg)) ; 32bit
+
+(define (generic-op->flags op)
   (define m (regexp-match #rx"^[a-z]+([bwl])$" op))
   (if (not m) 
     (values '(False) '(True)) ; default to 32bit
     (case (second m)
-             ; override w-flag
+                   ; override   w-flag
       [("b") (values '(False) '(False))]    ;  8bit
       [("w") (values '(True)  '(True) )]    ; 16bit
       [("l") (values '(False) '(True) )]))) ; 32bit
+
+(define (op->flags op)
+  ((match-lambda 
+    [(regexp #rx"^mov[sz]wl$") (values '(False) '(True) )] ; 16bit -> 32bit
+    [(regexp #rx"^mov[sz]bw$") (values '(True)  '(False))] ;  8bit -> 16bit
+    [(regexp #rx"^mov[sz]bl$") (values '(False) '(False))] ;  8bit -> 32bit
+    [else (generic-op->flags op)]) op))
 
 (define (rocksalt-info intel args)
   (define r (hash-ref specialOpcode intel #f))

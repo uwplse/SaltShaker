@@ -33,7 +33,7 @@ clean:
 	rm -f src/coq/x86sem.scm src/racket/x86sem.rkt
 	rm -rf src/racket/compiled 
 
-clean-all: clean
+cleaner: clean
 	make -C lib/SpaceSearch clean
 	make -C lib/stoke clean || true
 	make -C lib/CPUmodels/x86model/Model clean

@@ -77,7 +77,9 @@ RUN wget https://gforge.inria.fr/frs/download.php/file/36199/flocq-2.5.2.tar.gz 
 
 # enable rosette debugging
 RUN cd rosette && \
+# debug errors during symbolic execution
 #   sed -i "s/;(printf/(printf/g" rosette/base/core/effects.rkt && \
+# debug formula sent to solver
 #   sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
     raco pkg remove rosette && \
     raco pkg install
