@@ -87,12 +87,12 @@ Defined.
 Section InstrEq.
 
 Variable eq:SharedState -> SharedState -> bool.
-Variable uninterpretedBitsSpec : nat. (* this is one bit more than we need, but makes like easier*)
+Variable uninterpretedBitsSpec : nat.
 Variable runSpec : Word.int uninterpretedBitsSpec -> SharedState -> option SharedState.
 Variable runRocksalt : SharedState -> option SharedState.
 
-Definition instrEq (s:SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (let s0 := runSpec Word.zero s in _).
+Definition instrEq (u:Word.int uninterpretedBitsSpec) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
+  refine (let s0 := runSpec u s in _).
   refine (let s1 := runRocksalt s in _).
   refine (let error := Some (s, s0, s1) in _).
   refine (match s0 with None =>  error | Some s0' => _ end).
@@ -101,12 +101,13 @@ Definition instrEq (s:SharedState) : option (SharedState * option SharedState * 
 Defined.
 
 Definition testInstrEq : option (SharedState * option SharedState * option SharedState).
-  exact (instrEq testSharedState).
+  exact (instrEq Word.zero testSharedState).
 Defined.
 
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
+  refine (bind full (fun u : Word.int uninterpretedBitsSpec => _)).
   refine (bind symbolicSharedState (fun s => _)).
-  refine (match instrEq s with Some r => single r | None => Basic.empty end).
+  refine (match instrEq u s with Some r => single r | None => Basic.empty end).
 Defined.
 
 Definition listToOption {A} (l:list A) : option A :=
