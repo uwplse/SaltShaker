@@ -79,9 +79,10 @@
   (define file (make-temporary-file))
   (system* "/x86sem/src/python/instr2racket.py" instr file)
   (define ns (namespace-anchor->namespace a))
-  (parameterize ([current-namespace ns])
+  (define-values (ub r) (parameterize ([current-namespace ns])
     (load file)
-    (eval 'run)))
+    (eval '(values uninterpreted-bits run))))
+  (values (number->unary ub) (lambdas (a b) (r a b))))
 
 (define (racketList->coqList l)
   (if (null? l) '(Nil) `(Cons ,(car l) ,(racketList->coqList (cdr l)))))
@@ -116,7 +117,7 @@
   (if details (raise exn) (displayln exn)))])
 
   (define rocksaltInstr (rocksalt-instr instr intel))
-  (define stoke (runStoke instr))
+  (define-values (uninterpretedBitsStoke stoke) (runStoke instr))
   (define rocksalt (runRocksalt rocksaltInstr))
   
   (when details
@@ -134,8 +135,8 @@
   
     (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
     ; testing the instruction, just to make sure the code runs
-    (define _ (@ testInstrEq eq stoke rocksalt))
-    (define result (@ verifyInstrEq eq stoke rocksalt))
+    (define _ (@ testInstrEq eq uninterpretedBitsStoke stoke rocksalt))
+    (define result (@ verifyInstrEq eq uninterpretedBitsStoke stoke rocksalt))
   
     (when details
       (displayln (pretty-result pretty-reg result))

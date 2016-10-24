@@ -16,11 +16,25 @@ stokeout = subprocess.check_output(["stoke", "debug", "formula",
 formula = list(itertools.dropwhile(lambda l: l != "Formula:", stokeout))[1:]
 
 registers = []
+bits = 0
+
+def subBool(m):
+  global bits
+  out = "(bveq (bv 1 1) (extract %s %s u))" % (bits, bits)
+  bits += 1
+  return out
+
+def subBitVector(m):
+  global bits
+  size = int(m.group(1))
+  out = "(extract %s %s u)" % (bits+size-1, bits)
+  bits += size
+  return out
 
 output = """
 ; This file was automatically generated; do not edit!"
 
-(define (run s)
+(define (run u s)
 """
 
 for f in formula:
@@ -29,14 +43,18 @@ for f in formula:
     if m:
       (dst, code) = m.groups()
       code = re.sub("%([a-z0-9]+)", "(state-\\1 s)", code)
-      code = re.sub("TMP_BOOL_[0-9]+", "#f", code)
-      code = re.sub("TMP_BV_([0-9]+)_0+", (lambda s: "(bv 0 %s)" % s.group(1)), code) 
+      code = re.sub("TMP_BOOL_[0-9]+", subBool, code)
+      code = re.sub("TMP_BV_([0-9]+)_(0-9)+", subBitVector, code)
       registers.append(dst)
       output += "  (define new-%s %s)\n" % (dst, code)
     else:
       break
 
 output += "  (state %s))" % " ".join(["new-"+r for r in registers])
+
+output += """
+
+(define uninterpreted-bits %s)""" % bits
 
 f = open(file_, "w")
 f.write(output)

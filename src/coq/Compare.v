@@ -87,11 +87,13 @@ Defined.
 Section InstrEq.
 
 Variable eq:SharedState -> SharedState -> bool.
-Variable run0 run1 : SharedState -> option SharedState.
+Variable uninterpretedBitsSpec : nat. (* this is one bit more than we need, but makes like easier*)
+Variable runSpec : Word.int uninterpretedBitsSpec -> SharedState -> option SharedState.
+Variable runRocksalt : SharedState -> option SharedState.
 
 Definition instrEq (s:SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (let s0 := run0 s in _).
-  refine (let s1 := run1 s in _).
+  refine (let s0 := runSpec Word.zero s in _).
+  refine (let s1 := runRocksalt s in _).
   refine (let error := Some (s, s0, s1) in _).
   refine (match s0 with None =>  error | Some s0' => _ end).
   refine (match s1 with None =>  error | Some s1' => _ end).
