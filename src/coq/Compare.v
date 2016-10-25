@@ -49,6 +49,8 @@ Definition testSharedState : SharedState := {|
 |}.
 
 Set Printing Width 78.
+Check empty_oracle.
+
 
 (* Debug an instruction in here: *)
 Goal False.
@@ -66,7 +68,7 @@ Goal False.
     sf := repr 0; of := repr 0
   |} in _).
   refine (let s := testSharedState in _).
-  refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state s) in _).
+  refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state empty_oracle s) in _).
   refine (let gpr := gp_regs (core (rtl_mach_state (snd s'))) in _).
   refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
   Compute (gpr EAX).
@@ -76,8 +78,8 @@ Abort.
 Definition instrToRTL (pi:prefix * instr) : list rtl_instr :=
   instr_to_rtl (fst pi) (snd pi).
 
-Definition runRocksalt (pi:prefix * instr) (s:SharedState) : option SharedState.
-  refine (let r := RTL_step_list (instrToRTL pi) (shared_rtl_state s) in _).
+Definition runRocksalt (pi:prefix * instr) (o:oracle) (s:SharedState) : option SharedState.
+  refine (let r := RTL_step_list (instrToRTL pi) (shared_rtl_state o s) in _).
   refine (match r with 
   | (Okay_ans tt, s') => Some (rtl_state_shared s')
   | _ => None
@@ -89,11 +91,11 @@ Section InstrEq.
 Variable eq:SharedState -> SharedState -> bool.
 Variable uninterpretedBitsSpec : nat.
 Variable runSpec : Word.int uninterpretedBitsSpec -> SharedState -> option SharedState.
-Variable runRocksalt : SharedState -> option SharedState.
+Variable runRocksalt' : oracle -> SharedState -> option SharedState.
 
-Definition instrEq (u:Word.int uninterpretedBitsSpec) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
+Definition instrEq (u:Word.int uninterpretedBitsSpec) (o:oracle) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
   refine (let s0 := runSpec u s in _).
-  refine (let s1 := runRocksalt s in _).
+  refine (let s1 := runRocksalt' o s in _).
   refine (let error := Some (s, s0, s1) in _).
   refine (match s0 with None =>  error | Some s0' => _ end).
   refine (match s1 with None =>  error | Some s1' => _ end).
@@ -101,17 +103,33 @@ Definition instrEq (u:Word.int uninterpretedBitsSpec) (s:SharedState) : option (
 Defined.
 
 Definition testInstrEq : option (SharedState * option SharedState * option SharedState).
-  exact (instrEq Word.zero testSharedState).
+  exact (instrEq Word.zero empty_oracle testSharedState).
+Defined.
+
+Definition someOracle (o1:Word.int 0) : oracle. 
+  refine {|
+    oracle_bits s z := match s with 
+                       | O => cast_unsigned (Word.shr o1 (repr z))
+                       | _ => Word.zero 
+                       end;
+    oracle_offset := 0
+  |}.
 Defined.
 
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
   refine (bind full (fun u : Word.int uninterpretedBitsSpec => _)).
   refine (bind symbolicSharedState (fun s => _)).
-  refine (match instrEq u s with Some r => single r | None => Basic.empty end).
+(*  refine (match Precise.search _ with 
+          | uninhabited => single (s, Some s, Some s)
+          | solution _ => empty
+          end). *)
+  (* refine (bind full (fun o1 : Word.int 16 => _)). *)
+  refine (let o1 : Word.int 0 := Word.zero in _ ).
+  refine (match instrEq u (someOracle o1) s with 
+    | Some r => single r (* uninhabited (* empty *) *)
+    | None => empty (* single tt *)
+    end).
 Defined.
-
-Definition listToOption {A} (l:list A) : option A :=
-  match l with [] => None | a::_ => Some a end.
 
 Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
   refine (match Precise.search spaceInstrEq with 

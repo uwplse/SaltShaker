@@ -14,6 +14,8 @@ echo '===[ running and investigated ]==='
 
 # stoke shifts by wrong amount (SH)
 $compare 'rcll $0x1, %ebx' 'rcl'
+exit
+
 $compare 'rcrl $0x1, %ebx' 'rcr'
 
 # rocksalt updates input before all flags are computed (UR)
