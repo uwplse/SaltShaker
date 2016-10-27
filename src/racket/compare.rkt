@@ -123,7 +123,7 @@
   (define rocksalt (runRocksalt rocksaltInstr))
   
   (when details
-    (printf "Rocksalt Instruction: ~a\n" rocksaltInstr)
+    (printf "\n\nRocksalt Instruction: ~a\n" rocksaltInstr)
     (displayln "")
     (displayln "Rocksalt Semantics:")
     (for-each displayln (coqList->racketList (replace-unary (instrToRTL rocksaltInstr))))
