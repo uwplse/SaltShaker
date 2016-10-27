@@ -106,6 +106,8 @@
     [(? list? l) (map replace-unary l)]
     [e e]))
 
+(define t0 (current-inexact-milliseconds))
+
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
 (define intel (string-trim (vector-ref (current-command-line-arguments) 1)))
 (define details (= 3 (vector-length (current-command-line-arguments))))
@@ -154,9 +156,10 @@
   (define ignoredRegs (verificationLoop ignoreRegs))
   
   (if (null? ignoredRegs)
-    (printf "is equal\n")
-    (printf "is equal modulo ~a\n"
+    (printf "is equal")
+    (printf "is equal modulo ~a"
       (string-join (map symbol->string ignoredRegs) ", ")))
+  (printf " (~ams)\n" (- (current-inexact-milliseconds) t0))
   (flush-output)
   
   (when details
