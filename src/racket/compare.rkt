@@ -1,6 +1,8 @@
 #!/usr/bin/env racket
 #lang s-exp rosette
 
+(current-bitwidth #f)
+
 (require "x86sem.rkt" "state.rkt" "bvex.rkt")
 (define-namespace-anchor a)
 
@@ -158,8 +160,9 @@
   (flush-output)
   
   (when details
-  ; (displayln "Counterexample Space:")
-  ; (displayln (@ spaceInstrEq eq stoke rocksalt (void)))
+    (displayln "Counterexample Space:")
+    (define eq (shared_state_eq (shared-state-regs '())))
+    (displayln (@ spaceInstrEq eq uninterpretedBitsStoke stoke rocksalt (void)))
     (displayln "======================================================\n")
     (flush-output)))
    

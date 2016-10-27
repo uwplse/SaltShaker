@@ -86,6 +86,14 @@ Definition runRocksalt (pi:prefix * instr) (o:oracle) (s:SharedState) : option S
   end).
 Defined.
 
+Parameter existsWord : forall {n:nat}, (int n -> bool) -> bool.
+Extract Constant existsWord => "(lambdas (n f) 
+  (define-symbolic existentially-quantified (bitvector (word-bits->bv-bits n)))
+  (if (exists (list existentially-quantified) 
+    (match (f existentially-quantified)
+      ((True)  #t)
+      ((False) #f))) '(True) '(False)))".
+
 Section InstrEq.
 
 Variable eq:SharedState -> SharedState -> bool.
@@ -119,16 +127,28 @@ Defined.
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
   refine (bind full (fun u : Word.int uninterpretedBitsSpec => _)).
   refine (bind symbolicSharedState (fun s => _)).
-(*  refine (match Precise.search _ with 
-          | uninhabited => single (s, Some s, Some s)
+  refine (if existsWord (fun o1 => _)
+          then empty
+          else _).
+  - refine (match instrEq u (someOracle o1) s with 
+    | Some r => (* uninhabited *) false   (* non-equal *)
+    | None => (* solution tt *)   true   (* equal *)
+    end).
+  - refine (match instrEq u (someOracle Word.zero) s with 
+    | Some r => single r
+    | None => empty (* this should never happen *)
+    end).
+(*
+  refine (match Precise.search _ with 
+          | uninhabited => 
           | solution _ => empty
-          end). *)
+          end).
   (* refine (bind full (fun o1 : Word.int 16 => _)). *)
   refine (let o1 : Word.int 0 := Word.zero in _ ).
   refine (match instrEq u (someOracle o1) s with 
-    | Some r => single r (* uninhabited (* empty *) *)
-    | None => empty (* single tt *)
-    end).
+    | Some r => (* uninhabited *) empty     (* non-equal *)
+    | None => (* solution tt *) single tt   (* equal *)
+    end). *)
 Defined.
 
 Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
