@@ -101,6 +101,7 @@ Definition symbolicSharedState : Space SharedState.
 Defined.
 
 Section SharedState.
+  Variable (o:oracle).
   Variable (s:SharedState).
 
   Definition shared_reg : fmap register int32 :=
@@ -146,7 +147,7 @@ Section SharedState.
  
   Definition shared_rtl_state : rtl_state.
     refine {|
-      rtl_oracle := empty_oracle;
+      rtl_oracle := o;
       rtl_env := empty_env;
       rtl_mach_state := shared_full_machine;
       rtl_memory := empty_mem

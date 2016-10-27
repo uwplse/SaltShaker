@@ -7,7 +7,8 @@
          word-add word-sub word-mul word-divu word-divs word-modu word-mods
          word-castu word-casts
          word-and word-or word-xor word-shl word-shr word-shru word-ror word-rol
-         unary->number number->unary positive->number z->number)
+         unary->number number->unary positive->number z->number
+         word-bits->bv-bits)
 
 (define (number->unary n)
   (if (= n 0) '(O) `(S ,(number->unary (- n 1)))))
