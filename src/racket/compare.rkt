@@ -113,8 +113,8 @@
 (define details (= 3 (vector-length (current-command-line-arguments))))
 (define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
-(printf "~a " (~a instr #:align 'left #:min-width 25))
-(printf "~a " (~a intel #:align 'left #:min-width 8))
+(printf "~a " (~a (format "'~a'" instr) #:align 'left #:min-width 35))
+(printf "~a " (~a intel #:align 'left #:min-width 15))
 (flush-output)
 
 (with-handlers ([exn:fail? (lambda (exn) 
@@ -159,7 +159,7 @@
     (printf "is equal")
     (printf "is equal modulo ~a"
       (string-join (map symbol->string ignoredRegs) ", ")))
-  (printf " (~ams)\n" (- (current-inexact-milliseconds) t0))
+  (printf " (~ams)\n" (exact-round (- (current-inexact-milliseconds) t0)))
   (flush-output)
   
   (when details
