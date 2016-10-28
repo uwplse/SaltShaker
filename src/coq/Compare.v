@@ -115,25 +115,11 @@ Definition testInstrEq : option (SharedState * option SharedState * option Share
   exact (instrEq Word.zero empty_oracle testSharedState).
 Defined.
 
-Definition someOracle (f0 f1 f2 f3 f4 f5:Word.int 0) (r:Word.int 15) : oracle. 
+Definition someOracle (f:Word.int 5) (r:Word.int 15) : oracle. 
   refine {|
     oracle_bits s z := match s with 
-                       | 0%nat => 
-                         match z with
-                         | 0 => f0
-                         | 1 => f1
-                         | 2 => f2
-                         | 3 => f3
-                         | 4 => f4
-                         | 5 => f5
-                         | _ => Word.zero
-                         end
-                         (* cast_unsigned (Word.shr o1 (repr z)) *)
-                       | 15%nat => 
-                         match z with 
-                         | 0 => r
-                         | _ => Word.zero
-                         end
+                       | 0%nat => cast_unsigned (Word.shr f (repr z))
+                       | 15%nat => r
                        | _ => Word.zero 
                        end;
     oracle_offset := 0
@@ -146,19 +132,13 @@ Definition spaceInstrEq : Space (SharedState * option SharedState * option Share
   refine (if (_:bool)
           then empty
           else _).
-  - refine (existsWord (fun f0 => _)).
-    refine (existsWord (fun f1 => _)).
-    refine (existsWord (fun f2 => _)).
-    refine (existsWord (fun f3 => _)).
-    refine (existsWord (fun f4 => _)).
-    refine (existsWord (fun f5 => _)).
+  - refine (existsWord (fun f => _)).
     refine (existsWord (fun r => _)).
-    refine (match instrEq u (someOracle f0 f1 f2 f3 f4 f5 r) s with 
+    refine (match instrEq u (someOracle f r) s with 
     | Some r => false (* non-equal *)
     | None =>   true  (* equal *)
     end).
-  - refine (match instrEq u (someOracle Word.zero Word.zero Word.zero Word.zero 
-                                        Word.zero Word.zero Word.zero) s with 
+  - refine (match instrEq u (someOracle Word.zero Word.zero) s with 
     | Some r => single r
     | None => empty (* this should never happen *)
     end).
