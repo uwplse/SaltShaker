@@ -33,12 +33,8 @@ Finally, an instruction can have one instruction prefixes from each of the four 
 
 Imm_op = Immediate operand = constant
 
-The boolean passed to instructions toggels betweeen 8bit (false) and 32bit (true)
-
 http://penberg.blogspot.com/2010/04/short-introduction-to-x86-instruction.
 *)
-Definition no_prefix : prefix := mkPrefix None None false false.
-
 Definition testSharedState : SharedState := {| 
   eax := repr 129786124931; ecx := repr 456123421348; 
   edx := repr 982483124977; ebx := repr 123497821934; 
@@ -51,11 +47,15 @@ Definition testSharedState : SharedState := {|
 Set Printing Width 78.
 Check empty_oracle.
 
+(*
+(Pair (MkPrefix (None) (None) (True) (False)) (IMUL (True) (Reg_op (ECX)) (Some (Reg_op (EBX))) (Some (bv 65504 32))))
+
+*)
 
 (* Debug an instruction in here: *)
 Goal False.
-  refine (let p := no_prefix in _).
-  refine (let i : instr := LEAVE in _).
+  refine (let p := mkPrefix None None true false in _).
+  refine (let i : instr := IMUL true (Reg_op ECX) (Some (Reg_op EBX)) (Some (repr 65504)) in _).
   (* refine (let i : instr := BSF (Reg_op EAX) (Reg_op EBX) in _). *)
   refine (let r := instr_to_rtl p i in _).
   unfold instr_to_rtl, runConv in r; simpl in r.
@@ -67,12 +67,13 @@ Goal False.
     cf := repr 0; pf := repr 0; zf := repr 0; 
     sf := repr 0; of := repr 0
   |} in _).
-  refine (let s := testSharedState in _).
+(*  refine (let s := testSharedState in _). *)
   refine (let s' := RTL_step_list (instr_to_rtl p i) (shared_rtl_state empty_oracle s) in _).
   refine (let gpr := gp_regs (core (rtl_mach_state (snd s'))) in _).
   refine (let fgs := flags_reg (core (rtl_mach_state (snd s'))) in _).
   Compute (gpr EAX).
-  Compute (fgs ZF).
+  Compute (fgs CF).
+  Compute (fgs OF).
 Abort.
 
 Definition instrToRTL (pi:prefix * instr) : list rtl_instr :=
@@ -114,10 +115,25 @@ Definition testInstrEq : option (SharedState * option SharedState * option Share
   exact (instrEq Word.zero empty_oracle testSharedState).
 Defined.
 
-Definition someOracle (o1:Word.int 5) : oracle. 
+Definition someOracle (f0 f1 f2 f3 f4 f5:Word.int 0) (r:Word.int 15) : oracle. 
   refine {|
     oracle_bits s z := match s with 
-                       | O => cast_unsigned (Word.shr o1 (repr z))
+                       | 0%nat => 
+                         match z with
+                         | 0 => f0
+                         | 1 => f1
+                         | 2 => f2
+                         | 3 => f3
+                         | 4 => f4
+                         | 5 => f5
+                         | _ => Word.zero
+                         end
+                         (* cast_unsigned (Word.shr o1 (repr z)) *)
+                       | 15%nat => 
+                         match z with 
+                         | 0 => r
+                         | _ => Word.zero
+                         end
                        | _ => Word.zero 
                        end;
     oracle_offset := 0
@@ -127,14 +143,22 @@ Defined.
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
   refine (bind full (fun u : Word.int uninterpretedBitsSpec => _)).
   refine (bind symbolicSharedState (fun s => _)).
-  refine (if existsWord (fun o1 => _)
+  refine (if (_:bool)
           then empty
           else _).
-  - refine (match instrEq u (someOracle o1) s with 
+  - refine (existsWord (fun f0 => _)).
+    refine (existsWord (fun f1 => _)).
+    refine (existsWord (fun f2 => _)).
+    refine (existsWord (fun f3 => _)).
+    refine (existsWord (fun f4 => _)).
+    refine (existsWord (fun f5 => _)).
+    refine (existsWord (fun r => _)).
+    refine (match instrEq u (someOracle f0 f1 f2 f3 f4 f5 r) s with 
     | Some r => false (* non-equal *)
     | None =>   true  (* equal *)
     end).
-  - refine (match instrEq u (someOracle Word.zero) s with 
+  - refine (match instrEq u (someOracle Word.zero Word.zero Word.zero Word.zero 
+                                        Word.zero Word.zero Word.zero) s with 
     | Some r => single r
     | None => empty (* this should never happen *)
     end).
