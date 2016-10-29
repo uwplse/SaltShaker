@@ -115,11 +115,11 @@ Definition testInstrEq : option (SharedState * option SharedState * option Share
   exact (instrEq Word.zero empty_oracle testSharedState).
 Defined.
 
-Definition someOracle (f:Word.int 5) (r:Word.int 15) : oracle. 
+Definition someOracle (w:Word.int 21) : oracle. 
   refine {|
     oracle_bits s z := match s with 
-                       | 0%nat => cast_unsigned (Word.shr f (repr z))
-                       | 15%nat => r
+                       | 0%nat => cast_unsigned (Word.shr w (repr z))
+                       | 15%nat => cast_unsigned (Word.shr w (repr 6))
                        | _ => Word.zero 
                        end;
     oracle_offset := 0
@@ -132,13 +132,12 @@ Definition spaceInstrEq : Space (SharedState * option SharedState * option Share
   refine (if (_:bool)
           then empty
           else _).
-  - refine (existsWord (fun f => _)).
-    refine (existsWord (fun r => _)).
-    refine (match instrEq u (someOracle f r) s with 
+  - refine (existsWord (fun w => _)).
+    refine (match instrEq u (someOracle w) s with 
     | Some r => false (* non-equal *)
     | None =>   true  (* equal *)
     end).
-  - refine (match instrEq u (someOracle Word.zero Word.zero) s with 
+  - refine (match instrEq u (someOracle Word.zero) s with 
     | Some r => single r
     | None => empty (* this should never happen *)
     end).
