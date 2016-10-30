@@ -150,17 +150,6 @@ Definition spaceInstrEq : Space (SharedState * option SharedState * option Share
     | Some r => r
     | None => (s, Some s, Some s) (* this should never happen *)
     end).
-(*
-  refine (match Precise.search _ with 
-          | uninhabited => 
-          | solution _ => empty
-          end).
-  (* refine (bind full (fun o1 : Word.int 16 => _)). *)
-  refine (let o1 : Word.int 0 := Word.zero in _ ).
-  refine (match instrEq u (someOracle o1) s with 
-    | Some r => (* uninhabited *) empty     (* non-equal *)
-    | None => (* solution tt *) single tt   (* equal *)
-    end). *)
 Defined.
 
 Definition verifyInstrEq : option (SharedState * option SharedState * option SharedState).
