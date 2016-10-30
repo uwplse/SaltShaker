@@ -19,6 +19,8 @@ Require Import Full.
 Require Import ExtractWord.
 Require Import InitState.
 Require Import SharedState.
+Require Import JamesTactics.
+Require Import Coq.Logic.Classical_Pred_Type.
 
 Extract Constant cast_unsigned => "word-castu".
 Extract Constant cast_signed => "word-casts".
@@ -45,7 +47,6 @@ Definition testSharedState : SharedState := {|
 |}.
 
 Set Printing Width 78.
-Check empty_oracle.
 
 (*
 (Pair (MkPrefix (None) (None) (True) (False)) (IMUL (True) (Reg_op (ECX)) (Some (Reg_op (EBX))) (Some (bv 65504 32))))
@@ -79,7 +80,7 @@ Abort.
 Definition instrToRTL (pi:prefix * instr) : list rtl_instr :=
   instr_to_rtl (fst pi) (snd pi).
 
-Definition runRocksalt (pi:prefix * instr) (o:oracle) (s:SharedState) : option SharedState.
+Definition runRocksalt' (pi:prefix * instr) (o:oracle) (s:SharedState) : option SharedState.
   refine (let r := RTL_step_list (instrToRTL pi) (shared_rtl_state o s) in _).
   refine (match r with 
   | (Okay_ans tt, s') => Some (rtl_state_shared s')
@@ -95,19 +96,29 @@ Extract Constant existsWord => "(lambdas (n f)
       ((True)  #t)
       ((False) #f))) '(True) '(False)))".
 
+Axiom existsWordOk : forall n f, existsWord f = true <-> exists w : Word.int n, f w = true.
+
+Section Instr.
+
+Variable uninterpretedBitsSpec : nat.
+Variable runX86Spec : Word.int uninterpretedBitsSpec -> SharedState -> option SharedState.
+Variable rocksaltInstr : prefix * instr. 
+
+Definition runRocksalt o s := runRocksalt' rocksaltInstr o s. 
+
 Section InstrEq.
 
 Variable eq:SharedState -> SharedState -> bool.
-Variable uninterpretedBitsSpec : nat.
-Variable runSpec : Word.int uninterpretedBitsSpec -> SharedState -> option SharedState.
-Variable runRocksalt' : oracle -> SharedState -> option SharedState.
 
 Definition instrEq (u:Word.int uninterpretedBitsSpec) (o:oracle) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (let s0 := runSpec u s in _).
-  refine (let s1 := runRocksalt' o s in _).
+  refine (let s0 := runX86Spec u s in _).
+  refine (let s1 := runRocksalt o s in _).
   refine (let error := Some (s, s0, s1) in _).
-  refine (match s0 with None =>  error | Some s0' => _ end).
-  refine (match s1 with None =>  error | Some s1' => _ end).
+  refine (match s0,s1 with 
+  | None, None => None
+  | Some s0', Some s1' => _
+  | _,_ => error
+  end).
   refine (if eq s0' s1' then None else error).
 Defined.
 
@@ -127,19 +138,17 @@ Definition someOracle (f:Word.int 5) (r:Word.int 15) : oracle.
 Defined.
 
 Definition spaceInstrEq : Space (SharedState * option SharedState * option SharedState).
-  refine (bind full (fun u : Word.int uninterpretedBitsSpec => _)).
-  refine (bind symbolicSharedState (fun s => _)).
-  refine (if (_:bool)
-          then empty
-          else _).
+  refine (all (fun u : Word.int uninterpretedBitsSpec => _)).
+  refine (all (fun s : SharedState => _)).
+  refine (if (_:bool) then empty else single _).
   - refine (existsWord (fun f => _)).
     refine (match instrEq u (someOracle f (cast_unsigned u)) s with 
     | Some r => false (* non-equal *)
     | None =>   true  (* equal *)
     end).
   - refine (match instrEq u (someOracle Word.zero (cast_unsigned u)) s with 
-    | Some r => single r
-    | None => empty (* this should never happen *)
+    | Some r => r
+    | None => (s, Some s, Some s) (* this should never happen *)
     end).
 (*
   refine (match Precise.search _ with 
@@ -162,6 +171,102 @@ Definition verifyInstrEq : option (SharedState * option SharedState * option Sha
 Defined.
 
 End InstrEq.
+
+Set Implicit Arguments.
+
+Section Specification.
+  Variable A B : Type.
+
+  Class Specification := {
+    specification : A -> B -> Type
+  }.
+  
+  Context `{Specification}.
+  Definition spec := specification.
+
+  Class Implementation := {
+    implementation : A -> B;
+    implementsSpecification : forall a, spec a (implementation a)
+  }.
+
+  Context `{Implementation}.
+  Definition impl := implementation.
+End Specification.
+
+Arguments Implementation {_ _} _.
+
+Instance X86 : Specification SharedState (option SharedState) := {| 
+  specification s s' := {u : _ & runX86Spec u s = s'}
+|}.
+
+Require Import FunctionalExtensionality.
+Require Import Coq.Logic.ClassicalFacts.
+Axiom prop_ext : prop_extensionality. 
+
+Lemma emptyNot {A s} : s = Empty_set A -> (forall a, ~(s a)).
+  rewrite emptyIsFalse.
+  intros h a.
+  rewrite h.
+  intuition.
+Qed.
+
+Definition verifyInstrProp : 
+  (SharedState * option SharedState * option SharedState) +
+  (forall s0 (P:_ -> Prop) (h:forall o, P (runRocksalt o s0)) (cpu:Implementation X86), P (impl s0)).
+Proof.
+  destruct (verifyInstrEq (fun s0 s1 => if shared_state_eq_dec s0 s1 then true else false)) as [s'|] eqn:eq.
+  - left.
+    exact s'.
+  - right.
+    intros.
+    destruct cpu as [cpu cpuSpec].
+    simpl in *.
+    specialize (cpuSpec s0).
+    destruct cpuSpec as [u cpuSpec].
+    rewrite <- cpuSpec.
+    clear cpuSpec cpu.
+    unfold verifyInstrEq in eq.
+    break_match; [congruence|].
+    clear eq; rename Heqr into eq.
+    apply searchUninhabited in eq.
+    unfold spaceInstrEq in eq.
+    rewrite denoteAllOk in eq.
+    eapply emptyNot in eq.
+    apply not_ex_all_not with (n := u) in eq.
+    refine ((fun h' => _) (@denoteAllOk)).
+    rewrite h' in eq; clear h'.
+    apply not_ex_all_not with (n := s0) in eq.
+    break_match; revgoals. {
+      exfalso.
+      apply eq; clear eq.
+      refine ((fun h' => _) (@denoteSingleOk)).
+      rewrite h'; clear h'.
+      rewrite singletonIsEqual.
+      reflexivity.
+    } 
+    clear eq; rename Heqb into eq.
+    rewrite existsWordOk in eq.
+    destruct eq as [w eq].
+    break_match; [congruence|].
+    clear eq; rename Heqo into eq.
+    unfold instrEq in eq.
+    break_match; revgoals; clear Heqo.
+    + (* returned invalid state *)
+      break_match; [congruence|].
+      clear eq; rename Heqo into eq.
+      rewrite <- eq.
+      apply h.
+    + (* returned valid state *)
+      break_match; [|congruence].
+      rename Heqo into eq'.
+      break_match; [|congruence].
+      break_match; [|congruence].
+      subst.
+      rewrite <- eq'.
+      apply h.
+Defined.
+
+End Instr.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
   runRocksalt instrToRTL

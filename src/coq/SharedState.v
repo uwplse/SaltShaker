@@ -17,6 +17,9 @@ Require Import Full.
 Require Import Rosette.Unquantified.
 Require Import ExtractWord.
 Require Import InitState.
+Require Import Coq.Logic.ClassicalFacts.
+Axiom prop_ext : prop_extensionality. 
+Require Import FunctionalExtensionality.
 
 (*
 Shared state between Rocksalt and Stoke.
@@ -100,6 +103,25 @@ Definition symbolicSharedState : Space SharedState.
   |}).
 Defined.
 
+Global Instance fullSharedState : Full SharedState.
+  refine {| full := symbolicSharedState |}.
+Proof.
+  unfold symbolicSharedState.
+  Search Full_set.
+  rewrite fullIsTrue.
+  extensionality s.
+  destruct s.
+  apply prop_ext.
+  intuition.
+  refine ((fun h => _) (@denoteAllOk)).
+  repeat (rewrite h; eexists).
+  clear h.
+  refine ((fun h => _) (@denoteSingleOk)).
+  rewrite h.
+  rewrite singletonIsEqual.
+  reflexivity.
+Defined.
+
 Section SharedState.
   Variable (o:oracle).
   Variable (s:SharedState).
@@ -180,4 +202,8 @@ Definition shared_state_eq (l:list {n : nat & SharedState -> int n}) (s0 s1:Shar
   refine (forallb (fun nf => Word.eq _ _) l).
   refine ((projT2 nf) s0).
   refine ((projT2 nf) s1).
+Defined.
+
+Definition shared_state_eq_dec (s0 s1:SharedState) : {s0 = s1} + {s0 <> s1}.
+  decide equality; apply Word.eq_dec.
 Defined.
