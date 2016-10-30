@@ -87,6 +87,6 @@ RUN cd rosette && \
 ENTRYPOINT /x86sem/src/test.sh
 
 # install
-ADD . /x86sem
-RUN make -C /x86sem
+# ADD . /x86sem
+# RUN make -C /x86sem
 
