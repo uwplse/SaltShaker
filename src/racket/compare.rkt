@@ -138,8 +138,8 @@
   
     (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
     ; testing the instruction, just to make sure the code runs
-    (define _ (@ testInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr))
-    (define result (@ verifyInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr))
+    (define _ (@ testInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq))
+    (define result (@ verifyInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq))
   
     (when details
       (displayln (pretty-result pretty-reg result))
@@ -164,7 +164,7 @@
   (when details
     (displayln "Counterexample Space:")
     (define eq (shared_state_eq (shared-state-regs '())))
-    (displayln (@ spaceInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr (void)))
+    (displayln (@ spaceInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq (void)))
     (displayln "======================================================\n")
     (flush-output)))
    

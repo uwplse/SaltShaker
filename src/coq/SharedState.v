@@ -107,7 +107,6 @@ Global Instance fullSharedState : Full SharedState.
   refine {| full := symbolicSharedState |}.
 Proof.
   unfold symbolicSharedState.
-  Search Full_set.
   rewrite fullIsTrue.
   extensionality s.
   destruct s.
