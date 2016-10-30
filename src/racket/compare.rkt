@@ -77,7 +77,7 @@
     (match z ((None) "rocksalt error") ((Some z)
       (diff-state y z))))))))))
 
-(define (runStoke instr)
+(define (stoke instr)
   (define file (make-temporary-file))
   (system* "/x86sem/src/python/instr2racket.py" instr file)
   (define ns (namespace-anchor->namespace a))
@@ -117,12 +117,11 @@
 (printf "~a " (~a intel #:align 'left #:min-width 15))
 (flush-output)
 
-(with-handlers ([exn:fail? (lambda (exn) 
+(with-handlers ([exn:fail? (lambda (exn)
   (if details (raise exn) (displayln exn)))])
 
   (define rocksaltInstr (rocksalt-instr instr intel))
-  (define-values (uninterpretedBitsStoke stoke) (runStoke instr))
-  (define rocksalt (runRocksalt rocksaltInstr))
+  (define-values (uninterpretedBitsStoke runStoke) (stoke instr))
   
   (when details
     (printf "\n\nRocksalt Instruction: ~a\n" rocksaltInstr)
@@ -139,8 +138,8 @@
   
     (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
     ; testing the instruction, just to make sure the code runs
-    (define _ (@ testInstrEq eq uninterpretedBitsStoke stoke rocksalt))
-    (define result (@ verifyInstrEq eq uninterpretedBitsStoke stoke rocksalt))
+    (define _ (@ testInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr))
+    (define result (@ verifyInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr))
   
     (when details
       (displayln (pretty-result pretty-reg result))
@@ -165,7 +164,7 @@
   (when details
     (displayln "Counterexample Space:")
     (define eq (shared_state_eq (shared-state-regs '())))
-    (displayln (@ spaceInstrEq eq uninterpretedBitsStoke stoke rocksalt (void)))
+    (displayln (@ spaceInstrEq eq uninterpretedBitsStoke runStoke rocksaltInstr (void)))
     (displayln "======================================================\n")
     (flush-output)))
    
