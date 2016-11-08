@@ -12,11 +12,12 @@ echo '===[ running and investigated ]==='
 # SH = shift by wrong amount
 # ND = more non-determinism than necessary (not a bug)
 
-# cf/of flags are computed inaccurately (in stoke?)
-$compare 'imulw $0xffe0, %bx, %cx' imul  # 'is equal modulo cf, sf, of (2786.123046875ms)'
-
 # of flag is not set
 $compare 'shldl $0x0, %ebx, %ecx'  shld  # 'is equal modulo sf, of (2111ms)'
+$compare 'shldl $0x1, %ebx, %ebx'  shld  # 'is equal modulo of (2194ms)'
+
+# cf/of flags are computed inaccurately
+$compare 'imulw $0xffe0, %bx, %cx' imul  # 'is equal modulo cf, sf, of (2786.123046875ms)'
 
 # stoke shifts by wrong amount (SH)
 $compare 'rcll $0x1, %ebx' 'rcl'

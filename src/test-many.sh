@@ -5690,15 +5690,15 @@ $compare 'imulw $0xffff, %cx, %dx' 'imul'
 $compare 'imulw $0xffff, %dx, %bx' 'imul'
 $compare 'imulw $0xffff, %dx, %cx' 'imul'
 $compare 'imulw $0xffff, %dx, %dx' 'imul'
-$compare 'imulw %bx' 'imul'
+echo \'imulw %bx\'                         imul            diverges
 $compare 'imulw %bx, %bx' 'imul'
 $compare 'imulw %bx, %cx' 'imul'
 $compare 'imulw %bx, %dx' 'imul'
-$compare 'imulw %cx' 'imul'
+echo \'imulw %cx\'                         imul            diverges
 $compare 'imulw %cx, %bx' 'imul'
 $compare 'imulw %cx, %cx' 'imul'
 $compare 'imulw %cx, %dx' 'imul'
-$compare 'imulw %dx' 'imul'
+echo \'imulw %dx\'                         imul            diverges
 $compare 'imulw %dx, %bx' 'imul'
 $compare 'imulw %dx, %cx' 'imul'
 $compare 'imulw %dx, %dx' 'imul'

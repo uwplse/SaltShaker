@@ -44,7 +44,7 @@ for f in formula:
       (dst, code) = m.groups()
       code = re.sub("%([a-z0-9]+)", "(state-\\1 s)", code)
       code = re.sub("TMP_BOOL_[0-9]+", subBool, code)
-      code = re.sub("TMP_BV_([0-9]+)_(0-9)+", subBitVector, code)
+      code = re.sub("TMP_BV_([0-9]+)_([0-9]+)", subBitVector, code)
       registers.append(dst)
       output += "  (define new-%s %s)\n" % (dst, code)
     else:
