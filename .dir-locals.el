@@ -1,5 +1,5 @@
 ((coq-mode . ((eval .
-  (let ((root (replace-regexp-in-string "^/docker:[^:]+:" ""
+  (let ((root (replace-regexp-in-string "^/\\(\\(ssh\\|docker\\):[^:|]+[:|]\\)+" ""
                   (file-name-directory
                     (let ((d (dir-locals-find-file ".")))
                       (if (stringp d) d (car d)))))))

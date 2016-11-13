@@ -265,27 +265,48 @@ End Instr.
 
 Parameter Instr : Type.
 Parameter Instr_eq_dec : forall (i i' : Instr), {i = i'} + {i <> i'}.
+Extract Constant Instr => "__".
+Extract Constant Instr_eq_dec => "(lambdas (i j) (if (eq? i j) '(Left) '(Right)))".
 
-Parameter Stoke : Instr ->
-                  {uninterpretedBits : nat & (int uninterpretedBits -> SharedSt
-Parameter RocksaltInstr : Instr -> prefix * instr.
+Parameter stokeRacket : Instr ->
+                  {uninterpretedBits : nat & 
+                  (int uninterpretedBits -> SharedState -> option SharedState)}.
+Parameter rocksaltInstrRacket : Instr -> prefix * instr.
+Extract Constant stokeRacket => "stoke".
+Extract Constant rocksaltInstrRacket => "(lambdas (i) (rocksalt-instr (car i) (cdr i)))".
 
-Definition eqInstr (instr : Instr) : Space (SharedState * option SharedState *
-  let result := Stoke instr in
-  let uninterpretedBits := projT1 result in
-  let runStoke := projT2 result in
-  let rocksaltInstr := RocksaltInstr instr in
-  match (verifyInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eq
-    | None => empty
-    | Some a => single a
-    end.
 
+Check verifyInstrProp.
+
+Definition eqInstr (instr : Instr) : option (SharedState * option SharedState * option SharedState).
+  refine (let result := stokeRacket instr in _).
+  refine (let uninterpretedBits := projT1 result in _).
+  refine (let runStoke := projT2 result in _).
+  refine (let rocksaltInstr := rocksaltInstrRacket instr in _).
+  refine (let r := @verifyInstrProp uninterpretedBits runStoke rocksaltInstr in _). 
+  refine (match r with
+  | inl a => Some a
+  | inr _ => None
+  end).
+Defined.
+
+Definition testEqInstr (instr : Instr) : option (SharedState * option SharedState * option SharedState).
+  refine (let result := stokeRacket instr in _).
+  refine (let uninterpretedBits := projT1 result in _).
+  refine (let runStoke := projT2 result in _).
+  refine (let rocksaltInstr := rocksaltInstrRacket instr in _).
+  refine (@testInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eqb).
+Defined.
+
+(*
 Definition verifyInstrsEq (instrs : Space Instr)
   : option (SharedState * option SharedState * option SharedState) :=
   match (search (bind instrs eqInstr)) with
   | uninhabited => None
   | solution a => Some a
   end.
+*)
+
 
 (*
 Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
@@ -296,8 +317,8 @@ Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
   end.
  *)
 
-End AllInstrs.
-
-Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
+Extraction "x86sem" instrEq testInstrEq spaceInstrEq eqInstr testEqInstr
   runRocksalt instrToRTL
   shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of.
+
+

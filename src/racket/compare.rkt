@@ -77,27 +77,11 @@
     (match z ((None) "rocksalt error") ((Some z)
       (diff-state y z))))))))))
 
-(define (stoke instr)
-  (define file (make-temporary-file))
-  (system* "/x86sem/src/python/instr2racket.py" instr file)
-  (define ns (namespace-anchor->namespace a))
-  (define-values (ub r) (parameterize ([current-namespace ns])
-    (load file)
-    (eval '(values uninterpreted-bits run))))
-  (values (number->unary ub) (lambdas (a b) (r a b))))
-
 (define (racketList->coqList l)
   (if (null? l) '(Nil) `(Cons ,(car l) ,(racketList->coqList (cdr l)))))
 
 (define (coqList->racketList l)
   (match l ((Nil) '()) ((Cons h t) (cons h (coqList->racketList t)))))
-
-(define (shared-state-regs ignoreRegs)
-  (define regs (remove* ignoreRegs registers))
-  (racketList->coqList (for/list ((reg regs)) 
-    (define ns (namespace-anchor->namespace a))
-    (parameterize ([current-namespace ns])
-      `(ExistT (O) ,(eval reg))))))
 
 (define replace-unary
   (match-lambda
@@ -111,60 +95,21 @@
 (define instr (string-trim (vector-ref (current-command-line-arguments) 0)))
 (define intel (string-trim (vector-ref (current-command-line-arguments) 1)))
 (define details (= 3 (vector-length (current-command-line-arguments))))
-(define ignoreRegs '())  ; (map string->symbol (cdr (vector->list (current-command-line-arguments)))))
 
 (printf "~a " (~a (format "'~a'" instr) #:align 'left #:min-width 35))
 (printf "~a " (~a intel #:align 'left #:min-width 15))
 (flush-output)
 
-(with-handlers ([exn:fail? (lambda (exn)
-  (if details (raise exn) (displayln exn)))])
+; (with-handlers ([exn:fail? (lambda (exn)
+; (if details (raise exn) (displayln exn)))])
 
-  (define rocksaltInstr (rocksalt-instr instr intel))
-  (define-values (uninterpretedBitsStoke runStoke) (stoke instr))
-  
-  (when details
-    (printf "\n\nRocksalt Instruction: ~a\n" rocksaltInstr)
-    (displayln "")
-    (displayln "Rocksalt Semantics:")
-    (for-each displayln (coqList->racketList (replace-unary (instrToRTL rocksaltInstr))))
-    (displayln "")
-    (flush-output))
-  
-  (define (verificationLoop ignoreRegs)
-    (when details
-      (printf "Verification Outcome (ignoring registers ~a):\n" ignoreRegs)
-      (flush-output))
-  
-    (define eq (shared_state_eq (shared-state-regs ignoreRegs)))
-    ; testing the instruction, just to make sure the code runs
-    (define _ (@ testInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq))
-    (define result (@ verifyInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq))
-  
-    (when details
-      (displayln (pretty-result pretty-reg result))
-      (displayln "")
-      (flush-output))
-  
-    (match result
-      ((None) ignoreRegs)
-      ((Some r)
-        (verificationLoop (remove-duplicates
-          (append ignoreRegs (diff-result r)))))))
-  
-  (define ignoredRegs (verificationLoop ignoreRegs))
-  
-  (if (null? ignoredRegs)
-    (printf "is equal")
-    (printf "is equal modulo ~a"
-      (string-join (map symbol->string ignoredRegs) ", ")))
+  (define _ (@ testEqInstr (cons instr intel)))
+  (define result (@ eqInstr (cons instr intel)))
+  (match result
+    ((None) (printf "is equal"))
+    ((Some r) (printf "is not equal (differs on ~a)"
+      (string-join (map symbol->string (diff-result r)) ", "))))
+
   (printf " (~ams)\n" (exact-round (- (current-inexact-milliseconds) t0)))
   (flush-output)
   
-  (when details
-    (displayln "Counterexample Space:")
-    (define eq (shared_state_eq (shared-state-regs '())))
-    (displayln (@ spaceInstrEq uninterpretedBitsStoke runStoke rocksaltInstr eq (void)))
-    (displayln "======================================================\n")
-    (flush-output)))
-   

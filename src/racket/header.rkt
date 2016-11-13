@@ -3,9 +3,9 @@
 (require rosette/solver/smt/z3)
 (require racket/format)
 
-(require "extraction.rkt" "rosette.rkt" "word.rkt")
+(require "extraction.rkt" "rosette.rkt" "word.rkt" "stoke.rkt" "rocksalt-instr.rkt")
 
-(provide instrEq testInstrEq spaceInstrEq verifyInstrEq 
+(provide instrEq testInstrEq spaceInstrEq verifyInstrEq eqInstr testEqInstr
          runRocksalt instrToRTL
          shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of)
 
