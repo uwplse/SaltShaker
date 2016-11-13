@@ -31,6 +31,10 @@ Definition prefix := X86Model.X86Syntax.prefix.
 Extract Constant cast_unsigned => "word-castu".
 Extract Constant cast_signed => "word-casts".
 
+Definition debug {A B} (a:A) (f:unit -> B) := f tt.
+Arguments debug / {_ _} _ _.
+Extract Constant debug => "(lambdas (a f) (@ f '(Tt)))".
+
 Existing Instance rosetteBasic.
 Existing Instance rosetteSearch.
 
@@ -117,14 +121,19 @@ Section InstrEq.
 Variable eq:SharedState -> SharedState -> bool.
 
 Definition instrEq (u:Word.int uninterpretedBitsSpec) (o:oracle) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
+  refine (debug 3214 (fun _ => _)).
   refine (let s0 := runX86Spec u s in _).
+  refine (debug s0 (fun _ => _)).
   refine (let s1 := runRocksalt o s in _).
+  refine (debug s1 (fun _ => _)).
   refine (let error := Some (s, s0, s1) in _).
+  refine (debug error (fun _ => _)).
   refine (match s0,s1 with 
   | None, None => None
   | Some s0', Some s1' => _
   | _,_ => error
   end).
+  refine (debug tt (fun _ => _)).
   refine (if eq s0' s1' then None else error).
 Defined.
 
@@ -209,7 +218,7 @@ Definition verifyInstrProp :
   (SharedState * option SharedState * option SharedState) +
   (forall s0 (P:_ -> Prop) (h:forall o, P (runRocksalt o s0)) (cpu:Implementation X86), P (impl s0)).
 Proof.
-  destruct (verifyInstrEq (fun s0 s1 => if shared_state_eq_dec s0 s1 then true else false)) as [s'|] eqn:eq.
+  destruct (verifyInstrEq shared_state_eqb) as [s'|] eqn:eq.
   - left.
     exact s'.
   - right.
@@ -247,14 +256,17 @@ Proof.
     unfold instrEq in eq.
     break_match; revgoals; clear Heqo.
     + (* returned invalid state *)
+      simpl in *.
       break_match; [congruence|].
       clear eq; rename Heqo into eq.
       rewrite <- eq.
       apply h.
     + (* returned valid state *)
+      simpl in *.
       break_match; [|congruence].
       rename Heqo into eq'.
       break_match; [|congruence].
+      unfold shared_state_eqb in *.
       break_match; [|congruence].
       subst.
       rewrite <- eq'.
@@ -295,6 +307,7 @@ Definition testEqInstr (instr : Instr) : option (SharedState * option SharedStat
   refine (let uninterpretedBits := projT1 result in _).
   refine (let runStoke := projT2 result in _).
   refine (let rocksaltInstr := rocksaltInstrRacket instr in _).
+  refine (debug (uninterpretedBits, runStoke, rocksaltInstr) (fun _ => _)).
   refine (@testInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eqb).
 Defined.
 

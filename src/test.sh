@@ -14,9 +14,6 @@ echo '===[ running and investigated ]==='
 
 # of flag is not set
 $compare 'shldl $0x0, %ebx, %ecx'  shld  # 'is equal modulo sf, of (2111ms)'
-
-exit
-
 $compare 'shldl $0x1, %ebx, %ebx'  shld  # 'is equal modulo of (2194ms)'
 
 # cf/of flags are computed inaccurately

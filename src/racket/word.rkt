@@ -3,7 +3,7 @@
 (require "extraction.rkt" "bvex.rkt")
 
 (provide word-free word-mkint word-zero word-one word-mone 
-         word-eq word-lt word-ltu
+         word-eq word-eqdec word-lt word-ltu
          word-add word-sub word-mul word-divu word-divs word-modu word-mods
          word-castu word-casts
          word-and word-or word-xor word-shl word-shr word-shru word-ror word-rol
@@ -71,6 +71,9 @@
 
 (define word-eq (lambdas (_ x y)
   (if (bveq x y) '(True) '(False))))
+
+(define word-eqdec (lambdas (_ x y)
+  (if (bveq x y) '(Left) '(Right))))
 
 (define word-lt (lambdas (_ x y)
   (if (bvslt x y) '(True) '(False))))

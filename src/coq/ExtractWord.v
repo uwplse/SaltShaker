@@ -9,6 +9,7 @@ Extract Constant Word.zero => "word-zero".
 Extract Constant Word.one => "word-one".
 Extract Constant Word.mone => "word-mone".
 Extract Constant Word.eq => "word-eq".
+Extract Constant Word.eq_dec => "word-eqdec".
 Extract Constant Word.lt => "word-lt".
 Extract Constant Word.ltu => "word-ltu".
 Extract Constant Word.add => "word-add".
