@@ -19,6 +19,7 @@ Require Import EqDec.
 Require Import Minus.
 Require Import Incremental.
 Require Import Full.
+Require Import Native.
 Require Import ExtractWord.
 Require Import InitState.
 Require Import SharedState.
@@ -275,6 +276,10 @@ Defined.
 
 End Instr.
 
+Existing Instance listSpace.
+Existing Instance listSearch.
+Existing Instance listIncSearch.
+
 Parameter Instr : Type.
 Parameter Instr_eq_dec : forall (i i' : Instr), {i = i'} + {i <> i'}.
 Extract Constant Instr => "__".
@@ -311,24 +316,27 @@ Definition testEqInstr (instr : Instr) : option (SharedState * option SharedStat
   refine (@testInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eqb).
 Defined.
 
-(*
+Definition eqInstrBinder (instr : Instr)
+  : Space (SharedState * option SharedState * option SharedState).
+  refine (match eqInstr instr with None => empty | Some a => single a end).
+Defined.
+
 Definition verifyInstrsEq (instrs : Space Instr)
-  : option (SharedState * option SharedState * option SharedState) :=
-  match (search (bind instrs eqInstr)) with
-  | uninhabited => None
-  | solution a => Some a
-  end.
-*)
+  : option (SharedState * option SharedState * option SharedState).
+  refine (match search (bind instrs eqInstrBinder) with
+          | uninhabited => None
+          | solution a => Some a
+          end).
+Defined.
 
-
-(*
 Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
-  : option (SharedState * option SharedState * option SharedState) :=
-  match (incSearch instrs' instrs eqInstr) with
-  | uninhabited => None
-  | solution a => Some a
-  end.
- *)
+  : option (SharedState * option SharedState * option SharedState).
+  refine (match (incSearch instrs' instrs eqInstrBinder) with
+          | uninhabited => None
+          | solution a => Some a
+          end).
+  constructor. apply Instr_eq_dec.
+Defined.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq eqInstr testEqInstr
   runRocksalt instrToRTL
