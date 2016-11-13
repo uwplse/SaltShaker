@@ -15,12 +15,18 @@ Import Word.
 Require Import Basic.
 Require Import Rosette.Unquantified.
 Require Import Precise.
+Require Import EqDec.
+Require Import Minus.
+Require Import Incremental.
 Require Import Full.
 Require Import ExtractWord.
 Require Import InitState.
 Require Import SharedState.
 Require Import JamesTactics.
 Require Import Coq.Logic.Classical_Pred_Type.
+Require Import String.
+
+Definition prefix := X86Model.X86Syntax.prefix.
 
 Extract Constant cast_unsigned => "word-castu".
 Extract Constant cast_signed => "word-casts".
@@ -256,6 +262,41 @@ Proof.
 Defined.
 
 End Instr.
+
+Parameter Instr : Type.
+Parameter Instr_eq_dec : forall (i i' : Instr), {i = i'} + {i <> i'}.
+
+Parameter Stoke : Instr ->
+                  {uninterpretedBits : nat & (int uninterpretedBits -> SharedSt
+Parameter RocksaltInstr : Instr -> prefix * instr.
+
+Definition eqInstr (instr : Instr) : Space (SharedState * option SharedState *
+  let result := Stoke instr in
+  let uninterpretedBits := projT1 result in
+  let runStoke := projT2 result in
+  let rocksaltInstr := RocksaltInstr instr in
+  match (verifyInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eq
+    | None => empty
+    | Some a => single a
+    end.
+
+Definition verifyInstrsEq (instrs : Space Instr)
+  : option (SharedState * option SharedState * option SharedState) :=
+  match (search (bind instrs eqInstr)) with
+  | uninhabited => None
+  | solution a => Some a
+  end.
+
+(*
+Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
+  : option (SharedState * option SharedState * option SharedState) :=
+  match (incSearch instrs' instrs eqInstr) with
+  | uninhabited => None
+  | solution a => Some a
+  end.
+ *)
+
+End AllInstrs.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq verifyInstrEq 
   runRocksalt instrToRTL

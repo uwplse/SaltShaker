@@ -206,3 +206,6 @@ Defined.
 Definition shared_state_eq_dec (s0 s1:SharedState) : {s0 = s1} + {s0 <> s1}.
   decide equality; apply Word.eq_dec.
 Defined.
+
+Definition shared_state_eqb (s0 s1 : SharedState) : bool :=
+  if shared_state_eq_dec s0 s1 then true else false.
