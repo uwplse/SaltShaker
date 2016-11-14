@@ -1,0 +1,1017 @@
+sbbw $0x753, %ax : sbb
+sbbw $0x78, %bx : sbb
+sbbw $0x789d, %ax : sbb
+sbbw $0x78a1, %ax : sbb
+sbbw $0x79, %dx : sbb
+sbbw $0x7af2, %cx : sbb
+sbbw $0x7b, %dx : sbb
+sbbw $0x7b3c, %ax : sbb
+sbbw $0x7d, %dx : sbb
+sbbw $0x7f, %ax : sbb
+sbbw $0x7f, %bx : sbb
+sbbw $0x7f, %cx : sbb
+sbbw $0x7f, %dx : sbb
+sbbw $0x7fff, %ax : sbb
+sbbw $0x7fff, %bx : sbb
+sbbw $0x7fff, %cx : sbb
+sbbw $0x7fff, %dx : sbb
+sbbw $0x80, %ax : sbb
+sbbw $0x80, %bx : sbb
+sbbw $0x80, %cx : sbb
+sbbw $0x8000, %ax : sbb
+sbbw $0x8000, %bx : sbb
+sbbw $0x8000, %cx : sbb
+sbbw $0x8000, %dx : sbb
+sbbw $0x81, %bx : sbb
+sbbw $0x812e, %cx : sbb
+sbbw $0x825c, %ax : sbb
+sbbw $0x831b, %ax : sbb
+sbbw $0x832, %bx : sbb
+sbbw $0x83e7, %ax : sbb
+sbbw $0x85bd, %bx : sbb
+sbbw $0x87ae, %dx : sbb
+sbbw $0x8841, %bx : sbb
+sbbw $0x885d, %dx : sbb
+sbbw $0x89, %dx : sbb
+sbbw $0x8950, %bx : sbb
+sbbw $0x89a5, %ax : sbb
+sbbw $0x89ca, %dx : sbb
+sbbw $0x8a, %cx : sbb
+sbbw $0x8a58, %ax : sbb
+sbbw $0x8a91, %dx : sbb
+sbbw $0x8b4, %ax : sbb
+sbbw $0x8c, %dx : sbb
+sbbw $0x8ce, %cx : sbb
+sbbw $0x8d, %cx : sbb
+sbbw $0x8d10, %bx : sbb
+sbbw $0x8d26, %ax : sbb
+sbbw $0x8d87, %ax : sbb
+sbbw $0x8e, %bx : sbb
+sbbw $0x8e4e, %ax : sbb
+sbbw $0x8ebf, %dx : sbb
+sbbw $0x8f, %cx : sbb
+sbbw $0x8f, %dx : sbb
+sbbw $0x8f37, %ax : sbb
+sbbw $0x8f8d, %ax : sbb
+sbbw $0x906, %ax : sbb
+sbbw $0x91, %bx : sbb
+sbbw $0x927, %dx : sbb
+sbbw $0x939a, %ax : sbb
+sbbw $0x94df, %cx : sbb
+sbbw $0x9537, %ax : sbb
+sbbw $0x95ab, %bx : sbb
+sbbw $0x962c, %bx : sbb
+sbbw $0x96bd, %cx : sbb
+sbbw $0x9749, %ax : sbb
+sbbw $0x98, %bx : sbb
+sbbw $0x988d, %cx : sbb
+sbbw $0x9a5d, %bx : sbb
+sbbw $0x9acf, %dx : sbb
+sbbw $0x9c, %dx : sbb
+sbbw $0x9c96, %dx : sbb
+sbbw $0x9e, %dx : sbb
+sbbw $0x9f, %dx : sbb
+sbbw $0x9f28, %dx : sbb
+sbbw $0x9f3, %cx : sbb
+sbbw $0x9f4b, %ax : sbb
+sbbw $0xa0ed, %cx : sbb
+sbbw $0xa33b, %ax : sbb
+sbbw $0xa34c, %ax : sbb
+sbbw $0xa4, %bx : sbb
+sbbw $0xa4a9, %bx : sbb
+sbbw $0xa5, %bx : sbb
+sbbw $0xa6, %bx : sbb
+sbbw $0xa627, %dx : sbb
+sbbw $0xa718, %ax : sbb
+sbbw $0xa7f6, %ax : sbb
+sbbw $0xa822, %ax : sbb
+sbbw $0xa9, %cx : sbb
+sbbw $0xa91, %dx : sbb
+sbbw $0xa923, %ax : sbb
+sbbw $0xa95c, %bx : sbb
+sbbw $0xaa, %cx : sbb
+sbbw $0xac9b, %dx : sbb
+sbbw $0xad0, %cx : sbb
+sbbw $0xadd5, %ax : sbb
+sbbw $0xae43, %dx : sbb
+sbbw $0xaebe, %ax : sbb
+sbbw $0xafa, %cx : sbb
+sbbw $0xb062, %ax : sbb
+sbbw $0xb1, %bx : sbb
+sbbw $0xb1, %cx : sbb
+sbbw $0xb23d, %ax : sbb
+sbbw $0xb37, %dx : sbb
+sbbw $0xb39e, %ax : sbb
+sbbw $0xb415, %ax : sbb
+sbbw $0xb432, %cx : sbb
+sbbw $0xb5ac, %ax : sbb
+sbbw $0xb691, %cx : sbb
+sbbw $0xb7, %dx : sbb
+sbbw $0xb78a, %ax : sbb
+sbbw $0xb7dd, %ax : sbb
+sbbw $0xb8, %bx : sbb
+sbbw $0xb8d6, %ax : sbb
+sbbw $0xb9, %dx : sbb
+sbbw $0xba48, %bx : sbb
+sbbw $0xbc, %cx : sbb
+sbbw $0xbc, %dx : sbb
+sbbw $0xbc72, %ax : sbb
+sbbw $0xbe5e, %cx : sbb
+sbbw $0xbe6a, %ax : sbb
+sbbw $0xbe8, %ax : sbb
+sbbw $0xbf, %bx : sbb
+sbbw $0xbf, %cx : sbb
+sbbw $0xc1, %cx : sbb
+sbbw $0xc171, %bx : sbb
+sbbw $0xc1ee, %cx : sbb
+sbbw $0xc2, %cx : sbb
+sbbw $0xc2a1, %ax : sbb
+sbbw $0xc3b, %dx : sbb
+sbbw $0xc4, %dx : sbb
+sbbw $0xc552, %cx : sbb
+sbbw $0xc6, %dx : sbb
+sbbw $0xc721, %cx : sbb
+sbbw $0xc8, %bx : sbb
+sbbw $0xc89e, %dx : sbb
+sbbw $0xc9, %bx : sbb
+sbbw $0xca2e, %bx : sbb
+sbbw $0xcaa9, %dx : sbb
+sbbw $0xcab0, %bx : sbb
+sbbw $0xcb, %bx : sbb
+sbbw $0xcb, %cx : sbb
+sbbw $0xcc, %dx : sbb
+sbbw $0xcc55, %ax : sbb
+sbbw $0xcc57, %dx : sbb
+sbbw $0xcdc1, %ax : sbb
+sbbw $0xce, %cx : sbb
+sbbw $0xce, %dx : sbb
+sbbw $0xce21, %ax : sbb
+sbbw $0xcf8, %ax : sbb
+sbbw $0xd, %dx : sbb
+sbbw $0xd0, %cx : sbb
+sbbw $0xd02, %ax : sbb
+sbbw $0xd06a, %dx : sbb
+sbbw $0xd1, %dx : sbb
+sbbw $0xd117, %ax : sbb
+sbbw $0xd309, %ax : sbb
+sbbw $0xd334, %ax : sbb
+sbbw $0xd381, %dx : sbb
+sbbw $0xd3a4, %bx : sbb
+sbbw $0xd41, %cx : sbb
+sbbw $0xd411, %cx : sbb
+sbbw $0xd569, %dx : sbb
+sbbw $0xd6, %bx : sbb
+sbbw $0xd6, %dx : sbb
+sbbw $0xd62d, %dx : sbb
+sbbw $0xd6db, %dx : sbb
+sbbw $0xd9, %cx : sbb
+sbbw $0xd9, %dx : sbb
+sbbw $0xd9cc, %ax : sbb
+sbbw $0xda57, %ax : sbb
+sbbw $0xda60, %dx : sbb
+sbbw $0xdb, %dx : sbb
+sbbw $0xdb90, %ax : sbb
+sbbw $0xdc, %bx : sbb
+sbbw $0xdc62, %cx : sbb
+sbbw $0xdc83, %dx : sbb
+sbbw $0xdcd3, %dx : sbb
+sbbw $0xddde, %ax : sbb
+sbbw $0xde, %dx : sbb
+sbbw $0xdf, %cx : sbb
+sbbw $0xdf47, %ax : sbb
+sbbw $0xdfe6, %ax : sbb
+sbbw $0xe0, %bx : sbb
+sbbw $0xe0, %cx : sbb
+sbbw $0xe0, %dx : sbb
+sbbw $0xe087, %dx : sbb
+sbbw $0xe2, %bx : sbb
+sbbw $0xe3, %dx : sbb
+sbbw $0xe30c, %cx : sbb
+sbbw $0xe4, %cx : sbb
+sbbw $0xe5, %dx : sbb
+sbbw $0xe6a1, %ax : sbb
+sbbw $0xe755, %ax : sbb
+sbbw $0xe85a, %ax : sbb
+sbbw $0xe85f, %cx : sbb
+sbbw $0xea94, %ax : sbb
+sbbw $0xeb, %cx : sbb
+sbbw $0xeb, %dx : sbb
+sbbw $0xeb1e, %ax : sbb
+sbbw $0xebbf, %cx : sbb
+sbbw $0xec5b, %bx : sbb
+sbbw $0xec5f, %bx : sbb
+sbbw $0xeca1, %dx : sbb
+sbbw $0xed, %cx : sbb
+sbbw $0xeda8, %bx : sbb
+sbbw $0xee1d, %ax : sbb
+sbbw $0xee60, %ax : sbb
+sbbw $0xeed2, %ax : sbb
+sbbw $0xef, %dx : sbb
+sbbw $0xf1b7, %bx : sbb
+sbbw $0xf43b, %dx : sbb
+sbbw $0xf7, %cx : sbb
+sbbw $0xf7, %dx : sbb
+sbbw $0xf94b, %ax : sbb
+sbbw $0xfa73, %ax : sbb
+sbbw $0xfb45, %ax : sbb
+sbbw $0xfb54, %ax : sbb
+sbbw $0xfd63, %ax : sbb
+sbbw $0xfe2b, %ax : sbb
+sbbw $0xff, %bx : sbb
+sbbw $0xff, %cx : sbb
+sbbw $0xff, %dx : sbb
+sbbw $0xffe0, %ax : sbb
+sbbw $0xffe0, %bx : sbb
+sbbw $0xffe0, %cx : sbb
+sbbw $0xffe0, %dx : sbb
+sbbw $0xffff, %ax : sbb
+sbbw $0xffff, %bx : sbb
+sbbw $0xffff, %cx : sbb
+sbbw $0xffff, %dx : sbb
+sbbw %bx, %bx : sbb
+sbbw %bx, %cx : sbb
+sbbw %bx, %dx : sbb
+sbbw %cx, %bx : sbb
+sbbw %cx, %cx : sbb
+sbbw %cx, %dx : sbb
+sbbw %dx, %bx : sbb
+sbbw %dx, %cx : sbb
+sbbw %dx, %dx : sbb
+shlb $0x0, %ah : shl
+shlb $0x0, %bh : shl
+shlb $0x0, %bl : shl
+shlb $0x0, %ch : shl
+shlb $0x0, %cl : shl
+shlb $0x0, %dh : shl
+shlb $0x0, %dl : shl
+shlb $0x1, %ah : shl
+shlb $0x1, %bh : shl
+shlb $0x1, %bl : shl
+shlb $0x1, %ch : shl
+shlb $0x1, %cl : shl
+shlb $0x1, %dh : shl
+shlb $0x1, %dl : shl
+shlb $0x10, %cl : shl
+shlb $0x11, %ah : shl
+shlb $0x11, %dl : shl
+shlb $0x12, %ah : shl
+shlb $0x12, %bl : shl
+shlb $0x16, %bh : shl
+shlb $0x16, %ch : shl
+shlb $0x17, %dl : shl
+shlb $0x18, %ah : shl
+shlb $0x18, %cl : shl
+shlb $0x19, %cl : shl
+shlb $0x1a, %bl : shl
+shlb $0x1a, %ch : shl
+shlb $0x1b, %ch : shl
+shlb $0x1b, %dl : shl
+shlb $0x1c, %bl : shl
+shlb $0x1c, %dl : shl
+shlb $0x1d, %cl : shl
+shlb $0x1e, %dl : shl
+shlb $0x1f, %bh : shl
+shlb $0x2, %cl : shl
+shlb $0x20, %dl : shl
+shlb $0x22, %bh : shl
+shlb $0x23, %bl : shl
+shlb $0x23, %dl : shl
+shlb $0x24, %ah : shl
+shlb $0x29, %ah : shl
+shlb $0x2a, %ah : shl
+shlb $0x2a, %dl : shl
+shlb $0x2c, %bl : shl
+shlb $0x2c, %dh : shl
+shlb $0x30, %ah : shl
+shlb $0x30, %bh : shl
+shlb $0x30, %bl : shl
+shlb $0x30, %ch : shl
+shlb $0x30, %cl : shl
+shlb $0x30, %dh : shl
+shlb $0x30, %dl : shl
+shlb $0x31, %bh : shl
+shlb $0x31, %cl : shl
+shlb $0x31, %dl : shl
+shlb $0x33, %dh : shl
+shlb $0x34, %bh : shl
+shlb $0x35, %cl : shl
+shlb $0x37, %bl : shl
+shlb $0x37, %dl : shl
+shlb $0x38, %dh : shl
+shlb $0x39, %dh : shl
+shlb $0x3a, %cl : shl
+shlb $0x3c, %dl : shl
+shlb $0x3e, %bh : shl
+shlb $0x3e, %cl : shl
+shlb $0x42, %ch : shl
+shlb $0x43, %ch : shl
+shlb $0x45, %bl : shl
+shlb $0x45, %ch : shl
+shlb $0x47, %bl : shl
+shlb $0x47, %dh : shl
+shlb $0x48, %bl : shl
+shlb $0x4b, %bl : shl
+shlb $0x4b, %dh : shl
+shlb $0x4f, %bl : shl
+shlb $0x5, %ah : shl
+shlb $0x5, %bl : shl
+shlb $0x52, %ah : shl
+shlb $0x54, %ah : shl
+shlb $0x54, %dl : shl
+shlb $0x55, %bl : shl
+shlb $0x55, %dl : shl
+shlb $0x58, %ah : shl
+shlb $0x59, %ah : shl
+shlb $0x5a, %ah : shl
+shlb $0x5b, %bh : shl
+shlb $0x5c, %ch : shl
+shlb $0x5d, %bh : shl
+shlb $0x5d, %bl : shl
+shlb $0x5e, %bl : shl
+shlb $0x5e, %ch : shl
+shlb $0x5f, %cl : shl
+shlb $0x60, %bl : shl
+shlb $0x62, %ch : shl
+shlb $0x63, %bl : shl
+shlb $0x66, %bh : shl
+shlb $0x66, %ch : shl
+shlb $0x67, %dh : shl
+shlb $0x6a, %dh : shl
+shlb $0x6b, %bh : shl
+shlb $0x6b, %cl : shl
+shlb $0x6d, %ch : shl
+shlb $0x6d, %cl : shl
+shlb $0x6e, %bh : shl
+shlb $0x6f, %ah : shl
+shlb $0x7, %ah : shl
+shlb $0x72, %dl : shl
+shlb $0x73, %ch : shl
+shlb $0x74, %dl : shl
+shlb $0x75, %bh : shl
+shlb $0x76, %cl : shl
+shlb $0x77, %dl : shl
+shlb $0x79, %ah : shl
+shlb $0x79, %cl : shl
+shlb $0x7b, %dl : shl
+shlb $0x7d, %bl : shl
+shlb $0x7f, %ah : shl
+shlb $0x7f, %bh : shl
+shlb $0x7f, %bl : shl
+shlb $0x7f, %ch : shl
+shlb $0x7f, %cl : shl
+shlb $0x7f, %dh : shl
+shlb $0x7f, %dl : shl
+shlb $0x8, %cl : shl
+shlb $0x80, %ah : shl
+shlb $0x80, %bh : shl
+shlb $0x80, %bl : shl
+shlb $0x80, %ch : shl
+shlb $0x80, %cl : shl
+shlb $0x80, %dh : shl
+shlb $0x80, %dl : shl
+shlb $0x81, %ah : shl
+shlb $0x81, %dl : shl
+shlb $0x83, %ah : shl
+shlb $0x84, %dh : shl
+shlb $0x86, %ch : shl
+shlb $0x86, %dh : shl
+shlb $0x89, %dl : shl
+shlb $0x8a, %cl : shl
+shlb $0x8b, %bh : shl
+shlb $0x8b, %dl : shl
+shlb $0x8e, %cl : shl
+shlb $0x8f, %ah : shl
+shlb $0x9, %dl : shl
+shlb $0x93, %bh : shl
+shlb $0x93, %dh : shl
+shlb $0x94, %ah : shl
+shlb $0x94, %dl : shl
+shlb $0x96, %bh : shl
+shlb $0x96, %ch : shl
+shlb $0x99, %ah : shl
+shlb $0x9a, %bh : shl
+shlb $0x9b, %ah : shl
+shlb $0x9c, %bh : shl
+shlb $0x9c, %ch : shl
+shlb $0x9c, %dl : shl
+shlb $0x9e, %bh : shl
+shlb $0x9e, %dl : shl
+shlb $0x9f, %ah : shl
+shlb $0x9f, %dl : shl
+shlb $0xa0, %bh : shl
+shlb $0xa1, %bh : shl
+shlb $0xa4, %ch : shl
+shlb $0xa5, %ah : shl
+shlb $0xa9, %bl : shl
+shlb $0xa9, %dl : shl
+shlb $0xab, %ch : shl
+shlb $0xab, %cl : shl
+shlb $0xab, %dl : shl
+shlb $0xac, %bl : shl
+shlb $0xac, %dh : shl
+shlb $0xad, %bl : shl
+shlb $0xb, %dh : shl
+shlb $0xb2, %dl : shl
+shlb $0xb4, %cl : shl
+shlb $0xb4, %dh : shl
+shlb $0xb8, %dl : shl
+shlb $0xbc, %dl : shl
+shlb $0xbf, %bh : shl
+shlb $0xc0, %cl : shl
+shlb $0xc7, %ah : shl
+shlb $0xc7, %dh : shl
+shlb $0xc8, %cl : shl
+shlb $0xca, %ah : shl
+shlb $0xca, %cl : shl
+shlb $0xcb, %cl : shl
+shlb $0xcc, %bl : shl
+shlb $0xcd, %ah : shl
+shlb $0xce, %dh : shl
+shlb $0xd, %dl : shl
+shlb $0xd6, %ah : shl
+shlb $0xdb, %bl : shl
+shlb $0xdb, %cl : shl
+shlb $0xdd, %ah : shl
+shlb $0xdd, %bl : shl
+shlb $0xde, %bh : shl
+shlb $0xde, %cl : shl
+shlb $0xe0, %ah : shl
+shlb $0xe0, %bh : shl
+shlb $0xe0, %bl : shl
+shlb $0xe0, %ch : shl
+shlb $0xe0, %cl : shl
+shlb $0xe0, %dh : shl
+shlb $0xe0, %dl : shl
+shlb $0xe1, %cl : shl
+shlb $0xe2, %cl : shl
+shlb $0xe2, %dl : shl
+shlb $0xe3, %ch : shl
+shlb $0xe3, %dh : shl
+shlb $0xe6, %dl : shl
+shlb $0xe7, %ch : shl
+shlb $0xe8, %bl : shl
+shlb $0xe8, %dl : shl
+shlb $0xed, %bl : shl
+shlb $0xef, %dl : shl
+shlb $0xf, %dh : shl
+shlb $0xf0, %bl : shl
+shlb $0xf5, %bl : shl
+shlb $0xf9, %ch : shl
+shlb $0xfa, %dl : shl
+shlb $0xfd, %ch : shl
+shlb $0xfd, %dh : shl
+shlb $0xff, %ah : shl
+shlb $0xff, %bh : shl
+shlb $0xff, %bl : shl
+shlb $0xff, %ch : shl
+shlb $0xff, %cl : shl
+shlb $0xff, %dh : shl
+shlb $0xff, %dl : shl
+shlb %cl, %ah : shl
+shlb %cl, %bh : shl
+shlb %cl, %bl : shl
+shlb %cl, %ch : shl
+shlb %cl, %cl : shl
+shlb %cl, %dh : shl
+shlb %cl, %dl : shl
+shldl $0x0, %ebx, %ebx : shld
+shldl $0x0, %ebx, %ecx : shld
+shldl $0x0, %ebx, %edx : shld
+shldl $0x0, %ecx, %ebx : shld
+shldl $0x0, %ecx, %ecx : shld
+shldl $0x0, %ecx, %edx : shld
+shldl $0x0, %edx, %ebx : shld
+shldl $0x0, %edx, %ecx : shld
+shldl $0x0, %edx, %edx : shld
+shldl $0x1, %ebx, %ebx : shld
+shldl $0x1, %ebx, %ecx : shld
+shldl $0x1, %ebx, %edx : shld
+shldl $0x1, %ecx, %ebx : shld
+shldl $0x1, %edx, %ecx : shld
+shldl $0x11, %edx, %ebx : shld
+shldl $0x13, %ebx, %edx : shld
+shldl $0x15, %ebx, %ecx : shld
+shldl $0x18, %edx, %ecx : shld
+shldl $0x1c, %edx, %ebx : shld
+shldl $0x1e, %ebx, %edx : shld
+shldl $0x21, %ebx, %ebx : shld
+shldl $0x21, %ecx, %ebx : shld
+shldl $0x24, %edx, %ebx : shld
+shldl $0x28, %ebx, %ecx : shld
+shldl $0x28, %ecx, %ecx : shld
+shldl $0x29, %ebx, %ecx : shld
+shldl $0x2b, %ecx, %ecx : shld
+shldl $0x3, %ecx, %ecx : shld
+shldl $0x3, %edx, %edx : shld
+shldl $0x30, %ebx, %ebx : shld
+shldl $0x30, %ebx, %ecx : shld
+shldl $0x30, %ebx, %edx : shld
+shldl $0x30, %ecx, %ebx : shld
+shldl $0x30, %ecx, %ecx : shld
+shldl $0x30, %ecx, %edx : shld
+shldl $0x30, %edx, %ebx : shld
+shldl $0x30, %edx, %ecx : shld
+shldl $0x30, %edx, %edx : shld
+shldl $0x34, %edx, %ebx : shld
+shldl $0x3a, %edx, %ecx : shld
+shldl $0x3e, %edx, %edx : shld
+shldl $0x3f, %ebx, %edx : shld
+shldl $0x4, %edx, %edx : shld
+shldl $0x41, %edx, %edx : shld
+shldl $0x45, %ebx, %ecx : shld
+shldl $0x49, %ebx, %edx : shld
+shldl $0x4b, %edx, %ebx : shld
+shldl $0x4e, %ebx, %ebx : shld
+shldl $0x50, %ebx, %edx : shld
+shldl $0x52, %edx, %edx : shld
+shldl $0x53, %edx, %ebx : shld
+shldl $0x56, %ebx, %ebx : shld
+shldl $0x5b, %ecx, %edx : shld
+shldl $0x62, %ebx, %ecx : shld
+shldl $0x63, %ecx, %ebx : shld
+shldl $0x64, %edx, %edx : shld
+shldl $0x67, %edx, %ecx : shld
+shldl $0x68, %ebx, %edx : shld
+shldl $0x6b, %edx, %ebx : shld
+shldl $0x6d, %edx, %ebx : shld
+shldl $0x7, %edx, %ebx : shld
+shldl $0x7, %edx, %edx : shld
+shldl $0x73, %ecx, %edx : shld
+shldl $0x74, %edx, %ebx : shld
+shldl $0x75, %edx, %edx : shld
+shldl $0x76, %ecx, %ecx : shld
+shldl $0x79, %ecx, %ecx : shld
+shldl $0x7b, %edx, %edx : shld
+shldl $0x7f, %ebx, %ecx : shld
+shldl $0x7f, %ebx, %edx : shld
+shldl $0x7f, %ecx, %ebx : shld
+shldl $0x7f, %ecx, %ecx : shld
+shldl $0x7f, %ecx, %edx : shld
+shldl $0x7f, %edx, %ebx : shld
+shldl $0x7f, %edx, %ecx : shld
+shldl $0x7f, %edx, %edx : shld
+shldl $0x8, %ecx, %ebx : shld
+shldl $0x80, %ebx, %ebx : shld
+shldl $0x80, %ebx, %ecx : shld
+shldl $0x80, %ecx, %ebx : shld
+shldl $0x80, %ecx, %edx : shld
+shldl $0x80, %edx, %ebx : shld
+shldl $0x80, %edx, %ecx : shld
+shldl $0x81, %ecx, %ebx : shld
+shldl $0x81, %edx, %ebx : shld
+shldl $0x82, %ebx, %ecx : shld
+shldl $0x86, %ebx, %ecx : shld
+shldl $0x87, %ecx, %ebx : shld
+shldl $0x89, %edx, %edx : shld
+shldl $0x8d, %ecx, %ecx : shld
+shldl $0x8e, %edx, %ebx : shld
+shldl $0x8f, %ecx, %ecx : shld
+shldl $0x93, %ecx, %edx : shld
+shldl $0x94, %ebx, %edx : shld
+shldl $0x96, %edx, %ebx : shld
+shldl $0x98, %ebx, %ebx : shld
+shldl $0x99, %edx, %ecx : shld
+shldl $0x9b, %ecx, %edx : shld
+shldl $0x9c, %edx, %ecx : shld
+shldl $0x9e, %ecx, %ebx : shld
+shldl $0x9f, %ebx, %ecx : shld
+shldl $0xa, %edx, %edx : shld
+shldl $0xa0, %edx, %edx : shld
+shldl $0xa2, %ecx, %ebx : shld
+shldl $0xa4, %ecx, %ecx : shld
+shldl $0xa7, %ecx, %ebx : shld
+shldl $0xa8, %edx, %ecx : shld
+shldl $0xaa, %ebx, %ecx : shld
+shldl $0xaa, %ecx, %ecx : shld
+shldl $0xae, %ebx, %edx : shld
+shldl $0xaf, %ebx, %edx : shld
+shldl $0xb, %edx, %ebx : shld
+shldl $0xb0, %ecx, %edx : shld
+shldl $0xb1, %ecx, %ecx : shld
+shldl $0xb3, %ebx, %ecx : shld
+shldl $0xb5, %ebx, %edx : shld
+shldl $0xbe, %edx, %edx : shld
+shldl $0xca, %ecx, %ebx : shld
+shldl $0xcd, %ecx, %edx : shld
+shldl $0xd2, %ebx, %ecx : shld
+shldl $0xd4, %ebx, %ecx : shld
+shldl $0xd4, %ecx, %edx : shld
+shldl $0xd5, %ebx, %ebx : shld
+shldl $0xdc, %ecx, %edx : shld
+shldl $0xde, %edx, %ecx : shld
+shldl $0xe0, %ebx, %ebx : shld
+shldl $0xe0, %ebx, %ecx : shld
+shldl $0xe0, %ebx, %edx : shld
+shldl $0xe0, %ecx, %ebx : shld
+shldl $0xe0, %ecx, %ecx : shld
+shldl $0xe0, %ecx, %edx : shld
+shldl $0xe0, %edx, %ebx : shld
+shldl $0xe0, %edx, %ecx : shld
+shldl $0xe0, %edx, %edx : shld
+shldl $0xe2, %edx, %ebx : shld
+shldl $0xe7, %ebx, %edx : shld
+shldl $0xeb, %edx, %ecx : shld
+shldl $0xf2, %ecx, %edx : shld
+shldl $0xf6, %ebx, %ecx : shld
+shldl $0xfb, %ecx, %ebx : shld
+shldl $0xfe, %edx, %ecx : shld
+shldl $0xff, %ebx, %ebx : shld
+shldl $0xff, %ebx, %ecx : shld
+shldl $0xff, %ebx, %edx : shld
+shldl $0xff, %ecx, %ebx : shld
+shldl $0xff, %ecx, %ecx : shld
+shldl $0xff, %ecx, %edx : shld
+shldl $0xff, %edx, %ebx : shld
+shldl $0xff, %edx, %ecx : shld
+shldl $0xff, %edx, %edx : shld
+shldl %cl, %ebx, %ebx : shld
+shldl %cl, %ebx, %ecx : shld
+shldl %cl, %ebx, %edx : shld
+shldl %cl, %ecx, %ebx : shld
+shldl %cl, %ecx, %ecx : shld
+shldl %cl, %ecx, %edx : shld
+shldl %cl, %edx, %ebx : shld
+shldl %cl, %edx, %ecx : shld
+shldl %cl, %edx, %edx : shld
+shldw $0x0, %bx, %bx : shld
+shldw $0x0, %bx, %cx : shld
+shldw $0x0, %bx, %dx : shld
+shldw $0x0, %cx, %bx : shld
+shldw $0x0, %cx, %cx : shld
+shldw $0x0, %cx, %dx : shld
+shldw $0x0, %dx, %bx : shld
+shldw $0x0, %dx, %cx : shld
+shldw $0x0, %dx, %dx : shld
+shldw $0x1, %bx, %cx : shld
+shldw $0x1, %bx, %dx : shld
+shldw $0x1, %cx, %bx : shld
+shldw $0x1, %cx, %dx : shld
+shldw $0x1, %dx, %cx : shld
+shldw $0x12, %bx, %cx : shld
+shldw $0x12, %bx, %dx : shld
+shldw $0x16, %cx, %bx : shld
+shldw $0x19, %dx, %dx : shld
+shldw $0x27, %dx, %dx : shld
+shldw $0x2d, %bx, %dx : shld
+shldw $0x2d, %dx, %cx : shld
+shldw $0x36, %dx, %dx : shld
+shldw $0x37, %dx, %cx : shld
+shldw $0x38, %bx, %dx : shld
+shldw $0x3c, %bx, %cx : shld
+shldw $0x3e, %dx, %dx : shld
+shldw $0x4, %dx, %cx : shld
+shldw $0x41, %bx, %dx : shld
+shldw $0x42, %bx, %dx : shld
+shldw $0x45, %cx, %dx : shld
+shldw $0x46, %cx, %bx : shld
+shldw $0x47, %cx, %bx : shld
+shldw $0x48, %cx, %cx : shld
+shldw $0x49, %dx, %bx : shld
+shldw $0x4d, %dx, %dx : shld
+shldw $0x4e, %cx, %bx : shld
+shldw $0x4f, %bx, %cx : shld
+shldw $0x5, %bx, %dx : shld
+shldw $0x51, %cx, %dx : shld
+shldw $0x52, %bx, %cx : shld
+shldw $0x53, %bx, %dx : shld
+shldw $0x57, %bx, %dx : shld
+shldw $0x58, %bx, %bx : shld
+shldw $0x61, %bx, %dx : shld
+shldw $0x62, %dx, %cx : shld
+shldw $0x62, %dx, %dx : shld
+shldw $0x68, %cx, %dx : shld
+shldw $0x6a, %cx, %dx : shld
+shldw $0x6e, %bx, %bx : shld
+shldw $0x71, %dx, %cx : shld
+shldw $0x72, %cx, %cx : shld
+shldw $0x74, %bx, %cx : shld
+shldw $0x75, %bx, %bx : shld
+shldw $0x79, %cx, %dx : shld
+shldw $0x7a, %dx, %cx : shld
+shldw $0x7d, %bx, %bx : shld
+shldw $0x7f, %bx, %bx : shld
+shldw $0x7f, %bx, %cx : shld
+shldw $0x7f, %bx, %dx : shld
+shldw $0x7f, %cx, %cx : shld
+shldw $0x7f, %dx, %bx : shld
+shldw $0x7f, %dx, %cx : shld
+shldw $0x80, %bx, %bx : shld
+shldw $0x80, %bx, %cx : shld
+shldw $0x80, %bx, %dx : shld
+shldw $0x80, %cx, %bx : shld
+shldw $0x80, %cx, %cx : shld
+shldw $0x80, %cx, %dx : shld
+shldw $0x80, %dx, %dx : shld
+shldw $0x81, %dx, %cx : shld
+shldw $0x82, %cx, %bx : shld
+shldw $0x83, %bx, %cx : shld
+shldw $0x84, %cx, %dx : shld
+shldw $0x85, %cx, %cx : shld
+shldw $0x87, %dx, %cx : shld
+shldw $0x88, %bx, %cx : shld
+shldw $0x89, %cx, %bx : shld
+shldw $0x8c, %dx, %cx : shld
+shldw $0x97, %cx, %cx : shld
+shldw $0x98, %bx, %bx : shld
+shldw $0x98, %dx, %dx : shld
+shldw $0x9d, %bx, %cx : shld
+shldw $0xa9, %cx, %dx : shld
+shldw $0xab, %bx, %dx : shld
+shldw $0xac, %bx, %dx : shld
+shldw $0xb1, %cx, %cx : shld
+shldw $0xb1, %dx, %cx : shld
+shldw $0xb2, %dx, %bx : shld
+shldw $0xb6, %dx, %cx : shld
+shldw $0xb8, %bx, %dx : shld
+shldw $0xb8, %dx, %bx : shld
+shldw $0xb9, %dx, %cx : shld
+shldw $0xbb, %cx, %dx : shld
+shldw $0xbc, %bx, %bx : shld
+shldw $0xbc, %cx, %dx : shld
+shldw $0xbc, %dx, %bx : shld
+shldw $0xbe, %dx, %dx : shld
+shldw $0xcb, %dx, %bx : shld
+shldw $0xce, %bx, %cx : shld
+shldw $0xd5, %cx, %dx : shld
+shldw $0xd7, %dx, %bx : shld
+shldw $0xd8, %cx, %bx : shld
+shldw $0xda, %cx, %dx : shld
+shldw $0xdb, %dx, %bx : shld
+shldw $0xde, %bx, %bx : shld
+shldw $0xe, %bx, %bx : shld
+shldw $0xe0, %bx, %bx : shld
+shldw $0xe0, %bx, %cx : shld
+shldw $0xe0, %bx, %dx : shld
+shldw $0xe0, %cx, %bx : shld
+shldw $0xe0, %cx, %cx : shld
+shldw $0xe0, %cx, %dx : shld
+shldw $0xe0, %dx, %bx : shld
+shldw $0xe0, %dx, %cx : shld
+shldw $0xe0, %dx, %dx : shld
+shldw $0xe1, %bx, %bx : shld
+shldw $0xe2, %dx, %dx : shld
+shldw $0xe7, %bx, %cx : shld
+shldw $0xed, %dx, %cx : shld
+shldw $0xf4, %bx, %cx : shld
+shldw $0xf4, %dx, %cx : shld
+shldw $0xf5, %bx, %dx : shld
+shldw $0xf5, %dx, %dx : shld
+shldw $0xf7, %dx, %cx : shld
+shldw $0xfa, %cx, %bx : shld
+shldw $0xfb, %bx, %bx : shld
+shldw $0xfc, %dx, %cx : shld
+shldw $0xfd, %bx, %cx : shld
+shldw $0xfd, %dx, %cx : shld
+shldw $0xfe, %bx, %cx : shld
+shldw $0xfe, %cx, %cx : shld
+shldw $0xff, %bx, %bx : shld
+shldw $0xff, %bx, %cx : shld
+shldw $0xff, %bx, %dx : shld
+shldw $0xff, %cx, %bx : shld
+shldw $0xff, %cx, %cx : shld
+shldw $0xff, %cx, %dx : shld
+shldw $0xff, %dx, %bx : shld
+shldw $0xff, %dx, %cx : shld
+shldw $0xff, %dx, %dx : shld
+shll $0x0, %ebx : shl
+shll $0x0, %ecx : shl
+shll $0x0, %edx : shl
+shll $0x1, %ebx : shl
+shll $0x1, %ecx : shl
+shll $0x1, %edx : shl
+shll $0x13, %ebx : shl
+shll $0x14, %ebx : shl
+shll $0x15, %ecx : shl
+shll $0x17, %ebx : shl
+shll $0x19, %ecx : shl
+shll $0x1d, %edx : shl
+shll $0x1e, %edx : shl
+shll $0x26, %ecx : shl
+shll $0x27, %ecx : shl
+shll $0x28, %ebx : shl
+shll $0x3, %ecx : shl
+shll $0x30, %ebx : shl
+shll $0x30, %ecx : shl
+shll $0x30, %edx : shl
+shll $0x3a, %ebx : shl
+shll $0x3e, %ebx : shl
+shll $0x3f, %ecx : shl
+shll $0x4, %ebx : shl
+shll $0x44, %ecx : shl
+shll $0x45, %ecx : shl
+shll $0x48, %edx : shl
+shll $0x4e, %ebx : shl
+shll $0x4f, %ebx : shl
+shll $0x5, %edx : shl
+shll $0x51, %edx : shl
+shll $0x52, %edx : shl
+shll $0x54, %ecx : shl
+shll $0x55, %ecx : shl
+shll $0x58, %edx : shl
+shll $0x5d, %ecx : shl
+shll $0x5e, %ebx : shl
+shll $0x5f, %ecx : shl
+shll $0x62, %ecx : shl
+shll $0x63, %ebx : shl
+shll $0x71, %ebx : shl
+shll $0x72, %edx : shl
+shll $0x74, %ebx : shl
+shll $0x77, %ecx : shl
+shll $0x7c, %ecx : shl
+shll $0x7c, %edx : shl
+shll $0x7d, %ebx : shl
+shll $0x7e, %ebx : shl
+shll $0x7f, %ebx : shl
+shll $0x7f, %ecx : shl
+shll $0x7f, %edx : shl
+shll $0x8, %ebx : shl
+shll $0x80, %ebx : shl
+shll $0x80, %ecx : shl
+shll $0x80, %edx : shl
+shll $0x82, %ecx : shl
+shll $0x87, %ebx : shl
+shll $0x88, %edx : shl
+shll $0x8d, %ecx : shl
+shll $0x9, %ecx : shl
+shll $0x91, %ebx : shl
+shll $0x93, %ebx : shl
+shll $0x94, %ecx : shl
+shll $0x97, %ecx : shl
+shll $0x9a, %ebx : shl
+shll $0x9e, %ebx : shl
+shll $0xa0, %ebx : shl
+shll $0xa3, %edx : shl
+shll $0xa4, %ebx : shl
+shll $0xa4, %ecx : shl
+shll $0xa5, %edx : shl
+shll $0xa7, %ebx : shl
+shll $0xa8, %edx : shl
+shll $0xa9, %ecx : shl
+shll $0xa9, %edx : shl
+shll $0xab, %edx : shl
+shll $0xb, %edx : shl
+shll $0xb5, %ebx : shl
+shll $0xb6, %edx : shl
+shll $0xb7, %ebx : shl
+shll $0xbc, %ebx : shl
+shll $0xc, %ecx : shl
+shll $0xc1, %edx : shl
+shll $0xc4, %ecx : shl
+shll $0xc6, %ebx : shl
+shll $0xc9, %edx : shl
+shll $0xce, %ebx : shl
+shll $0xce, %ecx : shl
+shll $0xd6, %ecx : shl
+shll $0xd9, %ecx : shl
+shll $0xe0, %ebx : shl
+shll $0xe0, %ecx : shl
+shll $0xe0, %edx : shl
+shll $0xe3, %ebx : shl
+shll $0xe4, %edx : shl
+shll $0xe5, %ebx : shl
+shll $0xe6, %ecx : shl
+shll $0xe7, %ebx : shl
+shll $0xea, %ebx : shl
+shll $0xeb, %ebx : shl
+shll $0xec, %ecx : shl
+shll $0xed, %ebx : shl
+shll $0xf, %edx : shl
+shll $0xf1, %edx : shl
+shll $0xf2, %ecx : shl
+shll $0xf4, %ebx : shl
+shll $0xf5, %ecx : shl
+shll $0xfa, %ecx : shl
+shll $0xfb, %ebx : shl
+shll $0xfc, %ecx : shl
+shll $0xfd, %edx : shl
+shll $0xfe, %ebx : shl
+shll $0xff, %ebx : shl
+shll $0xff, %ecx : shl
+shll $0xff, %edx : shl
+shll %cl, %ebx : shl
+shll %cl, %ecx : shl
+shll %cl, %edx : shl
+shlw $0x0, %bx : shl
+shlw $0x0, %cx : shl
+shlw $0x0, %dx : shl
+shlw $0x1, %bx : shl
+shlw $0x1, %cx : shl
+shlw $0x1, %dx : shl
+shlw $0x13, %bx : shl
+shlw $0x1b, %dx : shl
+shlw $0x1f, %bx : shl
+shlw $0x22, %bx : shl
+shlw $0x22, %dx : shl
+shlw $0x24, %dx : shl
+shlw $0x25, %bx : shl
+shlw $0x2e, %dx : shl
+shlw $0x2f, %cx : shl
+shlw $0x30, %bx : shl
+shlw $0x30, %cx : shl
+shlw $0x30, %dx : shl
+shlw $0x32, %cx : shl
+shlw $0x3d, %dx : shl
+shlw $0x3e, %cx : shl
+shlw $0x4, %cx : shl
+shlw $0x41, %bx : shl
+shlw $0x45, %cx : shl
+shlw $0x47, %cx : shl
+shlw $0x4b, %cx : shl
+shlw $0x5, %bx : shl
+shlw $0x52, %bx : shl
+shlw $0x54, %bx : shl
+shlw $0x55, %cx : shl
+shlw $0x58, %dx : shl
+shlw $0x6, %bx : shl
+shlw $0x60, %bx : shl
+shlw $0x60, %cx : shl
+shlw $0x68, %bx : shl
+shlw $0x68, %dx : shl
+shlw $0x6c, %dx : shl
+shlw $0x6d, %bx : shl
+shlw $0x6e, %bx : shl
+shlw $0x6f, %cx : shl
+shlw $0x7, %bx : shl
+shlw $0x75, %dx : shl
+shlw $0x78, %dx : shl
+shlw $0x7a, %cx : shl
+shlw $0x7b, %cx : shl
+shlw $0x7f, %cx : shl
+shlw $0x7f, %dx : shl
+shlw $0x80, %bx : shl
+shlw $0x80, %cx : shl
+shlw $0x80, %dx : shl
+shlw $0x8b, %cx : shl
+shlw $0x8f, %bx : shl
+shlw $0x9, %cx : shl
+shlw $0x91, %bx : shl
+shlw $0x97, %dx : shl
+shlw $0x98, %cx : shl
+shlw $0x99, %bx : shl
+shlw $0x9b, %bx : shl
+shlw $0x9d, %dx : shl
+shlw $0xa0, %cx : shl
+shlw $0xa3, %dx : shl
+shlw $0xa4, %bx : shl
+shlw $0xa6, %bx : shl
+shlw $0xa8, %cx : shl
+shlw $0xa9, %bx : shl
+shlw $0xa9, %cx : shl
+shlw $0xaf, %bx : shl
+shlw $0xb, %cx : shl
+shlw $0xb2, %cx : shl
+shlw $0xba, %bx : shl
+shlw $0xc2, %bx : shl
+shlw $0xc3, %cx : shl
+shlw $0xc7, %cx : shl
+shlw $0xc8, %bx : shl
+shlw $0xce, %dx : shl
+shlw $0xd2, %cx : shl
+shlw $0xd3, %cx : shl
+shlw $0xd4, %bx : shl
+shlw $0xd7, %dx : shl
+shlw $0xdb, %bx : shl
+shlw $0xdd, %bx : shl
+shlw $0xe0, %bx : shl
+shlw $0xe0, %cx : shl
+shlw $0xe0, %dx : shl
+shlw $0xe3, %dx : shl
+shlw $0xf0, %dx : shl
+shlw $0xf2, %cx : shl
+shlw $0xf4, %dx : shl
+shlw $0xf9, %bx : shl
+shlw $0xfe, %cx : shl
+shlw $0xff, %bx : shl
+shlw $0xff, %cx : shl
+shlw $0xff, %dx : shl
+shlw %cl, %bx : shl
+shlw %cl, %cx : shl
+shlw %cl, %dx : shl
+shrb $0x0, %ah : shr
+shrb $0x0, %bh : shr
+shrb $0x0, %bl : shr
+shrb $0x0, %ch : shr
+shrb $0x0, %cl : shr
+shrb $0x0, %dh : shr
+shrb $0x0, %dl : shr
+shrb $0x1, %ah : shr
+shrb $0x1, %bh : shr
+shrb $0x1, %bl : shr
+shrb $0x1, %ch : shr
+shrb $0x1, %cl : shr
+shrb $0x1, %dh : shr
+shrb $0x1, %dl : shr
+shrb $0x10, %ch : shr
+shrb $0x11, %ch : shr
+shrb $0x13, %cl : shr
+shrb $0x17, %dl : shr
+shrb $0x19, %cl : shr
+shrb $0x1a, %dl : shr
+shrb $0x1c, %ah : shr
+shrb $0x1c, %dl : shr
+shrb $0x1d, %dl : shr
+shrb $0x1e, %ch : shr
+shrb $0x1e, %dh : shr
+shrb $0x1f, %ch : shr
+shrb $0x20, %ch : shr
+shrb $0x24, %ah : shr

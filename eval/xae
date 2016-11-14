@@ -1,0 +1,1017 @@
+cmpw $0x80, %dx : cmp
+cmpw $0x8000, %ax : cmp
+cmpw $0x8000, %bx : cmp
+cmpw $0x8000, %cx : cmp
+cmpw $0x8000, %dx : cmp
+cmpw $0x81, %bx : cmp
+cmpw $0x8245, %ax : cmp
+cmpw $0x8252, %cx : cmp
+cmpw $0x8273, %bx : cmp
+cmpw $0x83, %bx : cmp
+cmpw $0x8408, %bx : cmp
+cmpw $0x8435, %bx : cmp
+cmpw $0x8492, %ax : cmp
+cmpw $0x86ec, %cx : cmp
+cmpw $0x888c, %dx : cmp
+cmpw $0x88ba, %dx : cmp
+cmpw $0x8a, %bx : cmp
+cmpw $0x8d, %bx : cmp
+cmpw $0x8dc0, %cx : cmp
+cmpw $0x8df, %ax : cmp
+cmpw $0x8eb4, %bx : cmp
+cmpw $0x8f, %bx : cmp
+cmpw $0x8f44, %cx : cmp
+cmpw $0x90, %cx : cmp
+cmpw $0x91, %cx : cmp
+cmpw $0x91, %dx : cmp
+cmpw $0x9102, %bx : cmp
+cmpw $0x918e, %bx : cmp
+cmpw $0x93, %bx : cmp
+cmpw $0x93, %cx : cmp
+cmpw $0x93, %dx : cmp
+cmpw $0x936c, %dx : cmp
+cmpw $0x9487, %cx : cmp
+cmpw $0x953f, %ax : cmp
+cmpw $0x96, %dx : cmp
+cmpw $0x977b, %ax : cmp
+cmpw $0x97fa, %dx : cmp
+cmpw $0x9a0a, %dx : cmp
+cmpw $0x9a90, %ax : cmp
+cmpw $0x9b10, %dx : cmp
+cmpw $0x9bdd, %bx : cmp
+cmpw $0x9c7c, %ax : cmp
+cmpw $0x9d, %cx : cmp
+cmpw $0x9e9e, %ax : cmp
+cmpw $0x9ee3, %dx : cmp
+cmpw $0x9f, %dx : cmp
+cmpw $0x9f61, %bx : cmp
+cmpw $0x9f8b, %cx : cmp
+cmpw $0x9fc7, %ax : cmp
+cmpw $0xa07e, %dx : cmp
+cmpw $0xa13d, %ax : cmp
+cmpw $0xa2b0, %bx : cmp
+cmpw $0xa3, %dx : cmp
+cmpw $0xa371, %dx : cmp
+cmpw $0xa4, %dx : cmp
+cmpw $0xa4d7, %bx : cmp
+cmpw $0xa55d, %cx : cmp
+cmpw $0xa5da, %ax : cmp
+cmpw $0xa63d, %ax : cmp
+cmpw $0xa7ce, %bx : cmp
+cmpw $0xa8, %cx : cmp
+cmpw $0xa854, %bx : cmp
+cmpw $0xa977, %ax : cmp
+cmpw $0xa9f1, %cx : cmp
+cmpw $0xac45, %ax : cmp
+cmpw $0xad, %bx : cmp
+cmpw $0xad44, %dx : cmp
+cmpw $0xad69, %bx : cmp
+cmpw $0xaded, %dx : cmp
+cmpw $0xae, %dx : cmp
+cmpw $0xaf05, %ax : cmp
+cmpw $0xaf0a, %dx : cmp
+cmpw $0xb0cb, %cx : cmp
+cmpw $0xb272, %ax : cmp
+cmpw $0xb28b, %ax : cmp
+cmpw $0xb32d, %ax : cmp
+cmpw $0xb4, %cx : cmp
+cmpw $0xb41f, %ax : cmp
+cmpw $0xb5, %cx : cmp
+cmpw $0xb5, %dx : cmp
+cmpw $0xb539, %bx : cmp
+cmpw $0xb550, %ax : cmp
+cmpw $0xb5d4, %ax : cmp
+cmpw $0xb637, %ax : cmp
+cmpw $0xb8f4, %bx : cmp
+cmpw $0xb9, %cx : cmp
+cmpw $0xb91e, %dx : cmp
+cmpw $0xbc29, %cx : cmp
+cmpw $0xbcbc, %ax : cmp
+cmpw $0xbe, %dx : cmp
+cmpw $0xbe3, %ax : cmp
+cmpw $0xc084, %bx : cmp
+cmpw $0xc27a, %dx : cmp
+cmpw $0xc2de, %cx : cmp
+cmpw $0xc3, %bx : cmp
+cmpw $0xc314, %cx : cmp
+cmpw $0xc32f, %ax : cmp
+cmpw $0xc42, %bx : cmp
+cmpw $0xc4e2, %dx : cmp
+cmpw $0xc5, %bx : cmp
+cmpw $0xc56e, %dx : cmp
+cmpw $0xc5b6, %ax : cmp
+cmpw $0xc6, %dx : cmp
+cmpw $0xc6af, %ax : cmp
+cmpw $0xc6d7, %ax : cmp
+cmpw $0xc6fd, %bx : cmp
+cmpw $0xc7, %cx : cmp
+cmpw $0xc702, %ax : cmp
+cmpw $0xc8, %cx : cmp
+cmpw $0xc95f, %cx : cmp
+cmpw $0xca, %bx : cmp
+cmpw $0xcacb, %bx : cmp
+cmpw $0xcadc, %ax : cmp
+cmpw $0xcb36, %cx : cmp
+cmpw $0xcc, %cx : cmp
+cmpw $0xcc12, %ax : cmp
+cmpw $0xcd1d, %ax : cmp
+cmpw $0xcd85, %cx : cmp
+cmpw $0xce, %bx : cmp
+cmpw $0xce, %cx : cmp
+cmpw $0xce91, %bx : cmp
+cmpw $0xcf, %dx : cmp
+cmpw $0xcf07, %cx : cmp
+cmpw $0xcfaf, %cx : cmp
+cmpw $0xd2, %bx : cmp
+cmpw $0xd3, %cx : cmp
+cmpw $0xd34, %cx : cmp
+cmpw $0xd4, %cx : cmp
+cmpw $0xd4, %dx : cmp
+cmpw $0xd476, %cx : cmp
+cmpw $0xd4e3, %ax : cmp
+cmpw $0xd5, %bx : cmp
+cmpw $0xd65, %bx : cmp
+cmpw $0xd8, %dx : cmp
+cmpw $0xda, %cx : cmp
+cmpw $0xdaba, %dx : cmp
+cmpw $0xdbfd, %ax : cmp
+cmpw $0xdc28, %ax : cmp
+cmpw $0xdd4e, %ax : cmp
+cmpw $0xddcd, %ax : cmp
+cmpw $0xde67, %ax : cmp
+cmpw $0xdf, %cx : cmp
+cmpw $0xe0, %bx : cmp
+cmpw $0xe0, %cx : cmp
+cmpw $0xe0, %dx : cmp
+cmpw $0xe014, %ax : cmp
+cmpw $0xe157, %ax : cmp
+cmpw $0xe2, %bx : cmp
+cmpw $0xe35, %ax : cmp
+cmpw $0xe6, %bx : cmp
+cmpw $0xe7, %dx : cmp
+cmpw $0xe7da, %cx : cmp
+cmpw $0xe8, %cx : cmp
+cmpw $0xe8, %dx : cmp
+cmpw $0xe825, %bx : cmp
+cmpw $0xe9, %cx : cmp
+cmpw $0xea, %dx : cmp
+cmpw $0xea93, %ax : cmp
+cmpw $0xed, %cx : cmp
+cmpw $0xedcf, %cx : cmp
+cmpw $0xee59, %ax : cmp
+cmpw $0xee7, %cx : cmp
+cmpw $0xf0, %bx : cmp
+cmpw $0xf02e, %bx : cmp
+cmpw $0xf0c, %ax : cmp
+cmpw $0xf0c1, %cx : cmp
+cmpw $0xf24d, %ax : cmp
+cmpw $0xf271, %bx : cmp
+cmpw $0xf4, %dx : cmp
+cmpw $0xf477, %ax : cmp
+cmpw $0xf5c6, %cx : cmp
+cmpw $0xf5e8, %ax : cmp
+cmpw $0xf645, %bx : cmp
+cmpw $0xf7, %dx : cmp
+cmpw $0xf9, %dx : cmp
+cmpw $0xf9c2, %bx : cmp
+cmpw $0xfcdc, %ax : cmp
+cmpw $0xfd, %bx : cmp
+cmpw $0xfde, %bx : cmp
+cmpw $0xfe, %dx : cmp
+cmpw $0xff, %bx : cmp
+cmpw $0xff, %cx : cmp
+cmpw $0xff, %dx : cmp
+cmpw $0xffe0, %ax : cmp
+cmpw $0xffe0, %bx : cmp
+cmpw $0xffe0, %cx : cmp
+cmpw $0xffe0, %dx : cmp
+cmpw $0xffff, %ax : cmp
+cmpw $0xffff, %bx : cmp
+cmpw $0xffff, %cx : cmp
+cmpw $0xffff, %dx : cmp
+cmpw %bx, %bx : cmp
+cmpw %bx, %cx : cmp
+cmpw %bx, %dx : cmp
+cmpw %cx, %bx : cmp
+cmpw %cx, %cx : cmp
+cmpw %cx, %dx : cmp
+cmpw %dx, %bx : cmp
+cmpw %dx, %cx : cmp
+cmpw %dx, %dx : cmp
+cmpxchgb %ah, %ah : cmpxchg
+cmpxchgb %ah, %bh : cmpxchg
+cmpxchgb %ah, %bl : cmpxchg
+cmpxchgb %ah, %ch : cmpxchg
+cmpxchgb %ah, %cl : cmpxchg
+cmpxchgb %ah, %dh : cmpxchg
+cmpxchgb %ah, %dl : cmpxchg
+cmpxchgb %bh, %ah : cmpxchg
+cmpxchgb %bh, %bh : cmpxchg
+cmpxchgb %bh, %bl : cmpxchg
+cmpxchgb %bh, %ch : cmpxchg
+cmpxchgb %bh, %cl : cmpxchg
+cmpxchgb %bh, %dh : cmpxchg
+cmpxchgb %bh, %dl : cmpxchg
+cmpxchgb %bl, %ah : cmpxchg
+cmpxchgb %bl, %bh : cmpxchg
+cmpxchgb %bl, %bl : cmpxchg
+cmpxchgb %bl, %ch : cmpxchg
+cmpxchgb %bl, %cl : cmpxchg
+cmpxchgb %bl, %dh : cmpxchg
+cmpxchgb %bl, %dl : cmpxchg
+cmpxchgb %ch, %ah : cmpxchg
+cmpxchgb %ch, %bh : cmpxchg
+cmpxchgb %ch, %bl : cmpxchg
+cmpxchgb %ch, %ch : cmpxchg
+cmpxchgb %ch, %cl : cmpxchg
+cmpxchgb %ch, %dh : cmpxchg
+cmpxchgb %ch, %dl : cmpxchg
+cmpxchgb %cl, %ah : cmpxchg
+cmpxchgb %cl, %bh : cmpxchg
+cmpxchgb %cl, %bl : cmpxchg
+cmpxchgb %cl, %ch : cmpxchg
+cmpxchgb %cl, %cl : cmpxchg
+cmpxchgb %cl, %dh : cmpxchg
+cmpxchgb %cl, %dl : cmpxchg
+cmpxchgb %dh, %ah : cmpxchg
+cmpxchgb %dh, %bh : cmpxchg
+cmpxchgb %dh, %bl : cmpxchg
+cmpxchgb %dh, %ch : cmpxchg
+cmpxchgb %dh, %cl : cmpxchg
+cmpxchgb %dh, %dh : cmpxchg
+cmpxchgb %dh, %dl : cmpxchg
+cmpxchgb %dl, %ah : cmpxchg
+cmpxchgb %dl, %bh : cmpxchg
+cmpxchgb %dl, %bl : cmpxchg
+cmpxchgb %dl, %ch : cmpxchg
+cmpxchgb %dl, %cl : cmpxchg
+cmpxchgb %dl, %dh : cmpxchg
+cmpxchgb %dl, %dl : cmpxchg
+cmpxchgw %bx, %bx : cmpxchg
+cmpxchgw %bx, %cx : cmpxchg
+cmpxchgw %bx, %dx : cmpxchg
+cmpxchgw %cx, %bx : cmpxchg
+cmpxchgw %cx, %cx : cmpxchg
+cmpxchgw %cx, %dx : cmpxchg
+cmpxchgw %dx, %bx : cmpxchg
+cmpxchgw %dx, %cx : cmpxchg
+cmpxchgw %dx, %dx : cmpxchg
+cwtl : cwde
+decb %ah : dec
+decb %bh : dec
+decb %bl : dec
+decb %ch : dec
+decb %cl : dec
+decb %dh : dec
+decb %dl : dec
+decl %ebx : dec
+decl %ecx : dec
+decl %edx : dec
+decw %bx : dec
+decw %cx : dec
+decw %dx : dec
+imulb %ah : imul
+imulb %bh : imul
+imulb %bl : imul
+imulb %ch : imul
+imulb %cl : imul
+imulb %dh : imul
+imulb %dl : imul
+imull $0x0, %ebx, %ebx : imul
+imull $0x0, %ebx, %ecx : imul
+imull $0x0, %ebx, %edx : imul
+imull $0x0, %ecx, %ebx : imul
+imull $0x0, %ecx, %ecx : imul
+imull $0x0, %ecx, %edx : imul
+imull $0x0, %edx, %ebx : imul
+imull $0x0, %edx, %ecx : imul
+imull $0x0, %edx, %edx : imul
+imull $0x1, %ebx, %ebx : imul
+imull $0x1, %ebx, %edx : imul
+imull $0x1, %ecx, %ebx : imul
+imull $0x1, %ecx, %ecx : imul
+imull $0x1, %ecx, %edx : imul
+imull $0x1, %edx, %ebx : imul
+imull $0x1, %edx, %ecx : imul
+imull $0x1, %edx, %edx : imul
+imull $0x10243d3d, %ecx, %ebx : imul
+imull $0x13, %ecx, %edx : imul
+imull $0x15, %ecx, %ebx : imul
+imull $0x15a39be0, %ebx, %ecx : imul
+imull $0x19561b05, %edx, %ecx : imul
+imull $0x1a3664a3, %ebx, %edx : imul
+imull $0x1ae241ba, %edx, %edx : imul
+imull $0x1c, %ebx, %ecx : imul
+imull $0x1c98f1ec, %edx, %ecx : imul
+imull $0x1f, %ecx, %ebx : imul
+imull $0x1f, %ecx, %ecx : imul
+imull $0x1fea36f3, %ebx, %ebx : imul
+imull $0x22, %edx, %ebx : imul
+imull $0x2227c2f9, %ebx, %ebx : imul
+imull $0x245837b7, %ebx, %ecx : imul
+imull $0x25db911e, %edx, %ecx : imul
+imull $0x26030064, %edx, %ecx : imul
+imull $0x267fb33b, %ecx, %ebx : imul
+imull $0x26c54d59, %ebx, %edx : imul
+imull $0x27, %ebx, %edx : imul
+imull $0x27, %ecx, %edx : imul
+imull $0x291c48c4, %ebx, %ecx : imul
+imull $0x2a1fb3db, %edx, %edx : imul
+imull $0x2a4e9c35, %ecx, %ecx : imul
+imull $0x2abb7900, %ecx, %ecx : imul
+imull $0x2b, %ecx, %ecx : imul
+imull $0x2de827c3, %edx, %ebx : imul
+imull $0x2e, %edx, %edx : imul
+imull $0x2f, %ebx, %ebx : imul
+imull $0x2f, %ebx, %edx : imul
+imull $0x2f287c29, %ecx, %ebx : imul
+imull $0x3, %ebx, %ebx : imul
+imull $0x30, %ebx, %ebx : imul
+imull $0x30, %ebx, %ecx : imul
+imull $0x30, %ebx, %edx : imul
+imull $0x30, %ecx, %ebx : imul
+imull $0x30, %ecx, %ecx : imul
+imull $0x30, %ecx, %edx : imul
+imull $0x30, %edx, %ebx : imul
+imull $0x30, %edx, %ecx : imul
+imull $0x30, %edx, %edx : imul
+imull $0x3075f65f, %ebx, %edx : imul
+imull $0x3123cce4, %ebx, %ecx : imul
+imull $0x319b7d8, %ecx, %ebx : imul
+imull $0x32, %ecx, %edx : imul
+imull $0x33b5d6b0, %ebx, %edx : imul
+imull $0x36eeebd, %ebx, %edx : imul
+imull $0x37075e65, %ebx, %ecx : imul
+imull $0x3820a4c6, %ecx, %ebx : imul
+imull $0x388eccf, %ebx, %ecx : imul
+imull $0x39, %edx, %ebx : imul
+imull $0x39462c81, %edx, %edx : imul
+imull $0x3972bb48, %edx, %ecx : imul
+imull $0x39a2d011, %edx, %edx : imul
+imull $0x3a4d04f2, %ebx, %edx : imul
+imull $0x3a7d7b55, %ecx, %edx : imul
+imull $0x3ca27864, %ecx, %edx : imul
+imull $0x3e, %ebx, %edx : imul
+imull $0x3e3c9de0, %edx, %ebx : imul
+imull $0x4, %edx, %ecx : imul
+imull $0x40, %edx, %edx : imul
+imull $0x41, %ecx, %ecx : imul
+imull $0x4110bb48, %ebx, %ecx : imul
+imull $0x41bce20b, %ecx, %ecx : imul
+imull $0x45495745, %ecx, %ecx : imul
+imull $0x46, %edx, %ecx : imul
+imull $0x4672d63e, %ecx, %ebx : imul
+imull $0x47e62ee7, %edx, %ebx : imul
+imull $0x49b2fcf1, %ecx, %edx : imul
+imull $0x4a, %edx, %edx : imul
+imull $0x4b, %edx, %edx : imul
+imull $0x4b32c0e7, %ebx, %ecx : imul
+imull $0x4c9607fc, %ecx, %ecx : imul
+imull $0x4da8e844, %edx, %ecx : imul
+imull $0x4de7a157, %ecx, %ecx : imul
+imull $0x4f, %edx, %ebx : imul
+imull $0x52471e4f, %ebx, %ecx : imul
+imull $0x536d1a3e, %ecx, %ecx : imul
+imull $0x54, %ebx, %ecx : imul
+imull $0x5455c0ec, %ebx, %ebx : imul
+imull $0x545d111, %ecx, %edx : imul
+imull $0x55, %edx, %ebx : imul
+imull $0x55, %edx, %ecx : imul
+imull $0x5554f11a, %ecx, %edx : imul
+imull $0x57420a49, %edx, %edx : imul
+imull $0x59, %ecx, %ecx : imul
+imull $0x5a, %ecx, %ecx : imul
+imull $0x5a, %edx, %ecx : imul
+imull $0x5af802aa, %ecx, %ecx : imul
+imull $0x5d, %edx, %ebx : imul
+imull $0x5d, %edx, %ecx : imul
+imull $0x5e116cfd, %ebx, %ebx : imul
+imull $0x6, %edx, %ebx : imul
+imull $0x604ab35c, %ecx, %ecx : imul
+imull $0x6320043d, %ecx, %ebx : imul
+imull $0x6340e18d, %ecx, %ebx : imul
+imull $0x65ef1de9, %ecx, %ecx : imul
+imull $0x66, %edx, %ebx : imul
+imull $0x6706c7d6, %ecx, %ecx : imul
+imull $0x67226293, %ebx, %ecx : imul
+imull $0x68, %ecx, %edx : imul
+imull $0x6c7cb17c, %edx, %ecx : imul
+imull $0x6ce085fd, %edx, %ebx : imul
+imull $0x6d2c2a26, %ecx, %ecx : imul
+imull $0x6dfcc276, %ebx, %edx : imul
+imull $0x6f0f4765, %ecx, %ebx : imul
+imull $0x6fc098ba, %edx, %ebx : imul
+imull $0x6fdf6fca, %edx, %edx : imul
+imull $0x7, %ebx, %ecx : imul
+imull $0x704b89fc, %ecx, %ebx : imul
+imull $0x71, %ebx, %ebx : imul
+imull $0x710b9833, %edx, %ebx : imul
+imull $0x73d9b337, %ebx, %ecx : imul
+imull $0x7628ed36, %edx, %ebx : imul
+imull $0x77, %ecx, %ecx : imul
+imull $0x774767d7, %ebx, %edx : imul
+imull $0x7a0f2b54, %ecx, %edx : imul
+imull $0x7ce9fad3, %ebx, %ecx : imul
+imull $0x7f, %ebx, %edx : imul
+imull $0x7f, %ecx, %ebx : imul
+imull $0x7f, %ecx, %ecx : imul
+imull $0x7f, %ecx, %edx : imul
+imull $0x7f, %edx, %ebx : imul
+imull $0x7f, %edx, %ecx : imul
+imull $0x7f, %edx, %edx : imul
+imull $0x7fb99554, %ebx, %ecx : imul
+imull $0x7fff, %ebx, %ebx : imul
+imull $0x7fff, %ebx, %ecx : imul
+imull $0x7fff, %ebx, %edx : imul
+imull $0x7fff, %ecx, %edx : imul
+imull $0x7fff, %edx, %ebx : imul
+imull $0x7fff, %edx, %ecx : imul
+imull $0x7fff, %edx, %edx : imul
+imull $0x7fffffff, %ebx, %ecx : imul
+imull $0x7fffffff, %ebx, %edx : imul
+imull $0x7fffffff, %ecx, %ebx : imul
+imull $0x7fffffff, %ecx, %edx : imul
+imull $0x7fffffff, %edx, %ebx : imul
+imull $0x7fffffff, %edx, %ecx : imul
+imull $0x7fffffff, %edx, %edx : imul
+imull $0x8, %ebx, %edx : imul
+imull $0x80, %ebx, %ebx : imul
+imull $0x80, %ebx, %ecx : imul
+imull $0x80, %ebx, %edx : imul
+imull $0x80, %ecx, %ebx : imul
+imull $0x80, %ecx, %ecx : imul
+imull $0x80, %ecx, %edx : imul
+imull $0x80, %edx, %ecx : imul
+imull $0x80, %edx, %edx : imul
+imull $0x8000, %ebx, %ebx : imul
+imull $0x8000, %ebx, %ecx : imul
+imull $0x8000, %ebx, %edx : imul
+imull $0x8000, %ecx, %ecx : imul
+imull $0x8000, %ecx, %edx : imul
+imull $0x8000, %edx, %ecx : imul
+imull $0x8000, %edx, %edx : imul
+imull $0x80000000, %ebx, %ebx : imul
+imull $0x80000000, %ebx, %ecx : imul
+imull $0x80000000, %edx, %ebx : imul
+imull $0x80000000, %edx, %ecx : imul
+imull $0x83, %ebx, %ebx : imul
+imull $0x86, %edx, %ebx : imul
+imull $0x87, %ecx, %edx : imul
+imull $0x89, %ebx, %ecx : imul
+imull $0x89, %ebx, %edx : imul
+imull $0x89, %edx, %edx : imul
+imull $0x8a, %edx, %ecx : imul
+imull $0x8b, %edx, %edx : imul
+imull $0x8c, %ebx, %edx : imul
+imull $0x8e, %ecx, %ebx : imul
+imull $0x8e, %edx, %ecx : imul
+imull $0x8f, %ebx, %ecx : imul
+imull $0x9, %edx, %ecx : imul
+imull $0x93, %ebx, %ebx : imul
+imull $0x94, %ecx, %ebx : imul
+imull $0x9a, %ecx, %edx : imul
+imull $0x9b, %ebx, %ebx : imul
+imull $0xa5, %ecx, %ebx : imul
+imull $0xa51f7c6, %ebx, %ecx : imul
+imull $0xa6, %ebx, %edx : imul
+imull $0xa7, %edx, %ebx : imul
+imull $0xa8, %ebx, %ebx : imul
+imull $0xa9, %ebx, %ecx : imul
+imull $0xa9, %edx, %ebx : imul
+imull $0xae, %ebx, %ebx : imul
+imull $0xaf, %ecx, %ecx : imul
+imull $0xb7, %edx, %edx : imul
+imull $0xb9, %edx, %ebx : imul
+imull $0xbc, %ebx, %edx : imul
+imull $0xbc, %ecx, %edx : imul
+imull $0xbf, %ecx, %ebx : imul
+imull $0xbf74c47, %edx, %ecx : imul
+imull $0xc, %ebx, %ebx : imul
+imull $0xc2, %ecx, %ecx : imul
+imull $0xc40cff1, %ecx, %ebx : imul
+imull $0xc6, %ebx, %ecx : imul
+imull $0xc8, %ebx, %edx : imul
+imull $0xca, %edx, %ebx : imul
+imull $0xca, %edx, %edx : imul
+imull $0xcc, %ecx, %edx : imul
+imull $0xd, %edx, %ebx : imul
+imull $0xd0, %ebx, %ebx : imul
+imull $0xd7, %ebx, %ebx : imul
+imull $0xd7, %edx, %ecx : imul
+imull $0xd7, %edx, %edx : imul
+imull $0xd9, %edx, %edx : imul
+imull $0xda, %ecx, %ecx : imul
+imull $0xdb, %ecx, %ebx : imul
+imull $0xdc, %ecx, %edx : imul
+imull $0xdd0514a, %ebx, %ebx : imul
+imull $0xe0, %ebx, %ebx : imul
+imull $0xe0, %ebx, %ecx : imul
+imull $0xe0, %ebx, %edx : imul
+imull $0xe0, %ecx, %ebx : imul
+imull $0xe0, %ecx, %ecx : imul
+imull $0xe0, %ecx, %edx : imul
+imull $0xe0, %edx, %ebx : imul
+imull $0xe0, %edx, %ecx : imul
+imull $0xe0, %edx, %edx : imul
+imull $0xe1, %ecx, %edx : imul
+imull $0xe1, %edx, %ebx : imul
+imull $0xe2, %ecx, %ebx : imul
+imull $0xe2, %ecx, %ecx : imul
+imull $0xe5, %ecx, %ebx : imul
+imull $0xe9, %ecx, %edx : imul
+imull $0xea, %ebx, %ecx : imul
+imull $0xf1, %edx, %edx : imul
+imull $0xf4, %ecx, %ecx : imul
+imull $0xf6, %ebx, %ebx : imul
+imull $0xf66fe23, %ebx, %ebx : imul
+imull $0xff, %ebx, %ebx : imul
+imull $0xff, %ebx, %ecx : imul
+imull $0xff, %ebx, %edx : imul
+imull $0xff, %ecx, %ebx : imul
+imull $0xff, %ecx, %ecx : imul
+imull $0xff, %ecx, %edx : imul
+imull $0xff, %edx, %ebx : imul
+imull $0xff, %edx, %ecx : imul
+imull $0xff, %edx, %edx : imul
+imull $0xffffffe0, %ebx, %ebx : imul
+imull $0xffffffe0, %ebx, %ecx : imul
+imull $0xffffffe0, %ebx, %edx : imul
+imull $0xffffffe0, %ecx, %ebx : imul
+imull $0xffffffe0, %ecx, %ecx : imul
+imull $0xffffffe0, %ecx, %edx : imul
+imull $0xffffffe0, %edx, %ebx : imul
+imull $0xffffffe0, %edx, %ecx : imul
+imull $0xffffffe0, %edx, %edx : imul
+imull $0xffffffff, %ebx, %ebx : imul
+imull $0xffffffff, %ebx, %ecx : imul
+imull $0xffffffff, %ebx, %edx : imul
+imull $0xffffffff, %ecx, %ebx : imul
+imull $0xffffffff, %ecx, %ecx : imul
+imull $0xffffffff, %ecx, %edx : imul
+imull $0xffffffff, %edx, %ebx : imul
+imull $0xffffffff, %edx, %ecx : imul
+imull $0xffffffff, %edx, %edx : imul
+imull %ebx : imul
+imull %ebx, %ebx : imul
+imull %ebx, %ecx : imul
+imull %ebx, %edx : imul
+imull %ecx : imul
+imull %ecx, %ebx : imul
+imull %ecx, %ecx : imul
+imull %ecx, %edx : imul
+imull %edx : imul
+imull %edx, %ebx : imul
+imull %edx, %ecx : imul
+imull %edx, %edx : imul
+imulw $0x0, %bx, %bx : imul
+imulw $0x0, %bx, %cx : imul
+imulw $0x0, %bx, %dx : imul
+imulw $0x0, %cx, %bx : imul
+imulw $0x0, %cx, %cx : imul
+imulw $0x0, %cx, %dx : imul
+imulw $0x0, %dx, %bx : imul
+imulw $0x0, %dx, %cx : imul
+imulw $0x0, %dx, %dx : imul
+imulw $0x1, %bx, %dx : imul
+imulw $0x1, %cx, %bx : imul
+imulw $0x1, %cx, %cx : imul
+imulw $0x1, %cx, %dx : imul
+imulw $0x1, %dx, %bx : imul
+imulw $0x1, %dx, %cx : imul
+imulw $0x1, %dx, %dx : imul
+imulw $0x10, %bx, %bx : imul
+imulw $0x1030, %bx, %bx : imul
+imulw $0x12, %cx, %dx : imul
+imulw $0x17, %dx, %dx : imul
+imulw $0x18, %bx, %dx : imul
+imulw $0x185a, %bx, %bx : imul
+imulw $0x19, %bx, %cx : imul
+imulw $0x19f2, %cx, %bx : imul
+imulw $0x1a, %bx, %dx : imul
+imulw $0x1ac4, %cx, %bx : imul
+imulw $0x1c1a, %cx, %bx : imul
+imulw $0x1caf, %bx, %bx : imul
+imulw $0x24, %cx, %dx : imul
+imulw $0x2575, %dx, %bx : imul
+imulw $0x2a67, %cx, %dx : imul
+imulw $0x2d, %dx, %dx : imul
+imulw $0x2e27, %dx, %cx : imul
+imulw $0x2e2a, %dx, %cx : imul
+imulw $0x30, %bx, %bx : imul
+imulw $0x30, %bx, %cx : imul
+imulw $0x30, %bx, %dx : imul
+imulw $0x30, %cx, %bx : imul
+imulw $0x30, %cx, %cx : imul
+imulw $0x30, %cx, %dx : imul
+imulw $0x30, %dx, %bx : imul
+imulw $0x30, %dx, %cx : imul
+imulw $0x30, %dx, %dx : imul
+imulw $0x3216, %bx, %dx : imul
+imulw $0x33, %bx, %dx : imul
+imulw $0x3340, %dx, %bx : imul
+imulw $0x34, %cx, %bx : imul
+imulw $0x3418, %cx, %cx : imul
+imulw $0x34e3, %bx, %dx : imul
+imulw $0x39, %dx, %dx : imul
+imulw $0x3c36, %dx, %bx : imul
+imulw $0x41, %bx, %cx : imul
+imulw $0x41, %cx, %bx : imul
+imulw $0x43, %cx, %dx : imul
+imulw $0x44, %dx, %dx : imul
+imulw $0x45c7, %bx, %dx : imul
+imulw $0x46, %bx, %dx : imul
+imulw $0x47d5, %bx, %bx : imul
+imulw $0x48, %dx, %cx : imul
+imulw $0x48f6, %dx, %bx : imul
+imulw $0x4901, %dx, %bx : imul
+imulw $0x4997, %cx, %bx : imul
+imulw $0x4a, %cx, %dx : imul
+imulw $0x4a12, %cx, %bx : imul
+imulw $0x4b, %bx, %cx : imul
+imulw $0x4b, %cx, %dx : imul
+imulw $0x4b6b, %cx, %cx : imul
+imulw $0x4c, %cx, %dx : imul
+imulw $0x4ef1, %bx, %cx : imul
+imulw $0x5243, %dx, %dx : imul
+imulw $0x539d, %bx, %cx : imul
+imulw $0x53d0, %cx, %cx : imul
+imulw $0x55, %cx, %bx : imul
+imulw $0x55, %dx, %cx : imul
+imulw $0x551b, %dx, %bx : imul
+imulw $0x55a1, %cx, %dx : imul
+imulw $0x5643, %bx, %dx : imul
+imulw $0x57, %bx, %cx : imul
+imulw $0x5a61, %cx, %cx : imul
+imulw $0x5b, %cx, %cx : imul
+imulw $0x5bf1, %bx, %cx : imul
+imulw $0x5e8f, %cx, %bx : imul
+imulw $0x5efd, %cx, %cx : imul
+imulw $0x6, %dx, %bx : imul
+imulw $0x601, %bx, %cx : imul
+imulw $0x6147, %cx, %bx : imul
+imulw $0x62, %cx, %cx : imul
+imulw $0x64, %bx, %cx : imul
+imulw $0x65, %bx, %bx : imul
+imulw $0x66, %dx, %dx : imul
+imulw $0x6623, %dx, %bx : imul
+imulw $0x6656, %cx, %bx : imul
+imulw $0x67f3, %bx, %cx : imul
+imulw $0x6bc6, %cx, %cx : imul
+imulw $0x6d5e, %cx, %dx : imul
+imulw $0x6e, %bx, %bx : imul
+imulw $0x6e, %dx, %bx : imul
+imulw $0x7, %dx, %bx : imul
+imulw $0x700f, %dx, %dx : imul
+imulw $0x72, %dx, %cx : imul
+imulw $0x7324, %bx, %bx : imul
+imulw $0x79ca, %bx, %bx : imul
+imulw $0x7a, %dx, %bx : imul
+imulw $0x7a68, %dx, %bx : imul
+imulw $0x7b84, %cx, %dx : imul
+imulw $0x7d8d, %cx, %cx : imul
+imulw $0x7efc, %bx, %bx : imul
+imulw $0x7f, %bx, %bx : imul
+imulw $0x7f, %bx, %cx : imul
+imulw $0x7f, %bx, %dx : imul
+imulw $0x7f, %cx, %bx : imul
+imulw $0x7f, %cx, %cx : imul
+imulw $0x7f, %dx, %bx : imul
+imulw $0x7f, %dx, %cx : imul
+imulw $0x7f, %dx, %dx : imul
+imulw $0x7fff, %bx, %bx : imul
+imulw $0x7fff, %bx, %dx : imul
+imulw $0x7fff, %cx, %bx : imul
+imulw $0x7fff, %dx, %bx : imul
+imulw $0x7fff, %dx, %cx : imul
+imulw $0x7fff, %dx, %dx : imul
+imulw $0x80, %bx, %bx : imul
+imulw $0x80, %bx, %cx : imul
+imulw $0x80, %bx, %dx : imul
+imulw $0x80, %cx, %bx : imul
+imulw $0x80, %cx, %cx : imul
+imulw $0x80, %cx, %dx : imul
+imulw $0x80, %dx, %bx : imul
+imulw $0x80, %dx, %dx : imul
+imulw $0x8000, %cx, %cx : imul
+imulw $0x8000, %cx, %dx : imul
+imulw $0x8000, %dx, %bx : imul
+imulw $0x8000, %dx, %cx : imul
+imulw $0x8000, %dx, %dx : imul
+imulw $0x80ec, %cx, %bx : imul
+imulw $0x82, %cx, %bx : imul
+imulw $0x82aa, %cx, %cx : imul
+imulw $0x83, %dx, %bx : imul
+imulw $0x830c, %dx, %bx : imul
+imulw $0x851d, %cx, %bx : imul
+imulw $0x8537, %bx, %cx : imul
+imulw $0x89, %cx, %cx : imul
+imulw $0x89f0, %dx, %dx : imul
+imulw $0x8aa9, %bx, %bx : imul
+imulw $0x8ca9, %bx, %dx : imul
+imulw $0x8d, %bx, %bx : imul
+imulw $0x91d5, %bx, %cx : imul
+imulw $0x95, %cx, %cx : imul
+imulw $0x9568, %cx, %cx : imul
+imulw $0x95ec, %dx, %dx : imul
+imulw $0x98b9, %cx, %cx : imul
+imulw $0x99, %dx, %dx : imul
+imulw $0x9913, %cx, %cx : imul
+imulw $0x9c60, %bx, %dx : imul
+imulw $0x9d, %cx, %cx : imul
+imulw $0xa, %dx, %cx : imul
+imulw $0xa0, %dx, %bx : imul
+imulw $0xa3, %dx, %cx : imul
+imulw $0xa36e, %cx, %bx : imul
+imulw $0xa4ff, %dx, %cx : imul
+imulw $0xa5, %cx, %cx : imul
+imulw $0xa6, %dx, %cx : imul
+imulw $0xa71b, %cx, %dx : imul
+imulw $0xa9, %bx, %cx : imul
+imulw $0xa9, %cx, %dx : imul
+imulw $0xa9ad, %dx, %cx : imul
+imulw $0xaa, %dx, %cx : imul
+imulw $0xaaa6, %bx, %bx : imul
+imulw $0xabf5, %cx, %bx : imul
+imulw $0xae, %dx, %dx : imul
+imulw $0xae09, %dx, %dx : imul
+imulw $0xaf6c, %dx, %cx : imul
+imulw $0xb2, %dx, %bx : imul
+imulw $0xb3, %cx, %bx : imul
+imulw $0xb3, %dx, %bx : imul
+imulw $0xb328, %bx, %cx : imul
+imulw $0xb4, %bx, %dx : imul
+imulw $0xb4, %cx, %bx : imul
+imulw $0xb552, %cx, %dx : imul
+imulw $0xb8, %dx, %cx : imul
+imulw $0xb9, %dx, %dx : imul
+imulw $0xb94b, %cx, %cx : imul
+imulw $0xb957, %dx, %dx : imul
+imulw $0xba, %dx, %bx : imul
+imulw $0xba, %dx, %dx : imul
+imulw $0xbc, %cx, %cx : imul
+imulw $0xbd, %cx, %dx : imul
+imulw $0xbd5, %cx, %bx : imul
+imulw $0xc, %bx, %cx : imul
+imulw $0xc09f, %cx, %bx : imul
+imulw $0xc5, %dx, %cx : imul
+imulw $0xc700, %cx, %bx : imul
+imulw $0xca, %bx, %dx : imul
+imulw $0xca, %dx, %dx : imul
+imulw $0xcb, %bx, %cx : imul
+imulw $0xcc, %dx, %bx : imul
+imulw $0xcc9a, %cx, %cx : imul
+imulw $0xccc4, %bx, %bx : imul
+imulw $0xcd, %dx, %bx : imul
+imulw $0xcded, %bx, %bx : imul
+imulw $0xcf27, %dx, %bx : imul
+imulw $0xcf8, %bx, %dx : imul
+imulw $0xd1, %cx, %bx : imul
+imulw $0xd5cd, %bx, %bx : imul
+imulw $0xd5f6, %dx, %cx : imul
+imulw $0xd6, %bx, %bx : imul
+imulw $0xd6, %cx, %bx : imul
+imulw $0xd757, %dx, %dx : imul
+imulw $0xd8, %bx, %bx : imul
+imulw $0xd8, %bx, %cx : imul
+imulw $0xd8, %cx, %cx : imul
+imulw $0xd9, %bx, %dx : imul
+imulw $0xd97e, %dx, %bx : imul
+imulw $0xdd, %bx, %dx : imul
+imulw $0xe, %cx, %bx : imul
+imulw $0xe0, %bx, %bx : imul
+imulw $0xe0, %bx, %cx : imul
+imulw $0xe0, %bx, %dx : imul
+imulw $0xe0, %cx, %bx : imul
+imulw $0xe0, %cx, %cx : imul
+imulw $0xe0, %cx, %dx : imul
+imulw $0xe0, %dx, %bx : imul
+imulw $0xe0, %dx, %cx : imul
+imulw $0xe0, %dx, %dx : imul
+imulw $0xe4b5, %bx, %cx : imul
+imulw $0xe6, %dx, %bx : imul
+imulw $0xe6ee, %cx, %dx : imul
+imulw $0xe7, %dx, %cx : imul
+imulw $0xe848, %dx, %cx : imul
+imulw $0xe989, %cx, %dx : imul
+imulw $0xeb, %bx, %dx : imul
+imulw $0xed, %bx, %bx : imul
+imulw $0xee, %cx, %dx : imul
+imulw $0xefc3, %bx, %bx : imul
+imulw $0xf4, %dx, %bx : imul
+imulw $0xf6, %cx, %cx : imul
+imulw $0xf606, %bx, %dx : imul
+imulw $0xf7, %bx, %cx : imul
+imulw $0xfa, %cx, %bx : imul
+imulw $0xfa, %cx, %cx : imul
+imulw $0xfa29, %bx, %dx : imul
+imulw $0xfd, %cx, %bx : imul
+imulw $0xfe, %bx, %dx : imul
+imulw $0xfe, %cx, %cx : imul
+imulw $0xff, %bx, %bx : imul
+imulw $0xff, %bx, %cx : imul
+imulw $0xff, %bx, %dx : imul
+imulw $0xff, %cx, %bx : imul
+imulw $0xff, %cx, %cx : imul
+imulw $0xff, %cx, %dx : imul
+imulw $0xff, %dx, %bx : imul
+imulw $0xff, %dx, %cx : imul
+imulw $0xff, %dx, %dx : imul
+imulw $0xffe0, %bx, %bx : imul
+imulw $0xffe0, %bx, %cx : imul
+imulw $0xffe0, %bx, %dx : imul
+imulw $0xffe0, %cx, %bx : imul
+imulw $0xffe0, %cx, %cx : imul
+imulw $0xffe0, %cx, %dx : imul
+imulw $0xffe0, %dx, %bx : imul
+imulw $0xffe0, %dx, %cx : imul
+imulw $0xffe0, %dx, %dx : imul
+imulw $0xffff, %bx, %bx : imul
+imulw $0xffff, %bx, %cx : imul
+imulw $0xffff, %bx, %dx : imul
+imulw $0xffff, %cx, %bx : imul
+imulw $0xffff, %cx, %cx : imul
+imulw $0xffff, %cx, %dx : imul
+imulw $0xffff, %dx, %bx : imul
+imulw $0xffff, %dx, %cx : imul
+imulw $0xffff, %dx, %dx : imul
+imulw %bx : imul
+imulw %bx, %bx : imul
+imulw %bx, %cx : imul
+imulw %bx, %dx : imul
+imulw %cx : imul
+imulw %cx, %bx : imul
+imulw %cx, %cx : imul
+imulw %cx, %dx : imul
+imulw %dx : imul
+imulw %dx, %bx : imul
+imulw %dx, %cx : imul
+imulw %dx, %dx : imul
+incb %ah : inc
+incb %bh : inc
+incb %bl : inc
+incb %ch : inc
+incb %cl : inc
+incb %dh : inc
+incb %dl : inc
+incl %ebx : inc
+incl %ecx : inc
+incl %edx : inc
+incw %bx : inc
+incw %cx : inc
+incw %dx : inc
+movb $0x0, %ah : mov
+movb $0x0, %bh : mov
+movb $0x0, %bl : mov
+movb $0x0, %ch : mov
+movb $0x0, %cl : mov
+movb $0x0, %dh : mov
+movb $0x0, %dl : mov
+movb $0x1, %ah : mov
+movb $0x1, %bh : mov
+movb $0x1, %bl : mov
+movb $0x1, %ch : mov
+movb $0x1, %cl : mov
+movb $0x1, %dh : mov
+movb $0x1, %dl : mov
+movb $0x10, %dl : mov
+movb $0x11, %dh : mov
+movb $0x12, %bl : mov
+movb $0x12, %dl : mov
+movb $0x14, %bh : mov
+movb $0x14, %ch : mov
+movb $0x15, %cl : mov
+movb $0x15, %dl : mov
+movb $0x16, %bl : mov
+movb $0x16, %cl : mov
+movb $0x17, %bh : mov
+movb $0x18, %cl : mov
+movb $0x19, %dh : mov
+movb $0x1a, %ah : mov
+movb $0x1a, %bh : mov
+movb $0x1a, %dl : mov
+movb $0x1d, %bh : mov
+movb $0x1d, %cl : mov
+movb $0x1e, %cl : mov
+movb $0x1e, %dh : mov
+movb $0x1f, %bl : mov
+movb $0x1f, %ch : mov
+movb $0x1f, %dl : mov
+movb $0x2, %bh : mov
+movb $0x2, %cl : mov
+movb $0x20, %ch : mov
+movb $0x21, %ch : mov
+movb $0x21, %cl : mov
+movb $0x21, %dh : mov
+movb $0x23, %bh : mov
+movb $0x23, %bl : mov
+movb $0x24, %bl : mov
+movb $0x24, %ch : mov
+movb $0x25, %cl : mov
+movb $0x25, %dl : mov
+movb $0x26, %cl : mov
+movb $0x28, %ah : mov
+movb $0x28, %ch : mov
+movb $0x28, %dl : mov
+movb $0x29, %ah : mov
+movb $0x29, %bl : mov
+movb $0x29, %cl : mov
+movb $0x2a, %ah : mov
+movb $0x2b, %cl : mov
+movb $0x2c, %ah : mov
+movb $0x2d, %ah : mov
+movb $0x2d, %ch : mov
+movb $0x2f, %ah : mov
+movb $0x2f, %bl : mov
+movb $0x3, %dl : mov
+movb $0x30, %ah : mov
+movb $0x30, %bh : mov
+movb $0x30, %bl : mov
+movb $0x30, %ch : mov
+movb $0x30, %cl : mov
+movb $0x30, %dh : mov
+movb $0x30, %dl : mov
+movb $0x33, %cl : mov
+movb $0x34, %ah : mov
+movb $0x34, %cl : mov
+movb $0x34, %dl : mov
+movb $0x35, %ah : mov
+movb $0x36, %cl : mov
+movb $0x37, %ah : mov
+movb $0x37, %bl : mov
+movb $0x37, %dh : mov
+movb $0x37, %dl : mov
+movb $0x38, %cl : mov
+movb $0x39, %ah : mov
+movb $0x39, %bh : mov
+movb $0x39, %cl : mov
+movb $0x3a, %ah : mov
+movb $0x3a, %dl : mov
+movb $0x3b, %bh : mov
+movb $0x3b, %dh : mov
+movb $0x3c, %bl : mov
+movb $0x3c, %cl : mov
+movb $0x3e, %ah : mov
+movb $0x3e, %bl : mov
+movb $0x3f, %ch : mov
+movb $0x40, %cl : mov
+movb $0x41, %ah : mov
+movb $0x41, %bh : mov
+movb $0x41, %cl : mov
+movb $0x41, %dl : mov
+movb $0x42, %bl : mov
+movb $0x43, %ch : mov
+movb $0x43, %cl : mov
+movb $0x43, %dh : mov
+movb $0x44, %cl : mov
+movb $0x45, %bh : mov
+movb $0x45, %bl : mov
+movb $0x45, %cl : mov
+movb $0x46, %bh : mov
+movb $0x46, %cl : mov
+movb $0x46, %dh : mov
+movb $0x47, %dh : mov
+movb $0x48, %cl : mov
+movb $0x49, %ah : mov
+movb $0x49, %cl : mov
+movb $0x4b, %bl : mov
+movb $0x4d, %ah : mov
+movb $0x4f, %bh : mov
+movb $0x4f, %bl : mov
+movb $0x4f, %dl : mov
+movb $0x52, %bl : mov
+movb $0x53, %ah : mov
+movb $0x53, %bl : mov
+movb $0x55, %ah : mov
+movb $0x57, %dh : mov
+movb $0x57, %dl : mov
+movb $0x58, %dl : mov
+movb $0x59, %cl : mov
+movb $0x59, %dh : mov
+movb $0x59, %dl : mov
+movb $0x5a, %dl : mov
+movb $0x5b, %ch : mov
+movb $0x5b, %cl : mov
+movb $0x5c, %bh : mov
+movb $0x5c, %cl : mov
+movb $0x5d, %ah : mov
+movb $0x5d, %bl : mov
+movb $0x5e, %bh : mov
+movb $0x5f, %bl : mov
+movb $0x5f, %ch : mov
+movb $0x5f, %dl : mov
+movb $0x6, %bl : mov
+movb $0x6, %dh : mov
+movb $0x60, %ah : mov
+movb $0x61, %ah : mov
+movb $0x61, %bl : mov
+movb $0x61, %dl : mov
+movb $0x62, %cl : mov
+movb $0x63, %ah : mov
+movb $0x64, %ch : mov
+movb $0x64, %cl : mov
+movb $0x64, %dh : mov
+movb $0x65, %bh : mov
+movb $0x65, %bl : mov
+movb $0x65, %ch : mov
+movb $0x65, %dl : mov
+movb $0x66, %cl : mov
