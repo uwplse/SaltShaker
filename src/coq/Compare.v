@@ -317,29 +317,29 @@ Definition testEqInstr (instr : Instr) : option (SharedState * option SharedStat
 Defined.
 
 Definition eqInstrBinder (instr : Instr)
-  : Space (SharedState * option SharedState * option SharedState).
-  refine (match eqInstr instr with None => empty | Some a => single a end).
+  : Space (Instr * SharedState * option SharedState * option SharedState).
+  refine (match eqInstr instr with
+          | None => empty
+          | Some (s0, s1, s2) => _
+          end).
+  refine (single (instr, s0, s1, s2)).
 Defined.
 
+(* we use binds rather than searches because it is important for us to
+   have access to the full space of counterexamples *)
 Definition verifyInstrsEq (instrs : Space Instr)
-  : option (SharedState * option SharedState * option SharedState).
-  refine (match search (bind instrs eqInstrBinder) with
-          | uninhabited => None
-          | solution a => Some a
-          end).
+  : Space (Instr * SharedState * option SharedState * option SharedState).
+  refine (bind instrs eqInstrBinder).
 Defined.
 
 Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
-  : option (SharedState * option SharedState * option SharedState).
-  refine (match (incSearch instrs' instrs eqInstrBinder) with
-          | uninhabited => None
-          | solution a => Some a
-          end).
+  : Space (Instr * SharedState * option SharedState * option SharedState).
+  refine (bind (minus instrs' instrs) eqInstrBinder).
   constructor. apply Instr_eq_dec.
 Defined.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq eqInstr testEqInstr
-  runRocksalt instrToRTL
+  runRocksalt instrToRTL eqInstrBinder verifyInstrsEq verifyInstrsEqInc
   shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of.
 
 

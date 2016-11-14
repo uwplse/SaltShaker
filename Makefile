@@ -3,7 +3,11 @@
 compare: src/racket/* src/racket/x86sem.rkt stoke lib/SpaceSearch/src/racket/*
 	cp lib/SpaceSearch/src/racket/* src/racket/
 	raco make src/racket/compare.rkt
-	chmod +x src/racket/compare.rkt 
+	chmod +x src/racket/compare.rkt
+	raco make src/racket/compareAll.rkt
+	chmod +x src/racket/compareAll.rkt
+	raco make src/racket/compareAllInc.rkt
+	chmod +x src/racket/compareAllInc.rkt
 
 src/racket/x86sem.rkt: src/coq/*.v src/racket/header.rkt spacesearch rocksalt
 	cd src/coq; find . -name '*.v' -exec coq_makefile \

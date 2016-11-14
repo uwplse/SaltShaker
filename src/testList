@@ -1,0 +1,4 @@
+shldl $0x0, %ebx, %ecx : shld
+shldl $0x1, %ebx, %ebx : shld
+btl %ecx, %ebx : bt
+bsfl %ebx, %ebx : bsf

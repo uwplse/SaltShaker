@@ -6,7 +6,7 @@
 (require "extraction.rkt" "rosette.rkt" "word.rkt" "stoke.rkt" "rocksalt-instr.rkt")
 
 (provide instrEq testInstrEq spaceInstrEq verifyInstrEq eqInstr testEqInstr
-         runRocksalt instrToRTL
+         runRocksalt instrToRTL eqInstrBinder verifyInstrsEq verifyInstrsEqInc
          shared_state_eq eax ecx edx ebx esp ebp esi edi cf pf zf sf of)
 
 ; if anything is below this line, this file was automatically 
