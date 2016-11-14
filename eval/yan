@@ -1,0 +1,10 @@
+xorb $0x96, %ah : xor
+xorb $0x98, %al : xor
+xorb $0x98, %dh : xor
+xorb $0x99, %al : xor
+xorb $0x99, %bl : xor
+xorb $0x9a, %al : xor
+xorb $0x9b, %bl : xor
+xorb $0x9c, %al : xor
+xorb $0x9c, %bl : xor
+xorb $0x9d, %cl : xor

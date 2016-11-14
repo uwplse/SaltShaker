@@ -1,0 +1,10 @@
+shrb $0x19, %cl : shr
+shrb $0x1a, %dl : shr
+shrb $0x1c, %ah : shr
+shrb $0x1c, %dl : shr
+shrb $0x1d, %dl : shr
+shrb $0x1e, %ch : shr
+shrb $0x1e, %dh : shr
+shrb $0x1f, %ch : shr
+shrb $0x20, %ch : shr
+shrb $0x24, %ah : shr

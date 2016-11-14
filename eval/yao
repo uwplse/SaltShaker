@@ -1,0 +1,10 @@
+shrdw $0x90, %cx, %bx : shrd
+shrdw %cl, %bx, %bx : shrd
+shrdw %cl, %bx, %cx : shrd
+shrdw %cl, %bx, %dx : shrd
+shrdw %cl, %cx, %bx : shrd
+shrdw %cl, %cx, %cx : shrd
+shrdw %cl, %cx, %dx : shrd
+shrdw %cl, %dx, %bx : shrd
+shrdw %cl, %dx, %cx : shrd
+shrdw %cl, %dx, %dx : shrd

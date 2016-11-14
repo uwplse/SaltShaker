@@ -1,0 +1,10 @@
+adcw $0xfaa4, %dx : adc
+adcw $0xfabb, %bx : adc
+adcw $0xfc88, %ax : adc
+adcw $0xfd16, %ax : adc
+adcw $0xfe17, %ax : adc
+adcw $0xfe3a, %ax : adc
+adcw $0xfe8c, %ax : adc
+adcw $0xff, %bx : adc
+adcw $0xff, %cx : adc
+adcw $0xff, %dx : adc

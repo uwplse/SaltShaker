@@ -1,0 +1,10 @@
+subb $0xdd, %dl : sub
+subb $0xde, %bh : sub
+subb $0xdf, %ah : sub
+subb $0xe0, %ah : sub
+subb $0xe0, %al : sub
+subb $0xe0, %bh : sub
+subb $0xe0, %bl : sub
+subb $0xe0, %ch : sub
+subb $0xe0, %cl : sub
+subb $0xe0, %dh : sub

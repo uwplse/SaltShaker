@@ -1,0 +1,10 @@
+cmpw $0x80, %dx : cmp
+cmpw $0x8000, %ax : cmp
+cmpw $0x8000, %bx : cmp
+cmpw $0x8000, %cx : cmp
+cmpw $0x8000, %dx : cmp
+cmpw $0x81, %bx : cmp
+cmpw $0x8245, %ax : cmp
+cmpw $0x8252, %cx : cmp
+cmpw $0x8273, %bx : cmp
+cmpw $0x83, %bx : cmp

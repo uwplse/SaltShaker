@@ -1,0 +1,10 @@
+testb $0xbb, %cl : test
+testb $0xbc, %al : test
+testb $0xbc, %bh : test
+testb $0xbc, %ch : test
+testb $0xbd, %al : test
+testb $0xbd, %cl : test
+testb $0xbe, %al : test
+testb $0xbe, %cl : test
+testb $0xbf, %al : test
+testb $0xc0, %bh : test

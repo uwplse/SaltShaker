@@ -1,0 +1,10 @@
+adcb $0x0, %ah : adc
+adcb $0x0, %al : adc
+adcb $0x0, %bh : adc
+adcb $0x0, %bl : adc
+adcb $0x0, %ch : adc
+adcb $0x0, %cl : adc
+adcb $0x0, %dh : adc
+adcb $0x0, %dl : adc
+adcb $0x1, %ah : adc
+adcb $0x1, %al : adc

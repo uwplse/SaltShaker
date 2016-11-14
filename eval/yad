@@ -1,0 +1,10 @@
+andw $0xbac7, %ax : and
+andw $0xbc23, %cx : and
+andw $0xbc45, %dx : and
+andw $0xbce9, %cx : and
+andw $0xbe, %cx : and
+andw $0xc129, %ax : and
+andw $0xc152, %dx : and
+andw $0xc173, %dx : and
+andw $0xc3, %cx : and
+andw $0xc513, %ax : and

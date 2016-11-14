@@ -1,0 +1,10 @@
+movb $0x68, %bh : mov
+movb $0x68, %cl : mov
+movb $0x69, %bh : mov
+movb $0x69, %dl : mov
+movb $0x6a, %bl : mov
+movb $0x6a, %ch : mov
+movb $0x6a, %dh : mov
+movb $0x6a, %dl : mov
+movb $0x6b, %ch : mov
+movb $0x6b, %cl : mov
