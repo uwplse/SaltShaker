@@ -34,7 +34,7 @@ Extract Constant cast_signed => "word-casts".
 
 Definition debug {A B} (a:A) (f:unit -> B) := f tt.
 Arguments debug / {_ _} _ _.
-Extract Constant debug => "(lambdas (a f) (@ f '(Tt)))".
+Extract Constant debug => "(lambdas (a f) (displayln a) (flush-output) (@ f '(Tt)))".
 
 Existing Instance rosetteBasic.
 Existing Instance rosetteSearch.
@@ -122,19 +122,14 @@ Section InstrEq.
 Variable eq:SharedState -> SharedState -> bool.
 
 Definition instrEq (u:Word.int uninterpretedBitsSpec) (o:oracle) (s:SharedState) : option (SharedState * option SharedState * option SharedState).
-  refine (debug 3214 (fun _ => _)).
   refine (let s0 := runX86Spec u s in _).
-  refine (debug s0 (fun _ => _)).
   refine (let s1 := runRocksalt o s in _).
-  refine (debug s1 (fun _ => _)).
   refine (let error := Some (s, s0, s1) in _).
-  refine (debug error (fun _ => _)).
   refine (match s0,s1 with 
   | None, None => None
   | Some s0', Some s1' => _
   | _,_ => error
   end).
-  refine (debug tt (fun _ => _)).
   refine (if eq s0' s1' then None else error).
 Defined.
 
@@ -283,7 +278,7 @@ Existing Instance listIncSearch.
 Parameter Instr : Type.
 Parameter Instr_eq_dec : forall (i i' : Instr), {i = i'} + {i <> i'}.
 Extract Constant Instr => "__".
-Extract Constant Instr_eq_dec => "(lambdas (i j) (if (eq? i j) '(Left) '(Right)))".
+Extract Constant Instr_eq_dec => "(lambdas (i j) (if (equal? i j) '(Left) '(Right)))".
 
 Parameter stokeRacket : Instr ->
                   {uninterpretedBits : nat & 
@@ -312,7 +307,6 @@ Definition testEqInstr (instr : Instr) : option (SharedState * option SharedStat
   refine (let uninterpretedBits := projT1 result in _).
   refine (let runStoke := projT2 result in _).
   refine (let rocksaltInstr := rocksaltInstrRacket instr in _).
-  refine (debug (uninterpretedBits, runStoke, rocksaltInstr) (fun _ => _)).
   refine (@testInstrEq uninterpretedBits runStoke rocksaltInstr shared_state_eqb).
 Defined.
 
@@ -334,8 +328,11 @@ Defined.
 
 Definition verifyInstrsEqInc (instrs' instrs : Space Instr)
   : Space (Instr * SharedState * option SharedState * option SharedState).
-  refine (bind (minus instrs' instrs) eqInstrBinder).
-  constructor. apply Instr_eq_dec.
+  refine (let instrs'' := minus instrs' instrs in _).
+  refine (bind instrs'' eqInstrBinder).
+Unshelve.
+  - apply listMinus.
+  - constructor. apply Instr_eq_dec.
 Defined.
 
 Extraction "x86sem" instrEq testInstrEq spaceInstrEq eqInstr testEqInstr
