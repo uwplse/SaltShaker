@@ -1,0 +1,1017 @@
+addl $0x4deac6c9, %eax : add
+cmpl $0x71db018c, %edx : cmp
+cmpb %dl, %dl : cmp
+sbbb $0x1, %cl : sbb
+sarw $0xd, %bx : sar
+shldw $0xe1, %bx, %bx : shld
+rorb $0x67, %dh : ror
+adcl $0x36ef6eda, %ecx : adc
+cmpw $0xcd1d, %ax : cmp
+rcrw $0xe0, %cx : rcr
+adcl $0xd15faca, %eax : adc
+adcw $0x2a44, %bx : adc
+addb $0x9e, %dl : add
+sbbw $0xe0, %dx : sbb
+subw $0xf562, %ax : sub
+movw $0xc4be, %cx : mov
+rclw $0x5e, %cx : rcl
+xorl $0x9c, %ebx : xor
+subl $0x3d7d86b, %ebx : sub
+orb $0x50, %dh : or
+rclb $0xf2, %dl : rcl
+orl $0x2b0dfc2f, %edx : or
+subw $0x9e7, %bx : sub
+adcl $0xa0, %edx : adc
+andw $0xe71, %bx : and
+subw $0xc5, %bx : sub
+xorb $0x38, %bh : xor
+xorl $0x413455c2, %eax : xor
+addw $0xbbe7, %bx : add
+xorb $0xe8, %al : xor
+xorl $0x7f0c4326, %eax : xor
+subb $0xeb, %dh : sub
+imulw $0xb9, %dx, %dx : imul
+testb $0x5d, %al : test
+orb %cl, %dh : or
+addw $0xfcac, %ax : add
+xaddb %ch, %dl : xadd
+subw $0xe8, %cx : sub
+imulw $0xe0, %dx, %cx : imul
+sbbw $0x8000, %bx : sbb
+shrl $0x21, %ecx : shr
+shrb $0x1e, %ch : shr
+xorl $0x5456c78e, %eax : xor
+shldl $0x1, %ebx, %edx : shld
+movl $0x68dbc908, %edx : mov
+sbbw $0xe4, %cx : sbb
+sbbw $0x150b, %ax : sbb
+rcrb $0x81, %dl : rcr
+shrdl $0xa3, %ebx, %edx : shrd
+xorw $0x1807, %ax : xor
+adcw $0xe0, %bx : adc
+addw $0x35a1, %bx : add
+rolb $0x30, %bh : rol
+subw $0x59b8, %ax : sub
+subw $0x4a, %cx : sub
+subw $0xaa46, %ax : sub
+orb $0xed, %al : or
+cmpb $0x13, %dh : cmp
+movw $0x1719, %bx : mov
+shlb $0xff, %bh : shl
+sarb $0x76, %dl : sar
+shrdl $0x80, %edx, %edx : shrd
+addl $0xce, %ebx : add
+movb $0xf7, %dh : mov
+sbbw $0xd02, %ax : sbb
+andb $0x4, %dl : and
+sbbw $0x44, %cx : sbb
+sbbl $0x32c7f588, %eax : sbb
+adcl $0x65, %ecx : adc
+adcb %cl, %bl : adc
+xorb $0xe9, %cl : xor
+subw $0x681, %dx : sub
+rcrb $0xde, %dh : rcr
+xorw $0x5bac, %ax : xor
+adcw $0x4ade, %ax : adc
+rclw $0xe0, %dx : rcl
+orb %bl, %ch : or
+rcrb $0x7d, %cl : rcr
+sbbl $0xee, %edx : sbb
+adcl $0x7a61d75b, %eax : adc
+orw $0x1941, %cx : or
+movw $0x8ad1, %dx : mov
+testb $0xe2, %ch : test
+andl $0x19, %edx : and
+shrdl $0x63, %edx, %ebx : shrd
+shll $0xe0, %ebx : shl
+addb $0xf, %al : add
+shrl $0x9a, %ebx : shr
+sbbl $0x5, %ebx : sbb
+xorb $0x64, %al : xor
+rolb $0x46, %cl : rol
+andb $0xb4, %al : and
+orw $0x711a, %dx : or
+rcrw $0x1e, %bx : rcr
+adcl $0x7f, %edx : adc
+adcw $0x9cbf, %bx : adc
+movl $0x46e10331, %ebx : mov
+testl $0x80000000, %eax : test
+subb $0x14, %dh : sub
+imulw $0x539d, %bx, %cx : imul
+cmpw $0x163c, %ax : cmp
+addw $0xff, %bx : add
+shlb $0x5f, %cl : shl
+andl $0x75, %ecx : and
+xorw $0xe0, %cx : xor
+orb $0xf, %ch : or
+testb $0xe0, %dh : test
+orb $0xf2, %dh : or
+orl $0xe6, %ebx : or
+subw $0x1651, %cx : sub
+movb $0x1e, %cl : mov
+testl $0x61ac3853, %eax : test
+cmpxchgb %ch, %ch : cmpxchg
+xorb $0x30, %dh : xor
+rolb $0x5e, %bl : rol
+addb $0x1f, %bh : add
+movl $0x391fb2dc, %ecx : mov
+cmpw $0xc5b6, %ax : cmp
+sarw $0xf0, %dx : sar
+roll $0xe0, %ecx : rol
+movb $0x19, %dh : mov
+andw $0x88, %bx : and
+subb $0xa5, %al : sub
+adcb $0x0, %bl : adc
+shldl $0xcd, %ecx, %edx : shld
+adcb %cl, %dl : adc
+testb $0x4b, %ch : test
+xorb $0x77, %ch : xor
+xaddw %cx, %cx : xadd
+cmpl $0xa, %ecx : cmp
+sbbb $0xda, %al : sbb
+sbbl $0x7f, %ebx : sbb
+orb %dl, %dl : or
+subw $0xffe0, %bx : sub
+testw $0xecf1, %bx : test
+rcrw $0x39, %cx : rcr
+testl $0x6673a7, %eax : test
+orw $0x71, %dx : or
+sbbl $0x356db1ae, %eax : sbb
+rorl $0xea, %ecx : ror
+imulw $0x7f, %dx, %bx : imul
+cmpb $0xa9, %bl : cmp
+subl $0x2d112ecf, %ebx : sub
+orw $0xd56, %ax : or
+subb $0xff, %cl : sub
+addb $0xa7, %dh : add
+sbbl $0x403e9509, %eax : sbb
+subl $0x462d857, %ecx : sub
+rorb $0x43, %dl : ror
+testb $0xac, %al : test
+testb $0x1f, %ch : test
+shlw $0x97, %dx : shl
+addl $0x345c3aff, %ebx : add
+xorw $0xff, %cx : xor
+adcl $0x6e, %ebx : adc
+roll $0x2, %ecx : rol
+rorl $0x21, %edx : ror
+orb $0xe0, %ah : or
+roll $0x8e, %ecx : rol
+orb $0x4e, %dl : or
+rcrb $0x11, %ch : rcr
+shldl $0xa2, %ecx, %ebx : shld
+xorb $0x99, %bl : xor
+andb %cl, %dh : and
+testb $0x71, %dl : test
+andl $0x60073aae, %ecx : and
+xorb $0x4a, %bl : xor
+movl $0x2a0dc809, %ecx : mov
+rcll $0x62, %edx : rcl
+testw $0xcf48, %cx : test
+subl $0x4e256e1e, %eax : sub
+adcb $0xe0, %al : adc
+incb %dl : inc
+adcl $0xe2, %ecx : adc
+xorl $0xc, %ecx : xor
+cmpl $0x536a8314, %eax : cmp
+xorl $0x1439539, %edx : xor
+xorw $0x51, %bx : xor
+xorb $0x9c, %al : xor
+rorb $0x1b, %dh : ror
+addb %cl, %bl : add
+testb $0x6a, %al : test
+addb $0x24, %cl : add
+rcrb $0xd5, %dh : rcr
+testb $0xc1, %bl : test
+shrdw $0x3f, %bx, %bx : shrd
+xorw $0x6aec, %dx : xor
+imulw $0xc5, %dx, %cx : imul
+sbbb $0xaf, %al : sbb
+orb $0xb4, %al : or
+testw $0xa5b7, %ax : test
+andl $0x3d6713b4, %eax : and
+subw $0xb475, %ax : sub
+sbbl $0x54, %ebx : sbb
+cmpw $0xde67, %ax : cmp
+xorb $0xf, %ah : xor
+andb %ch, %cl : and
+rorb $0xc9, %ah : ror
+adcl $0x7c97b4f, %edx : adc
+movb $0xe0, %dh : mov
+testl $0x22447059, %ecx : test
+movb $0xb8, %ch : mov
+subb $0xff, %dh : sub
+shrdw $0x2, %bx, %dx : shrd
+movl $0x7fff, %ecx : mov
+adcb $0x8d, %dl : adc
+xorw $0x7fff, %cx : xor
+sbbl $0xae, %edx : sbb
+rorw $0xff, %bx : ror
+cmpb $0x79, %ch : cmp
+xorb $0xf0, %ch : xor
+shll $0x55, %ecx : shl
+sbbw %cx, %cx : sbb
+rolb $0xcc, %cl : rol
+rolb $0xbd, %cl : rol
+testw $0x1ec8, %cx : test
+movb $0xe5, %ch : mov
+xorl $0x3f32aadc, %eax : xor
+rolb $0x80, %dh : rol
+rorb $0x7f, %ah : ror
+xorb %cl, %ch : xor
+orw $0xad40, %ax : or
+shlw $0xd3, %cx : shl
+shlb $0x30, %cl : shl
+orl $0xcaa6830, %eax : or
+sarl %cl, %edx : sar
+andb %ch, %dh : and
+rolb $0x0, %dl : rol
+sbbl $0x252f07c5, %edx : sbb
+addl $0xbc, %edx : add
+andl $0x18ddced2, %eax : and
+testl $0x707658, %eax : test
+sarb $0x33, %bh : sar
+movzbl %dh, %edx : movzx
+orb $0xa2, %al : or
+rclw $0xd5, %bx : rcl
+cmpb $0x35, %bh : cmp
+addl $0xbb, %ecx : add
+xorw $0x80, %ax : xor
+sbbw $0x8d, %cx : sbb
+cmpb %dl, %dh : cmp
+testb $0x40, %bh : test
+adcl $0xffffffff, %edx : adc
+shlb $0x60, %bl : shl
+cmpb $0xba, %dh : cmp
+xorl $0x8000, %eax : xor
+orl $0x579503e5, %ecx : or
+rolb $0xa, %dl : rol
+xorl $0x9b, %ebx : xor
+cmpb $0x72, %al : cmp
+shlw $0x52, %bx : shl
+subl $0x1c3e6e54, %eax : sub
+rcll $0xd4, %ecx : rcl
+rorb $0xd5, %dh : ror
+adcl $0x3e1f8994, %ebx : adc
+shrdl $0xd5, %ebx, %ebx : shrd
+xchgb %ch, %ah : xchg
+xorb $0x69, %dh : xor
+testl $0x46069c15, %eax : test
+xorl $0xe4, %ebx : xor
+addw $0x6d, %ax : add
+movw $0xe9dc, %dx : mov
+andw %bx, %bx : and
+rclb $0x1, %bh : rcl
+andl $0x802e0c4, %eax : and
+subw $0x5508, %ax : sub
+sbbb $0xc8, %al : sbb
+cmpxchgb %ah, %dl : cmpxchg
+cmpl $0x2f, %edx : cmp
+orb $0x1e, %al : or
+addb %bl, %ah : add
+orw $0xab90, %ax : or
+cmpl $0x169aff18, %ecx : cmp
+shlw $0xaf, %bx : shl
+shrl $0x32, %ecx : shr
+sbbb $0xc2, %al : sbb
+subw $0xe6, %dx : sub
+rolb $0x15, %dl : rol
+rcll $0x61, %edx : rcl
+imulw $0x7fff, %bx, %bx : imul
+rorb $0x53, %ah : ror
+sarb $0xfb, %dh : sar
+orl $0x39c48a2a, %ebx : or
+addl $0x6ef011c7, %eax : add
+adcb $0x72, %cl : adc
+orb $0xfc, %al : or
+adcw $0xeab, %bx : adc
+cmpl $0x33ecd396, %ecx : cmp
+subb %dl, %bl : sub
+cmpb $0x35, %dl : cmp
+addb %cl, %ch : add
+testb $0xca, %al : test
+addb $0x20, %ah : add
+addl $0x1536ffd6, %eax : add
+shlb $0x37, %bl : shl
+testb $0xba, %al : test
+xorl $0x7090a363, %eax : xor
+sarw $0x18, %cx : sar
+sbbw $0xb062, %ax : sbb
+andl $0x80000000, %edx : and
+andl $0x3bbad8f0, %eax : and
+shrb $0x79, %dl : shr
+subb $0x56, %al : sub
+movl $0x5117ec66, %ebx : mov
+movb $0x12, %dl : mov
+adcl $0x9a, %edx : adc
+orw $0xd5db, %ax : or
+rolb $0xae, %bh : rol
+shrdl $0x7f, %ebx, %edx : shrd
+addw $0x79c3, %bx : add
+rcrl $0xd3, %ecx : rcr
+addw $0xdb, %dx : add
+movsbl %cl, %ebx : movsx
+testb $0xff, %ah : test
+testb $0x49, %al : test
+testw $0x8fd0, %ax : test
+movl $0x602f9a37, %ecx : mov
+rcrl $0x26, %ecx : rcr
+rcrw $0x1c, %bx : rcr
+sarl $0x79, %ebx : sar
+addl $0x75568d39, %ebx : add
+addw $0x10c2, %cx : add
+orw $0x416d, %ax : or
+imulw $0xffff, %dx, %cx : imul
+movl $0x1616225e, %edx : mov
+testw $0x438c, %dx : test
+orl $0x7fffffff, %ecx : or
+movb $0x1a, %dl : mov
+addb $0x68, %dh : add
+subb $0x1, %bl : sub
+rorb $0x97, %bh : ror
+xorb $0x1, %bh : xor
+andw $0x77, %dx : and
+movb $0x4d, %ah : mov
+adcw $0x5ca4, %ax : adc
+cmpw $0x208f, %cx : cmp
+subb $0x22, %al : sub
+rcrl $0xa, %ebx : rcr
+addw $0x6c, %bx : add
+imulw $0xb3, %dx, %bx : imul
+andb $0x12, %ch : and
+sarb $0x5f, %bl : sar
+orl $0x41961e2b, %ecx : or
+movzbl %bh, %edx : movzx
+imulw $0x7f, %cx, %bx : imul
+sbbb $0xb3, %dh : sbb
+andb %dl, %bh : and
+andl $0x752d26ce, %ebx : and
+imull $0x39a2d011, %edx, %edx : imul
+adcl $0xf2, %edx : adc
+adcl $0x7e5ea405, %ecx : adc
+sbbw $0x734a, %ax : sbb
+subw $0x7b01, %ax : sub
+movl $0x6c87d379, %edx : mov
+addl $0x4fc35e5, %ecx : add
+shrl $0xd0, %ecx : shr
+orb $0x1, %ch : or
+subw $0xf5f5, %ax : sub
+movl $0x65441f82, %ecx : mov
+movl $0x40acadee, %edx : mov
+imull $0x55, %edx, %ecx : imul
+andl $0x165cc02f, %ecx : and
+andb $0x9, %al : and
+adcb $0x80, %cl : adc
+imulw $0x82, %cx, %bx : imul
+sbbb $0xe0, %ah : sbb
+orb $0x82, %al : or
+cmpb $0xc4, %bl : cmp
+andw $0x65, %cx : and
+rorw $0x37, %cx : ror
+xorb $0xc2, %dl : xor
+orb $0x65, %ah : or
+rclb $0x5e, %dh : rcl
+shlb $0x54, %ah : shl
+rclw $0xdf, %cx : rcl
+shlb $0x9, %dl : shl
+shrdw $0xff, %bx, %bx : shrd
+rolb $0x78, %dl : rol
+shldl $0x8f, %ecx, %ecx : shld
+sbbl $0x7f, %edx : sbb
+shrdl $0xbe, %ebx, %ebx : shrd
+subb %cl, %cl : sub
+testw $0xff92, %cx : test
+adcl $0xffffffff, %ecx : adc
+xorw $0x9927, %dx : xor
+xorl $0xfa38ee2, %edx : xor
+orb $0x0, %dl : or
+movb $0x8a, %bh : mov
+sarl $0x2a, %ebx : sar
+cmpw $0xffe0, %dx : cmp
+shlw %cl, %cx : shl
+cmpb $0xa1, %cl : cmp
+adcl $0xe3dfe6, %eax : adc
+adcl %ecx, %ebx : adc
+adcb %ah, %ch : adc
+xaddw %cx, %bx : xadd
+imull $0xca, %edx, %ebx : imul
+andl $0x30, %ebx : and
+xorb $0xca, %dh : xor
+addw $0x6d8e, %cx : add
+movw $0x2028, %cx : mov
+shlb $0x9e, %bh : shl
+shldl $0x15, %ebx, %ecx : shld
+testl $0x174f1059, %eax : test
+rorb $0x7b, %dl : ror
+shldl $0x73, %ecx, %edx : shld
+andb $0x49, %al : and
+cmpw $0xda, %cx : cmp
+xorb $0x43, %dl : xor
+addw $0x72, %dx : add
+testb $0x0, %cl : test
+testb $0x68, %bl : test
+rcll %cl, %edx : rcl
+imull $0x7fffffff, %ecx, %edx : imul
+adcl $0x1, %edx : adc
+addb $0xec, %ch : add
+sbbw $0xb9, %dx : sbb
+orl $0x4e, %ebx : or
+xchgb %dh, %ch : xchg
+rcrl $0x4d, %ecx : rcr
+addl $0x7a36b492, %edx : add
+andw $0x8a89, %ax : and
+shrb $0x8b, %bl : shr
+imull $0xe5, %ecx, %ebx : imul
+movb $0x18, %cl : mov
+xorb $0xe0, %cl : xor
+cmpb $0x3c, %al : cmp
+shlb $0xff, %dh : shl
+sbbl $0x80, %eax : sbb
+addw $0x96, %bx : add
+andw $0xf3, %bx : and
+addl $0x6e, %ecx : add
+sbbl $0xf7, %ecx : sbb
+rorb $0xff, %bl : ror
+shlw $0x1f, %bx : shl
+xorl $0xd0, %ebx : xor
+adcb $0x25, %al : adc
+subl $0x30, %eax : sub
+shrl $0x9d, %ecx : shr
+adcb $0xcf, %cl : adc
+cmpb %bh, %bh : cmp
+adcb $0x30, %ch : adc
+xorw $0xe742, %ax : xor
+orw $0x6f82, %cx : or
+shlw $0x91, %bx : shl
+orl $0x7868e0b2, %ecx : or
+adcb $0xd8, %al : adc
+andb $0x1d, %al : and
+shrw $0xb3, %bx : shr
+testw $0x67a6, %cx : test
+addb %bh, %cl : add
+sbbw $0xeca1, %dx : sbb
+sarb $0x6, %dh : sar
+andw $0xd95f, %ax : and
+orw $0x485, %ax : or
+testb $0xff, %al : test
+xorb $0xf7, %al : xor
+testl $0x4b65c7c4, %edx : test
+testb $0xdc, %al : test
+adcw $0x69, %dx : adc
+rcrb $0x80, %bl : rcr
+testw $0x6ce8, %bx : test
+movb $0x78, %ch : mov
+movb %ch, %ah : mov
+rolb $0x7e, %cl : rol
+adcl $0xb7, %ebx : adc
+xorl $0x2fa8818d, %ecx : xor
+adcb $0x0, %al : adc
+subl $0x3459f711, %eax : sub
+sbbl $0x5e908999, %ebx : sbb
+sarl $0x8a, %ecx : sar
+rcrw $0xff, %dx : rcr
+xorl $0x343772ea, %eax : xor
+rorb $0xef, %ch : ror
+rcll $0x10, %ebx : rcl
+andl $0x4bbd11bd, %edx : and
+shrdl $0xc6, %ecx, %edx : shrd
+cmpw $0xfe, %dx : cmp
+addb $0x0, %bh : add
+rclb $0xff, %ch : rcl
+andl $0x7fffffff, %ebx : and
+adcw $0x48, %dx : adc
+shrdw $0x80, %dx, %bx : shrd
+shldw $0x62, %dx, %cx : shld
+subw $0x11d0, %ax : sub
+orw $0x765c, %bx : or
+sarw $0x85, %cx : sar
+shrdl $0xcd, %ebx, %edx : shrd
+xorb $0xc5, %bh : xor
+orl $0x7ac76a63, %eax : or
+adcl $0x60, %ebx : adc
+xorw $0x1, %ax : xor
+xorb $0xf, %al : xor
+sarw $0xa2, %bx : sar
+shll $0xe4, %edx : shl
+xorb $0xff, %bh : xor
+shrdw $0xbe, %cx, %bx : shrd
+orb $0xb0, %al : or
+rcll $0x4b, %ebx : rcl
+shlb $0x2, %cl : shl
+cmpl $0x43bc24af, %eax : cmp
+cmpw $0x1e, %cx : cmp
+andl $0x5c14ed50, %eax : and
+movl $0x4b201108, %edx : mov
+shrdl $0x60, %ebx, %edx : shrd
+andw %dx, %bx : and
+sbbl $0x19735faf, %eax : sbb
+adcb $0x19, %cl : adc
+addb $0xe4, %al : add
+shldl $0x18, %edx, %ecx : shld
+testl $0x7f8b895f, %ebx : test
+orw $0x3e75, %cx : or
+subb %ch, %bh : sub
+orb %dh, %cl : or
+movb $0x65, %dl : mov
+shrl $0x57, %ebx : shr
+andb $0x3c, %al : and
+sbbw $0x7af2, %cx : sbb
+xchgb %dh, %bh : xchg
+sbbw $0xf94b, %ax : sbb
+xorl $0x7762c715, %ebx : xor
+sbbb %ah, %ah : sbb
+movw $0xf47, %dx : mov
+shll $0xd6, %ecx : shl
+imulw $0x6, %dx, %bx : imul
+sbbl $0xba48d2b, %edx : sbb
+movw $0x8000, %bx : mov
+rcrw $0x30, %bx : rcr
+subl $0x6826151a, %ecx : sub
+cmpw $0x29, %cx : cmp
+andb $0x5e, %al : and
+imull $0xff, %edx, %ecx : imul
+sarb $0x15, %cl : sar
+adcw $0x34e2, %ax : adc
+subb $0x90, %cl : sub
+movl $0x56c27a41, %ebx : mov
+addb $0xd0, %al : add
+subb $0xb, %bh : sub
+rclw $0xbc, %cx : rcl
+adcb $0xb2, %al : adc
+shrb $0xb4, %bl : shr
+sarl $0x70, %edx : sar
+andl $0x29, %ebx : and
+cmpw $0x9e9e, %ax : cmp
+shldl $0xe0, %ecx, %ebx : shld
+testw $0x6cbf, %dx : test
+orl $0x0, %eax : or
+movw $0xd1da, %cx : mov
+shlb $0xff, %ah : shl
+movb $0x7, %dl : mov
+rolw $0x1, %cx : rol
+xorb $0xf1, %ah : xor
+sarw $0xcd, %bx : sar
+xorw $0x0, %cx : xor
+orl %edx, %edx : or
+shrb $0x0, %ch : shr
+rcrb $0xe7, %cl : rcr
+adcb $0xb9, %bh : adc
+andw $0x3949, %ax : and
+shldw $0xd7, %dx, %bx : shld
+rclb $0xc7, %ch : rcl
+sbbl $0x290fc4b9, %ecx : sbb
+addw $0x8000, %bx : add
+cmpw $0x9b10, %dx : cmp
+rorl $0x12, %ecx : ror
+movl $0xffffffff, %edx : mov
+andl $0x6a, %edx : and
+testw $0xeaa5, %dx : test
+andl $0x4f0af79d, %eax : and
+shlw $0x30, %bx : shl
+subw $0xe94e, %bx : sub
+adcw $0xbfac, %ax : adc
+subl $0xa5, %ebx : sub
+cmpb $0x83, %ah : cmp
+shll $0xab, %edx : shl
+shrdl $0x43, %ecx, %ebx : shrd
+andl $0xe0, %ebx : and
+sarw $0xe0, %dx : sar
+xorw $0x29d6, %cx : xor
+testw $0x74ba, %dx : test
+rcrb $0xd0, %dl : rcr
+subb $0x30, %bh : sub
+xorw $0x4a, %bx : xor
+movw $0xeaa1, %dx : mov
+cmpw %cx, %bx : cmp
+cmpb $0x4d, %dl : cmp
+xorw $0x9da6, %cx : xor
+xorw $0xa0, %dx : xor
+addl $0x7f, %ebx : add
+sbbl $0x26b4c766, %edx : sbb
+adcl $0xc600e47, %eax : adc
+rcrb $0x80, %dl : rcr
+roll $0x4f, %ecx : rol
+xorw $0x609f, %dx : xor
+andw $0x7f, %dx : and
+rclb $0x66, %dl : rcl
+movw $0x6b73, %bx : mov
+movb $0x0, %ch : mov
+shlb $0xd, %dl : shl
+addb $0x78, %bl : add
+cmpl $0x322655c4, %ecx : cmp
+addb $0x58, %dl : add
+cmpw $0xffff, %dx : cmp
+testw $0x4781, %cx : test
+addl $0x7fffffff, %eax : add
+sbbw $0x73cb, %cx : sbb
+orw $0xcc3d, %cx : or
+sarb $0x15, %ah : sar
+adcl $0x169cad8d, %eax : adc
+shlw $0xb, %cx : shl
+adcw $0xea5, %cx : adc
+testb $0x73, %dh : test
+shrw $0xf9, %dx : shr
+cmpb $0xe0, %dl : cmp
+rcrl $0xd9, %edx : rcr
+addw $0xd6a1, %cx : add
+shrl $0xbd, %ecx : shr
+andw $0xb0, %dx : and
+cmpb $0x1, %bl : cmp
+adcl $0x1, %eax : adc
+sbbl $0x717a1ec3, %eax : sbb
+adcl $0x7fffffff, %ecx : adc
+addw $0x7a20, %dx : add
+testw $0x26f3, %ax : test
+orb $0x38, %dh : or
+addl $0x3b, %ebx : add
+orl $0x283b0c62, %ecx : or
+addw $0x9f, %bx : add
+sbbb $0x40, %cl : sbb
+testl $0x80000000, %edx : test
+sbbl $0x78ecb16d, %edx : sbb
+andw $0xe0, %cx : and
+sbbw %cx, %bx : sbb
+addw $0xdeb8, %bx : add
+adcl $0x3785655a, %eax : adc
+addb $0x90, %bh : add
+shlw $0xf4, %dx : shl
+sbbl $0x51, %ecx : sbb
+rorl $0xc0, %ebx : ror
+sbbw $0xff, %cx : sbb
+sbbb $0x27, %al : sbb
+testl $0x158c6e67, %ecx : test
+adcw $0x30, %cx : adc
+cmpl $0x2289062f, %eax : cmp
+shrdl $0x43, %ebx, %ecx : shrd
+xchgl %edx, %ebx : xchg
+andb $0xff, %ah : and
+subw $0xa84d, %bx : sub
+addl $0x7d21f6f, %eax : add
+adcw $0xfabb, %bx : adc
+testl $0x0, %ebx : test
+orw $0xd173, %ax : or
+movl $0x3865ef26, %edx : mov
+andl $0xff, %edx : and
+testb $0x22, %ah : test
+orb $0x59, %dl : or
+cmpl $0x30126d70, %ecx : cmp
+shrdw $0x11, %dx, %bx : shrd
+addw $0x8000, %ax : add
+imull $0x52471e4f, %ebx, %ecx : imul
+subb $0x30, %ah : sub
+adcb $0xe6, %al : adc
+cmpw $0x4b, %bx : cmp
+andw $0xf2bc, %ax : and
+testw $0xe04, %ax : test
+movl $0x52b6541, %edx : mov
+sbbw $0xd117, %ax : sbb
+sbbb $0xe, %ch : sbb
+rcrw $0xe6, %cx : rcr
+addw $0x6ec0, %ax : add
+xorw $0xaf, %cx : xor
+movb $0xff, %bh : mov
+addb $0xff, %al : add
+movw $0xd623, %bx : mov
+testb $0x13, %bl : test
+shrdl $0x8b, %ebx, %ebx : shrd
+shlb $0x66, %bh : shl
+shldw $0x1, %cx, %dx : shld
+rolb $0x4e, %bl : rol
+rcll $0xa6, %ecx : rcl
+imull $0x80, %ecx, %ecx : imul
+sbbb $0x7f, %dh : sbb
+orw $0x7f7e, %ax : or
+testl $0x640b1cdc, %eax : test
+sbbb $0xff, %ah : sbb
+shlw $0xba, %bx : shl
+xorl $0x96, %ebx : xor
+cmpb %dh, %ah : cmp
+xaddb %cl, %cl : xadd
+cmpl $0xd8ce1b6, %eax : cmp
+testb $0xf3, %bh : test
+rorb $0x80, %cl : ror
+imull $0x8000, %ebx, %edx : imul
+rorb $0xc0, %cl : ror
+shrdw $0x1, %dx, %bx : shrd
+testw $0x6fba, %bx : test
+orl $0x28664580, %eax : or
+shrb $0x30, %ch : shr
+rorw $0x8d, %bx : ror
+testl $0x7fffffff, %edx : test
+shrdl $0x7c, %ebx, %edx : shrd
+xorl $0xe3, %ebx : xor
+addb $0xe0, %cl : add
+testw $0xa84, %ax : test
+adcl $0xb1, %edx : adc
+andb %dl, %ch : and
+xorb %bl, %ch : xor
+andb $0x1a, %al : and
+subl $0x43f5def4, %ecx : sub
+shlw $0x9b, %bx : shl
+addl $0x2d920863, %eax : add
+addb $0x49, %ah : add
+rcrl $0x71, %ecx : rcr
+cmpw %bx, %cx : cmp
+shldl $0xb0, %ecx, %edx : shld
+sbbl $0xffffffff, %eax : sbb
+adcl $0x697a2fc8, %ecx : adc
+andw $0xc3, %cx : and
+testl $0x3f520967, %eax : test
+andw $0xe863, %dx : and
+andw $0x9fb8, %bx : and
+imulw $0x80, %bx, %dx : imul
+cmpw $0x4, %dx : cmp
+sbbb $0x39, %dl : sbb
+movb $0xa5, %ah : mov
+orb $0xfd, %al : or
+testb $0x4a, %al : test
+sbbl $0x26, %edx : sbb
+addl $0x3b80911c, %eax : add
+rclb $0xf9, %dl : rcl
+imulw $0x5b, %cx, %cx : imul
+sbbb $0xe2, %ah : sbb
+sarb $0x43, %dl : sar
+sbbl $0x5726bfa3, %eax : sbb
+xorw $0xfacb, %bx : xor
+cmpb $0x80, %dh : cmp
+rorw $0x82, %bx : ror
+testb %ch, %dl : test
+movl $0x3946dfd1, %edx : mov
+sarb $0x4b, %bl : sar
+addw $0xe0, %cx : add
+shrdw $0x47, %cx, %bx : shrd
+imulw $0x82aa, %cx, %cx : imul
+sarb $0x93, %dh : sar
+movb $0x1, %bl : mov
+addw $0x13ce, %bx : add
+rolb $0x2, %ah : rol
+roll $0xff, %ebx : rol
+xorb $0xf8, %ch : xor
+movb $0xcc, %dh : mov
+addb $0xe1, %cl : add
+addl $0x39, %ecx : add
+rcll $0x44, %edx : rcl
+rorw %cl, %bx : ror
+testb $0x8e, %ah : test
+andb $0xcc, %bl : and
+testb $0x90, %al : test
+cmpw $0x13, %cx : cmp
+cmpl $0x37, %edx : cmp
+sarw $0x86, %bx : sar
+andw $0xfc86, %dx : and
+adcw $0xffff, %ax : adc
+xorb $0xb0, %bl : xor
+shrdl $0xff, %ecx, %edx : shrd
+movb %bh, %bl : mov
+subb $0x2, %al : sub
+cmpw $0x53, %cx : cmp
+movl $0x3d25989e, %ecx : mov
+xorb $0x8b, %al : xor
+testl $0x7a4370b, %eax : test
+rolb $0x5f, %bl : rol
+sbbl $0xf, %ebx : sbb
+adcb $0x11, %ch : adc
+sbbw $0x9f3, %cx : sbb
+shll $0x0, %edx : shl
+subw $0xc190, %cx : sub
+testl $0x60c8b64f, %edx : test
+shrdw $0xbb, %bx, %bx : shrd
+orl $0x6, %ebx : or
+testw $0x8586, %bx : test
+shrl $0xf8, %ecx : shr
+addl $0x4c7d19b8, %ecx : add
+adcb $0xca, %al : adc
+xorw $0xd4b8, %bx : xor
+sarb $0x67, %dh : sar
+testb $0xab, %cl : test
+adcw $0xfd16, %ax : adc
+cmpw %dx, %dx : cmp
+rorb $0x7f, %bl : ror
+xorb $0x7d, %ah : xor
+rclb $0xcf, %ah : rcl
+rcrl $0x7f, %edx : rcr
+sarb $0xaf, %cl : sar
+cmpb $0x91, %al : cmp
+xorw $0xb2, %cx : xor
+shlb $0x58, %ah : shl
+sbbl $0xda, %ecx : sbb
+movb $0x99, %ah : mov
+rclb $0x42, %dl : rcl
+movw $0x96c0, %dx : mov
+addl $0x7e2e9334, %ecx : add
+sarl $0x57, %ecx : sar
+rcrb $0xf8, %bh : rcr
+movl $0x2424a6ac, %ebx : mov
+shrb $0x36, %bl : shr
+xaddl %ebx, %ebx : xadd
+xorl $0xff, %ecx : xor
+addb $0x88, %dh : add
+subb $0x1b, %bh : sub
+addl $0x7224cd23, %eax : add
+movb $0x65, %bl : mov
+andb %ah, %bl : and
+xorw $0x29b, %ax : xor
+sbbl $0x4e6c1073, %eax : sbb
+testb $0xe2, %bh : test
+shrdw $0x1, %cx, %cx : shrd
+rorl $0x79, %ebx : ror
+xorw $0x88ca, %ax : xor
+cmpw $0x97fa, %dx : cmp
+testb $0x5d, %dh : test
+sbbw $0x5692, %ax : sbb
+addl $0x5b9b030b, %edx : add
+subl $0x3626605, %edx : sub
+andb $0xa7, %al : and
+imull $0xffffffff, %ecx, %edx : imul
+andb $0x9e, %dl : and
+roll $0x80, %ecx : rol
+cmpl $0x1f57f1c2, %eax : cmp
+xorw $0x7f, %dx : xor
+xorl $0x73, %ecx : xor
+sbbb $0xb3, %bl : sbb
+movw $0xe4aa, %bx : mov
+rcrl $0x74, %ecx : rcr
+movb $0x21, %ch : mov
+testl $0x8000, %edx : test
+subw $0xb, %cx : sub
+xorw $0xecca, %ax : xor
+orl $0xa5, %ecx : or
+rcrw $0xde, %bx : rcr
+rolw $0x81, %bx : rol
+cmpw $0xf9, %dx : cmp
+adcl $0xe0, %ecx : adc
+orw $0x86e5, %ax : or
+xorl $0x6848ac1c, %ebx : xor
+subl $0x465bcedc, %edx : sub
+orb $0xff, %al : or
+testw $0xd795, %dx : test
+shrdw $0x30, %cx, %dx : shrd
+btl $0xff, %edx : bt
+btl $0xf2, %ecx : bt
+btl $0xbd, %edx : bt
+btl $0x4, %ecx : bt
+btl $0xd6, %edx : bt
+btl $0xb5, %ebx : bt
+bsrl %edx, %ecx : bsr
+btl $0xbb, %ebx : bt
+bsfl %edx, %ecx : bsf
+btl $0x1, %ecx : bt
+btl $0xd8, %edx : bt
+btl $0x30, %ecx : bt
+btl $0x15, %ebx : bt
+shrdw %cl, %cx, %bx : shrd
+btl $0xe0, %ebx : bt
+btl $0x42, %ebx : bt
+shrdw %cl, %bx, %dx : shrd
+shldw %cl, %bx, %bx : shld
+btl $0x5c, %ebx : bt
+btl $0xed, %edx : bt
+btl $0x80, %ecx : bt
+shldw $0x30, %cx, %dx : shld
+bsfl %ebx, %ecx : bsf
+btl $0x88, %ebx : bt
+btl $0xcc, %ecx : bt
+btl %ecx, %ebx : bt
+shldw %cl, %bx, %cx : shld
+btl $0xda, %ebx : bt
+btl $0x5c, %edx : bt
+bsfl %ebx, %edx : bsf
+bsrl %edx, %edx : bsr
+shldw $0x30, %dx, %dx : shld
+btl $0x6, %ecx : bt
+btl $0x59, %ebx : bt
+btl %ebx, %ecx : bt
+bsfl %edx, %edx : bsf
+btl $0x0, %ecx : bt
+btl $0xd, %ecx : bt
+btl $0x44, %edx : bt
+btl $0x78, %ebx : bt
+btl $0x38, %ecx : bt
+btl $0x28, %edx : bt
+btl $0x76, %ecx : bt
+btl $0x80, %ebx : bt
+btl $0xe1, %edx : bt
+btl $0xef, %edx : bt
+btl $0x1, %edx : bt
+btl $0xe8, %ebx : bt
+btl $0xf7, %edx : bt
+btl $0x31, %ebx : bt
+btl $0x7, %ebx : bt
+shrdw %cl, %dx, %bx : shrd
+bsfl %edx, %ebx : bsf
+btl $0x7f, %edx : bt
+btl $0x70, %ecx : bt
+shrdw %cl, %dx, %cx : shrd
+bsrl %ebx, %ecx : bsr
+btl $0xb, %ebx : bt
+shldw $0x30, %bx, %cx : shld
+btl $0xae, %ecx : bt
+btl $0xf2, %ebx : bt
+btl $0x43, %edx : bt
+btl $0xff, %ecx : bt
+shldw %cl, %cx, %cx : shld
+btl %ebx, %edx : bt
+btl $0x24, %ebx : bt
+shldw $0x30, %dx, %cx : shld
+btl $0xad, %edx : bt
+btl $0x68, %ebx : bt
+shldw $0x30, %dx, %bx : shld
+btl $0xba, %ecx : bt
+shrdw $0x30, %dx, %dx : shrd
+btl $0xec, %ebx : bt
+btl $0x1f, %ebx : bt
+btl $0xcb, %ebx : bt
+btl $0x30, %edx : bt
+btl $0x9f, %ebx : bt
+btl $0x1a, %ebx : bt
+btl $0x7e, %ebx : bt
+btl $0x1, %ebx : bt
+btl $0xbe, %edx : bt
+bsfl %ecx, %ebx : bsf
+bsrl %edx, %ebx : bsr
+btl $0x35, %ebx : bt
+btl $0xff, %ebx : bt
+shrdw %cl, %bx, %bx : shrd
+btl $0x2b, %edx : bt
+shrdw $0x30, %dx, %bx : shrd
+btl $0x1d, %edx : bt
+shrdw $0x30, %bx, %bx : shrd
+shrdw $0x30, %cx, %bx : shrd
+btl $0x5b, %ebx : bt
+bsfl %ebx, %ebx : bsf
+shldw $0x30, %bx, %dx : shld
+btl $0x9a, %ebx : bt
+btl $0x1a, %ecx : bt
+btl $0xa5, %edx : bt
+bsrl %ebx, %edx : bsr
+btl $0x92, %ecx : bt
+shldw %cl, %dx, %dx : shld
+btl $0xe0, %edx : bt
+btl $0x7f, %ecx : bt
+btl $0xa3, %ecx : bt
+btl $0x80, %edx : bt
+shrdw %cl, %dx, %dx : shrd
+shrdw $0x30, %bx, %cx : shrd
+btl $0x43, %ebx : bt
+btl $0x82, %ecx : bt
+shldw %cl, %dx, %bx : shld
+btl $0x56, %ebx : bt
+btl $0x7f, %ebx : bt
+btl $0x4, %edx : bt
+btl %ecx, %ecx : bt
+shrdw $0x50, %bx, %cx : shrd
+shldw %cl, %bx, %dx : shld
+btl $0xb4, %ecx : bt
+btl $0x27, %ebx : bt
+shldw %cl, %dx, %cx : shld
+shldw %cl, %cx, %dx : shld
+btl $0x61, %ecx : bt
+bsrl %ebx, %ebx : bsr
+shrdw $0x70, %bx, %cx : shrd
+btl %edx, %ebx : bt
+btl $0x81, %ecx : bt
+btl $0x1e, %ebx : bt
+btl $0x95, %ebx : bt
+btl $0x0, %ebx : bt
+btl %ebx, %ebx : bt
+btl $0x9d, %edx : bt
+btl $0xbf, %ecx : bt
+btl $0xb, %ecx : bt
+shldw $0x30, %bx, %bx : shld
+btl $0x77, %edx : bt
+btl $0xfd, %ebx : bt
+btl $0x89, %edx : bt
+btl $0xb9, %ebx : bt
+bsrl %ecx, %edx : bsr
+btl $0xf6, %edx : bt
+btl $0x2d, %ecx : bt
+btl %edx, %edx : bt
+btl $0x60, %ecx : bt
+bsrl %ecx, %ebx : bsr
+btl $0x41, %edx : bt
+shrdw $0x90, %cx, %bx : shrd
+bsfl %ecx, %edx : bsf
+btl $0x30, %ebx : bt
+btl $0x11, %edx : bt
+shrdw $0x30, %bx, %dx : shrd
+btl $0x16, %ecx : bt
+bsrl %ecx, %ecx : bsr
+shrdw %cl, %cx, %cx : shrd
+btl $0x89, %ecx : bt
+shrdw %cl, %bx, %cx : shrd
+btl $0x0, %edx : bt
+shrdw $0x30, %cx, %cx : shrd
+btl $0x84, %ecx : bt
+shrdw $0x30, %dx, %cx : shrd
+btl $0x4e, %ecx : bt
+btl $0xe0, %ecx : bt
+btl $0x86, %ecx : bt
+shldw %cl, %cx, %bx : shld
+btl $0xc7, %ebx : bt
+shldw $0x30, %cx, %bx : shld
+shrdw %cl, %cx, %dx : shrd
+bsfl %ecx, %ecx : bsf
+btl %ecx, %edx : bt
+btl %edx, %ecx : bt
+btl $0x8b, %ebx : bt
+shldw $0x30, %cx, %cx : shld

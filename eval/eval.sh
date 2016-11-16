@@ -2,11 +2,8 @@
 
 cd /x86sem/eval
 
-segments=( 'xaa' 'xab' 'xac' 'xad' 'xae' 'xaf' 'xag' 'xah'
-           'xai' 'xaj' 'xak' 'xal' 'xam' 'xan' 'xao' )
-
-# segments=( 'yaa' 'yab' 'yac' 'yad' 'yae' 'yaf' 'yag' 'yah'
-#            'yai' 'yaj' 'yak' 'yal' 'yam' 'yan' 'yao' )
+segments=( 'zaa' 'zab' 'zac' 'zad' 'zae' 'zaf' 'zag' 'zah'
+           'zai' 'zaj' 'zak' 'zal' 'zam' 'zan' 'zao' )
 
 echo "================[individual]=============================="
 
