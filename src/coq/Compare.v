@@ -287,9 +287,6 @@ Parameter rocksaltInstrRacket : Instr -> prefix * instr.
 Extract Constant stokeRacket => "stoke".
 Extract Constant rocksaltInstrRacket => "(lambdas (i) (rocksalt-instr (car i) (cdr i)))".
 
-
-Check verifyInstrProp.
-
 Definition eqInstr (instr : Instr) : option (SharedState * option SharedState * option SharedState).
   refine (let result := stokeRacket instr in _).
   refine (let uninterpretedBits := projT1 result in _).
