@@ -14,7 +14,7 @@ Build with:
 
     docker build -t x86sem .
 
-Run with:
+Verify a couple of instruction variants with:
 
     docker run x86sem
 
