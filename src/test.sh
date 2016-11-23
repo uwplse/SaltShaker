@@ -2,8 +2,6 @@
 
 compare=/x86sem/src/racket/compare.rkt
 
-echo '===[ running and investigated ]==='
-
 # bugs exhibited:
 # PF = computes wrong parity flag
 # UR = reads after update
@@ -86,7 +84,7 @@ $compare 'bswap %ebx' 'bswap'
 $compare 'bsfl %ecx, %ebx' 'bsf'
 $compare 'bsrl %ecx, %ebx' 'bsr'
 
-echo '===[ failing and investigated ]==='
+echo '===[ not supported by rocksalt ]==='
 
 # stoke implements these with uninterpreted functions
 $compare 'divl %ebx' 'div'
