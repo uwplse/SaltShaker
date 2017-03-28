@@ -12,9 +12,9 @@ Import PTree.
 Import Pos.
 Import BinNums.
 Import Word.
-Require Import Basic.
-Require Import Full.
-Require Import Rosette.Unquantified.
+Require Import SpaceSearch.Space.Basic.
+Require Import SpaceSearch.Space.Full.
+Require Import SpaceSearch.Backends.Rosette.Unquantified.
 Require Import ExtractWord.
 Require Import InitState.
 Require Import Coq.Logic.ClassicalFacts.

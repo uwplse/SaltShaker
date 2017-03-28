@@ -13,32 +13,13 @@ RUN apt-get update && \
       python \
       python-pip \
       vim \
+      unzip \
       wget
 
 # install z3
 RUN git clone https://github.com/Z3Prover/z3.git && \
     cd z3; python scripts/mk_make.py && \
            cd build; make; make install
-
-# install coq
-RUN apt-get update && \
-    apt-get install -y \
-      camlp5 \
-      libpcre-ocaml-dev \
-      libpcre3-dev \
-      pkg-config && \
-    curl -O https://coq.inria.fr/distrib/8.5pl2/files/coq-8.5pl2.tar.gz && \
-    tar -xvf coq-*.tar.gz && \
-    cd coq-*; ./configure \
-                     -bindir /usr/local/bin \
-                     -libdir /usr/local/lib/coq \
-                     -configdir /etc/xdg/coq \
-                     -datadir /usr/local/share/coq \
-                     -mandir /usr/local/share/man \
-                     -docdir /usr/local/share/doc/coq \
-                     -emacs /usr/local/share/emacs/site-lisp \
-                     -coqdocdir /usr/local/share/texmf/tex/latex/misc && \
-                   make -j4; make install
 
 # install racket
 RUN wget http://mirror.racket-lang.org/installers/6.6/racket-6.6-x86_64-linux.sh -O install.sh && \
@@ -55,7 +36,15 @@ RUN apt-get update && \
     git clone https://github.com/emina/rosette.git && \
     cd rosette; git checkout 2.2 && \
                 raco pkg install
- 
+
+# install opam
+RUN wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin && \
+    opam init -n --comp=4.01.0
+ENV PATH "/root/.opam/4.01.0/bin":$PATH
+
+# install coq
+RUN opam install coq.8.5.2
+
 # install stoke dependencies
 RUN apt-get update && \
     apt-get install -y software-properties-common apt-transport-https && \
@@ -75,16 +64,10 @@ RUN wget https://gforge.inria.fr/frs/download.php/file/36199/flocq-2.5.2.tar.gz 
     tar -xvf flocq-* && \
     cd flocq-*; ./configure && ./remake && ./remake install
 
-# enable rosette debugging
-RUN cd rosette && \
-# debug errors during symbolic execution
-#   sed -i "s/;(printf/(printf/g" rosette/base/core/effects.rkt && \
-# debug formula sent to solver
-#   sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
-    raco pkg remove rosette && \
-    raco pkg install
+# install space-search
+RUN opam update && opam install space-search
 
-ENTRYPOINT /x86sem/src/test.sh
+ENTRYPOINT /x86sem/test/test.sh
 
 # install
 ADD . /x86sem
