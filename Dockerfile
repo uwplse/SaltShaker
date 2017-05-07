@@ -65,7 +65,7 @@ RUN wget https://gforge.inria.fr/frs/download.php/file/36199/flocq-2.5.2.tar.gz 
     cd flocq-*; ./configure && ./remake && ./remake install
 
 # install space-search
-RUN opam update && opam install space-search
+RUN opam update && opam install space-search.0.9.1
 
 ENTRYPOINT /x86sem/test/test.sh
 

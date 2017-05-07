@@ -1,12 +1,6 @@
 [submodule "CPUmodels"]
 	path = libs/CPUmodels
 	url = git@github.com:konne88/CPUmodels.git
-[submodule "SpaceSearch"]
-	path = lib/SpaceSearch
-	url = git@github.com:konne88/SpaceSearch.git
-[submodule "libs/CPUmodels"]
-	path = lib/CPUmodels
-	url = git@github.com:konne88/CPUmodels.git
 [submodule "libs/stoke"]
 	path = lib/stoke
 	url = git@github.com:konne88/stoke.git

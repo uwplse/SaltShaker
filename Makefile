@@ -1,11 +1,11 @@
-.PHONY: compare clean stoke rocksalt spacesearch
+.PHONY: compare clean stoke rocksalt
 
 compare: src/racket/* src/racket/x86sem.rkt stoke lib/SpaceSearch/src/racket/*
-	cp lib/SpaceSearch/src/racket/* src/racket/
+	cp `opam config var coq:lib`/user-contrib/SpaceSearch/*.rkt src/racket/
 	raco make src/racket/compare.rkt
 	chmod +x src/racket/compare.rkt 
 
-src/racket/x86sem.rkt: src/coq/*.v src/racket/header.rkt spacesearch rocksalt
+src/racket/x86sem.rkt: src/coq/*.v src/racket/header.rkt rocksalt
 	cd src/coq; find . -name '*.v' -exec coq_makefile \
 	                   -R . Main \
 	                   -R ../../lib/CPUmodels/x86model/Model X86Model \
