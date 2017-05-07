@@ -1,15 +1,20 @@
+SaltShaker is a solver-aided tool that checks, for all possible machine states, that an x86 instruction executed by [RockSalt’s Coq x86 semantics][rocksalt] behaves according to its instruction specifications extracted from [STOKE][stoke]. SaltShaker verified the RockSalt semantics of over 15,000 instruction instantiations in under 2h, found 7 bugs in RockSalt, and found 1 bug in STOKE. We reported these bugs, and they were subsequently fixed by the respective developers.
+
+[stoke]: http://stoke.stanford.edu/
+[rocksalt]: https://github.com/gangtan/CPUmodels
+
 Running
 =======
 
 Checkout the project with:
 
-    git clone --recursive git@github.com:uwplse/x86semantics
+    git clone --recursive git@github.com:uwplse/SaltShaker
 
 Build with: 
 
     docker build -t x86sem .
 
-Run with:
+Verify a couple of instruction variants with:
 
     docker run x86sem
 

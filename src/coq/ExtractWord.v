@@ -1,8 +1,8 @@
 Require Import Bits.
 Import Word.
-Require Import Basic.
-Require Import Rosette.Unquantified.
-Require Import Full.
+Require Import SpaceSearch.Space.Basic.
+Require Import SpaceSearch.Backends.Rosette.Unquantified.
+Require Import SpaceSearch.Space.Full.
 
 Extract Constant Word.repr => "word-mkint".
 Extract Constant Word.zero => "word-zero".

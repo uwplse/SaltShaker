@@ -12,10 +12,10 @@ Import PTree.
 Import Pos.
 Import BinNums.
 Import Word.
-Require Import Basic.
-Require Import Rosette.Unquantified.
-Require Import Precise.
-Require Import Full.
+Require Import SpaceSearch.Space.Basic.
+Require Import SpaceSearch.Backends.Rosette.Unquantified.
+Require Import SpaceSearch.Search.Precise.
+Require Import SpaceSearch.Space.Full.
 Require Import ExtractWord.
 Require Import InitState.
 Require Import SharedState.
