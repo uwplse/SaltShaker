@@ -69,3 +69,6 @@ RUN opam update && opam install space-search.0.9.1
 
 ENTRYPOINT /x86sem/test/test.sh
 
+# install
+ADD . /x86sem
+RUN make -C /x86sem
