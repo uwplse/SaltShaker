@@ -1,6 +1,6 @@
 .PHONY: compare clean stoke rocksalt
 
-compare: src/racket/* src/racket/x86sem.rkt stoke lib/SpaceSearch/src/racket/*
+compare: src/racket/* src/racket/x86sem.rkt stoke
 	cp `opam config var coq:lib`/user-contrib/SpaceSearch/*.rkt src/racket/
 	raco make src/racket/compare.rkt
 	chmod +x src/racket/compare.rkt 
